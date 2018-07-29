@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "196483564569",
+    "firebase_url": "https://cheese-me-up.firebaseio.com",
+    "project_id": "cheese-me-up",
+    "storage_bucket": "cheese-me-up.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196483564569:android:c02be9c6e14383fd",
+        "android_client_info": {
+          "package_name": "com.example.cheesemeup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196483564569-trsloqoo90m3s416tsec525kppa28ok9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cheesemeup",
+            "certificate_hash": "80f7b3c94447569978ddc5810ffb352dadcfd817"
+          }
+        },
+        {
+          "client_id": "196483564569-4tuf5vcdh5vp5jllligk9j3k35gals5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfmJfMvHTDmxTWL8_I_5B5q7SiEyZALoM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196483564569-4tuf5vcdh5vp5jllligk9j3k35gals5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

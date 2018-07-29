@@ -1,0 +1,51 @@
+{
+    "users": [],
+    "cheeses": [{
+        "id": 1,
+        "name": "Cantal ",
+        "image": "/media/img/cheese/wiki/cantal.jpg",
+        "Country of origin": " France",
+        "Region": " Cantal, Auvergne",
+        "Type": " semi-hard, hard, artisan",
+        "Fat content": " 45%",
+        "Texture": " brittle, close, compact, crumbly, firm and smooth",
+        "Rind": " natural",
+        "Colour": " pale yellow",
+        "Flavour": " buttery, milky, nutty, strong, sweet, tangy",
+        "Aroma": " earthy, milky, strong",
+        "Vegetarian": " no ",
+        "Synonyms": " Cantalet, Fourme de Cantal",
+        "Alternative spellings": " Cantal jeune, Cantal Entre-deux, Cantal Vieux, Cantal fremier, Cantal laitier, Cantal AOC",
+        "description": " Cantal AOC is one of the oldest cheeses in France dating to the times of the Gaul’s rule. It received an Appellation d'Origine (AOC) status from the administrative region of Cantal in the Auvergne region in 1956. This has ensured that the semi-hard, uncooked, pressed cheese has the features and characteristics attributable to the area of origin. There are three types of Cantal cheese, grouped according to age and texture. Cantal jeune, a young cheese is aged at 30 to 60 days during which it develops a thin gray-ivory crust and a smooth, pale yellow, close-textured paste. It is fresh, sweet, milky in flavour with a light hint of hazelnut, and vanilla. Cantal Entre-deux, an aged Cantal has the flavours of the green pastures and aromas of butter and cream. From 3 months of ripening, Cantal cheese starts to come into its own. Creative Commons/TechniqueA well-aged Cantal Vieux has a thick crust and is a cheese connoisseur’s delight. Due to the lengthy ripening period, the cheese has become more strongly flavoured and is a typical hard cheese with a firm, brittle and crumbly paste. The 8-month stay inside the cellars let Cantal develop a peppery and spicy aroma. The cheese is additionally grouped as “fremier” and “laitier”, wherein fermier is a farmhouse cheese made of raw milk while laitier is the commercial, mass-produced version from pasteurised milk. Cantal works well with nuts, grapes and apples as well can be used in salads, soups, cheese fondue or gratins. Cabernet Sauvignon and Merlot are a few wines that pair nicely with Cantal. "
+    }, {
+        "id": 2,
+        "name": "Abbaye de Belloc ",
+        "image": "/media/img/cheese/wiki/abbaye-de-belloc.jpg",
+        "Country of origin": " France",
+        "Region": " Pays Basque",
+        "Type": " semi-hard, artisan",
+        "Texture": " creamy, dense and firm",
+        "Rind": " natural",
+        "Colour": " yellow",
+        "Flavour": " burnt caramel",
+        "Aroma": " lanoline",
+        "Vegetarian": " yes ",
+        "Producers": " Abbaye de Notre-Dame de Belloc ",
+        "Synonyms": " Abbaye Notre-Dame de Belloc",
+        "description": " Abbaye de Belloc is also known as 'Abbaye Notre-Dame de Belloc' since it was produced by the Benedictine monks at the 'Abbaye de Notre Dame de Belloc' in the Pays Basque region of Aquitaine, France. They used sheep milk available in the locality and followed a cheese making process that dates back to 3000 years. Abbaye de Belloc is a flat wheel shaped traditional, farmhouse, unpasteurised, semi-hard cheese made from sheep's milk. It has a natural, crusty, brownish rind with patches of red, orange and yellow. The rind is marked with tiny craters. The cheese has a firm, dense, rich and creamy texture. The taste resembles burnt caramel and there is a distinctive lanolin aroma. Ageing process of the cheese ranges from four to ten months. The younger wheels are made in December while the older in July. Both types of cheese wheels are sent to the market in April. "
+    }, {
+        "id": 3,
+        "name": "Boulette d'Avesnes ",
+        "image": "/media/img/cheese/Boulette_dAvesnes.jpg",
+        "Country of origin": " France",
+        "Region": " Avesnes",
+        "Type": " fresh soft",
+        "Fat content": " 45%",
+        "Texture": " creamy and smooth",
+        "Rind": " washed",
+        "Flavour": " spicy",
+        "Aroma": " stinky",
+        "Vegetarian": " yes ",
+        "description": " Boulette d'Avesnes is a cow's milk cheese originally produced in Avesnes, a village on the French-Belgian border. It is flavoured with parsley, pepper, tarragon, and cloves and later shaped into a cone by hand. The cones (boulettes) were originally produced from buttermilk and made on farms as a by-product of buttermaking. Most boulettes are sold fresh and supposed to be eaten within 30 days. But they can also age quite well in ripening cellars where they develop reddish colour due to the effect of paprika or annatto, a natural food colouring. This creamy, fresh cheese is well known for its stinky flavour and is best consumed with a good beer or traditional gin. "
+    }]
+}
