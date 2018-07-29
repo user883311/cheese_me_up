@@ -5,9 +5,19 @@
 .packages
 .pub/
 build/
+assets/
+.assets
+/assets
+/assets/
+./assets
+
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
 
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
 doc/api/
+
+*.log
+*.json
+*.jpg
