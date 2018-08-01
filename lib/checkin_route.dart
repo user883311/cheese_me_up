@@ -1,4 +1,8 @@
-import 'package:cheese_me_up/cheese.dart';
+//
+//
+//
+
+import './models/cheese.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +55,7 @@ class _CheckinRoute extends State<CheckinRoute> {
                     subtitle: new Text(cheeseList[index].region +
                         ", " +
                         cheeseList[index].country),
+                    onTap: _tappedTile,
                   ),
                 );
               },
@@ -59,5 +64,9 @@ class _CheckinRoute extends State<CheckinRoute> {
         ],
       ),
     );
+  }
+
+  void _tappedTile() {
+    print("tapp dat cheese!");
   }
 }

@@ -1,7 +1,10 @@
 //
 //
 //
+import 'package:cheese_me_up/models/user.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+
 
 class FeedRoute extends StatefulWidget {
   FeedRoute();
@@ -10,6 +13,27 @@ class FeedRoute extends StatefulWidget {
 }
 
 class _FeedRoute extends State<FeedRoute> {
+  List<User> userCheesesList = List();
+  final FirebaseDatabase database = FirebaseDatabase.instance;
+  DatabaseReference databaseReference;
+  final int userId = 0;
+
+  @override
+  void initState() {
+    
+    super.initState();
+    databaseReference =
+        database.reference().child("users").child(userId.toString());
+    databaseReference.onChildAdded.listen(_onEntryAdded);
+  }
+
+  void _onEntryAdded(Event event) {
+    setState(() {
+      userCheesesList.add(User.fromSnapshot(event.snapshot));
+      print(userCheesesList);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
