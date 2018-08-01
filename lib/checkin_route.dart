@@ -17,19 +17,20 @@ class _CheckinRoute extends State<CheckinRoute> {
   List<Cheese> cheeseList = List();
   Cheese cheese;
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference databaseReference;
+  DatabaseReference _cheesesRef;
 
   @override
   void initState() {
     super.initState();
-    databaseReference = database.reference().child("cheeses");
-    databaseReference.onChildAdded.listen(_onEntryAdded);
+    _cheesesRef = database.reference().child("cheeses");
+    _cheesesRef.onChildAdded.listen(_onEntryAdded);
   }
 
   void _onEntryAdded(Event event) {
     setState(() {
       cheeseList.add(Cheese.fromSnapshot(event.snapshot));
     });
+    print(cheeseList);
   }
 
   @override
@@ -43,7 +44,7 @@ class _CheckinRoute extends State<CheckinRoute> {
           TextField(),
           Flexible(
             child: FirebaseAnimatedList(
-              query: databaseReference,
+              query: _cheesesRef,
               itemBuilder: (_, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
                 return new Card(

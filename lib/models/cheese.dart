@@ -12,6 +12,7 @@ class Cheese {
   String image;
 
   Cheese(
+    this.id,
     this.name,
     this.region,
     this.country,
@@ -19,7 +20,7 @@ class Cheese {
   );
 
   Cheese.fromSnapshot(DataSnapshot snapshot)
-      : id = snapshot.key,
+      : id = snapshot.value["id"],
         name = snapshot.value["name"],
         region = snapshot.value["Region"],
         country = snapshot.value["Country of origin"],
@@ -27,6 +28,7 @@ class Cheese {
 
   toJson() {
     return {
+      "id":id,
       "name": name,
       "Region": region,
       "Country of origin": country,

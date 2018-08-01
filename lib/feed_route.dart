@@ -1,10 +1,13 @@
 //
 //
 //
+import 'dart:async';
+
+import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:convert' show json, utf8;
 
 class FeedRoute extends StatefulWidget {
   FeedRoute();
@@ -13,24 +16,53 @@ class FeedRoute extends StatefulWidget {
 }
 
 class _FeedRoute extends State<FeedRoute> {
-  List<User> userCheesesList = List();
+  var user;
+  List<Cheese> cheesesList;
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference databaseReference;
+  DatabaseReference _userRef, _cheesesRef;
+
   final int userId = 0;
+  String str = "initial value";
+  List tempList = List();
 
   @override
   void initState() {
-    
     super.initState();
-    databaseReference =
-        database.reference().child("users").child(userId.toString());
-    databaseReference.onChildAdded.listen(_onEntryAdded);
+
+    // Create the 2 required references to the current user
+    // and repository of cheeses.
+    _userRef = database.reference().child("users/$userId");
+    _cheesesRef = database.reference().child("cheeses");
+
+    _userRef.once().then((DataSnapshot snapshot) {
+      setState(() {
+        print('Connected to the user database and read ${snapshot.value}');
+        str = snapshot.value.toString();
+        user = new User.fromSnapshot(snapshot);
+        print('Howdy, ${user.username}, user ID ${user.id}!');
+        print('We sent the verification link to ${user.email}.');
+        print('Your pw is ${user.password}.');
+        print('Your list of cheeses is ${user.cheeses}.');
+      });
+    });
+
+    _cheesesRef.once().then((DataSnapshot snapshot) {
+      setState(() {
+        print('Connected to the cheese database and read ${snapshot.value[2]}');
+      });
+    });
   }
 
-  void _onEntryAdded(Event event) {
-    setState(() {
-      userCheesesList.add(User.fromSnapshot(event.snapshot));
-      print(userCheesesList);
+  Future<Cheese> getCheeseFromId(int id) async {
+    _cheesesRef.once().then((DataSnapshot snapshot) {
+      DatabaseReference _uniqueCheeseRef =
+          database.reference().child("cheeses/$id");
+
+      _uniqueCheeseRef.once().then((DataSnapshot snapshot) {
+        setState(() {
+          return Cheese.fromSnapshot(snapshot);
+        });
+      });
     });
   }
 
@@ -42,41 +74,21 @@ class _FeedRoute extends State<FeedRoute> {
       ),
       body: ListView(
         children: <Widget>[
+          user == null
+              ? Text("loading...")
+              : Text(
+                  "Howdy, ${user.username}, user ID ${user.id}. You have tried ${user.cheeses.length} cheeses, and the first one was id# ${user.cheeses[0]["id"]}"),
           RaisedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("back to login")),
-          AllTimeContainer(),
-        ],
-      ),
-      persistentFooterButtons: <Widget>[
-        Center(
-          child: FlatButton(
             child: Text("check-in"),
             onPressed: _goCheckIn,
+            color: Colors.blue,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   void _goCheckIn() {
     Navigator.pushNamed(context, '/checkin_route');
-  }
-}
-
-class AllTimeContainer extends StatefulWidget {
-  AllTimeContainer();
-  @override
-  _AllTimeContainer createState() => new _AllTimeContainer();
-}
-
-class _AllTimeContainer extends State<AllTimeContainer> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text("All time cheeses tried"),
-    );
   }
 }
