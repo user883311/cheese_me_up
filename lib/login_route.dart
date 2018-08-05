@@ -20,7 +20,6 @@ class LoginRoute extends StatelessWidget {
               },
               child: Text("login"),
             ),
-
           ],
         ));
   }

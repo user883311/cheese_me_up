@@ -14,7 +14,7 @@ class CheckinRoute extends StatefulWidget {
 }
 
 class _CheckinRoute extends State<CheckinRoute> {
-  List<Cheese> cheeseList = List();
+  List<Cheese> cheeses = List();
   Cheese cheese;
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference _cheesesRef;
@@ -28,9 +28,9 @@ class _CheckinRoute extends State<CheckinRoute> {
 
   void _onEntryAdded(Event event) {
     setState(() {
-      cheeseList.add(Cheese.fromSnapshot(event.snapshot));
+      cheeses.add(Cheese.fromSnapshot(event.snapshot));
     });
-    print(cheeseList);
+    print(cheeses);
   }
 
   @override
@@ -52,10 +52,10 @@ class _CheckinRoute extends State<CheckinRoute> {
                     leading: CircleAvatar(
                       backgroundColor: Colors.red,
                     ),
-                    title: new Text(cheeseList[index].name),
-                    subtitle: new Text(cheeseList[index].region +
+                    title: new Text(cheeses[index].name),
+                    subtitle: new Text(cheeses[index].region +
                         ", " +
-                        cheeseList[index].country),
+                        cheeses[index].country),
                     onTap: _tappedTile,
                   ),
                 );
