@@ -26,7 +26,7 @@ class Cheese {
         country = snapshot.value["Country of origin"],
         image = snapshot.value["image"];
 
-  toJson() {
+  toJson([Cheese cheese]) {
     return {
       "id":id,
       "name": name,
