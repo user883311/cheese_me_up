@@ -5,7 +5,7 @@ import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-var user;
+User user;
 
 class FeedRoute extends StatefulWidget {
   FeedRoute();
@@ -23,15 +23,14 @@ class _FeedRoute extends State<FeedRoute> {
   @override
   void initState() {
     super.initState();
-    // User:
     _userRef = database.reference().child("users/$userId");
-    _userRef.once().then((DataSnapshot snapshot) {
+    _userRef.onValue.listen((Event event) {
       setState(() {
         try {
-          user = new User.fromSnapshot(snapshot);
-          var b = 1;
+          user = new User.fromSnapshot(event.snapshot);
           print(user.toString());
-          print('Connected to the user database and read ${snapshot.value}');
+          print(
+              'Connected to the user database and read ${event.snapshot.value}');
           print('Howdy, ${user.username}, user ID ${user.id}!');
           print('We sent the verification link to ${user.email}.');
           print('Your pw is ${user.password}.');
@@ -51,7 +50,11 @@ class _FeedRoute extends State<FeedRoute> {
       ),
       body: ListView(
         children: <Widget>[
-          user == null ? Text("Loading...") : AllTimeCard(user: user,),
+          user == null
+              ? Text("Loading...")
+              : AllTimeCard(
+                  user: user,
+                ),
         ],
       ),
       bottomNavigationBar: ButtonBar(
@@ -85,7 +88,7 @@ class _FeedRoute extends State<FeedRoute> {
 }
 
 class AllTimeCard extends StatefulWidget {
-  // TODO: do I really need to require this parameter, 
+  // TODO: do I really need to require this parameter,
   // if only one user is ever going to be using the
   // app at one given time?
   final User user;
