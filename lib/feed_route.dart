@@ -51,7 +51,7 @@ class _FeedRoute extends State<FeedRoute> {
       ),
       body: ListView(
         children: <Widget>[
-          user == null ? Text("loading...") : AllTimeCard(),
+          user == null ? Text("Loading...") : AllTimeCard(user: user,),
         ],
       ),
       bottomNavigationBar: ButtonBar(
@@ -85,7 +85,14 @@ class _FeedRoute extends State<FeedRoute> {
 }
 
 class AllTimeCard extends StatefulWidget {
+  // TODO: do I really need to require this parameter, 
+  // if only one user is ever going to be using the
+  // app at one given time?
   final User user;
+  const AllTimeCard({Key key, @required this.user})
+      : assert(user != null),
+        super(key: key);
+
   @override
   _AllTimeCard createState() => new _AllTimeCard();
 }
@@ -100,7 +107,7 @@ class _AllTimeCard extends State<AllTimeCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Text(
-          "Howdy, ${user.username}!\nTo this day, you have scored ${user.cheeses.length} cheeses, and the first one was... ${user.cheeses.values.first["name"]}."),
+          "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.cheeses.length} cheeses, and the first one was... ${user.cheeses.values.first["name"]}."),
     );
   }
 }

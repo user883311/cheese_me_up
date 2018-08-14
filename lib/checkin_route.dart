@@ -59,13 +59,12 @@ class _CheckinRoute extends State<CheckinRoute> {
           );
         })) {
       case true:
-        // save as new cheese in user cheeses repo
         _saveNewCheese(cheese);
+        // TODO: create AlertBox to notify checkin successful
         print("${cheese.name} was checked in, congrats!");
         break;
       case false:
-        // go back to search results
-        print("${cheese.name} was checked NOT in, too bad!");
+        print("${cheese.name} was NOT checked in, too bad!");
         break;
     }
   }
@@ -92,6 +91,7 @@ class _CheckinRoute extends State<CheckinRoute> {
   }
 
   void refreshSearch(String string) {
+    // TODO: create responsive results, based on string
     print("the search string is : $string");
     setState(() {
       _cheesesRef =

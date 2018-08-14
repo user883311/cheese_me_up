@@ -2,7 +2,6 @@
 // The 2 methods help to translate between the Firebase
 // realtime database and the required Flutter JSON objects.
 
-import 'package:cheese_me_up/models/cheese.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class User {

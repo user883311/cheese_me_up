@@ -16,6 +16,7 @@ class LoginRoute extends StatelessWidget {
             TextField(),
             RaisedButton(
               onPressed: () {
+                // TODO: add authentification capabilities
                 Navigator.pushNamed(context, '/feed_route');
               },
               child: Text("login"),
