@@ -23,20 +23,23 @@ class _FeedRoute extends State<FeedRoute> {
   @override
   void initState() {
     super.initState();
-    // I need 2 things: the current user,
-    // and repository of all cheeses.
-
     // User:
     _userRef = database.reference().child("users/$userId");
     _userRef.once().then((DataSnapshot snapshot) {
       setState(() {
-        user = new User.fromSnapshot(snapshot);
+        try {
+          user = new User.fromSnapshot(snapshot);
+          var b = 1;
+          print(user.toString());
+          print('Connected to the user database and read ${snapshot.value}');
+          print('Howdy, ${user.username}, user ID ${user.id}!');
+          print('We sent the verification link to ${user.email}.');
+          print('Your pw is ${user.password}.');
+          print('Your list of cheeses is ${user.cheeses}.');
+        } catch (e) {
+          print("error message: $e");
+        }
       });
-      print('Connected to the user database and read ${snapshot.value}');
-      print('Howdy, ${user.username}, user ID ${user.id}!');
-      print('We sent the verification link to ${user.email}.');
-      print('Your pw is ${user.password}.');
-      print('Your list of cheeses is ${user.cheeses}.');
     });
   }
 
@@ -68,6 +71,11 @@ class _FeedRoute extends State<FeedRoute> {
           ),
         ],
       ),
+      drawer: (user == null)
+          ? null
+          : HistoryDrawer(
+              cheeses: user.cheeses,
+            ),
     );
   }
 
@@ -77,6 +85,7 @@ class _FeedRoute extends State<FeedRoute> {
 }
 
 class AllTimeCard extends StatefulWidget {
+  final User user;
   @override
   _AllTimeCard createState() => new _AllTimeCard();
 }
@@ -91,7 +100,48 @@ class _AllTimeCard extends State<AllTimeCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Text(
-          "Howdy, ${user.username}, To this day, you have scored ${user.cheeses.length} cheeses, and the first one was id# ${user.cheeses[0]["id"]}"),
+          "Howdy, ${user.username}!\nTo this day, you have scored ${user.cheeses.length} cheeses, and the first one was... ${user.cheeses.values.first["name"]}."),
+    );
+  }
+}
+
+class HistoryDrawer extends StatelessWidget {
+  final String drawerTitle = "History";
+  HistoryDrawer({Key key, cheeses}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Drawer(
+      // Add a ListView to the drawer. This ensures the user can scroll
+      // through the options in the Drawer if there isn't enough vertical
+      // space to fit everything.
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text('History'),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+          ListTile(
+            title: Text('Item 1'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+            },
+          ),
+          ListTile(
+            title: Text('Item 2'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+            },
+          ),
+        ],
+      ),
     );
   }
 }

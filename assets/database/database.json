@@ -5,13 +5,12 @@
             "username": "user883311",
             "email": "user883311@gmail.com",
             "password": "password",
-            "cheeses": [{
-                "id": "1",
-                "timestamp": 3218416469
-            }, {
-                "id": "2",
-                "timestamp": 3218433439
-            }]
+            "cheeses": {
+                "-JRHTHaIs-jNPLXOQivY": {
+                    "id": 1,
+                    "timestamp": 124124124
+                }
+            }
         }
     },
     "cheeses": {

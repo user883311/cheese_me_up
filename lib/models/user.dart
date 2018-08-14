@@ -10,7 +10,7 @@ class User {
   final String email;
   final int id;
   final String password;
-  final List cheeses;
+  final cheeses;
 
   User(
     this.username,
@@ -24,7 +24,7 @@ class User {
       : username = snapshot.value["username"],
         email = snapshot.value["email"],
         password = snapshot.value["password"],
-        cheeses = snapshot.value["cheeses"].toList(),
+        cheeses = snapshot.value["cheeses"],
         id = snapshot.value["id"];
 
   toJson() {

@@ -2,13 +2,11 @@
 //
 //
 import 'dart:async';
-
-import 'package:cheese_me_up/feed_route.dart';
-
-import './models/cheese.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:flutter/material.dart';
+
+import './models/cheese.dart';
 
 class CheckinRoute extends StatefulWidget {
   CheckinRoute();
@@ -62,7 +60,6 @@ class _CheckinRoute extends State<CheckinRoute> {
         })) {
       case true:
         // save as new cheese in user cheeses repo
-        // FIREBASE [{id: 1, timestamp: 3218416469}, {id: 2, timestamp: 3218433439}]
         _saveNewCheese(cheese);
         print("${cheese.name} was checked in, congrats!");
         break;
@@ -73,9 +70,25 @@ class _CheckinRoute extends State<CheckinRoute> {
     }
   }
 
-  void _saveNewCheese(Cheese cheese) {
-    _cheesesRef.push({"id": 1, "timestamp": 634723647});
-    _cheesesRef.push({"id": cheese.id, "timestamp": 4124125524});
+  Future<Null> _saveNewCheese(Cheese cheese) async {
+    final int userId = 0;
+    DatabaseReference _userCheesesRef =
+        FirebaseDatabase.instance.reference().child('users/$userId/cheeses');
+    final TransactionResult transactionResult =
+        await _userCheesesRef.runTransaction((MutableData mutableData) async {
+      print(mutableData.value);
+      _userCheesesRef.push(cheese.toJson()).set(cheese.toJson());
+      return mutableData;
+    });
+
+    if (transactionResult.committed) {
+      print("transactionResult.committed");
+    } else {
+      print('Transaction not committed.');
+      if (transactionResult.error != null) {
+        print(transactionResult.error.message);
+      }
+    }
   }
 
   void refreshSearch(String string) {
