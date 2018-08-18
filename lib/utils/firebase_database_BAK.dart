@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-Future getUserProfile() async {
+Future<User> getUserProfile() async {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference _userRef;
 
@@ -25,6 +25,8 @@ Future getUserProfile() async {
       return user;
     } catch (e) {
       print("error message: $e");
+      return null;
     }
   });
+  return null;
 }

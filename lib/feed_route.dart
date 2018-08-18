@@ -1,7 +1,10 @@
 //
 //
 //
+import 'package:cheese_me_up/checkin_route.dart';
+import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
+import 'package:cheese_me_up/models/user_cheese.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -26,18 +29,20 @@ class _FeedRoute extends State<FeedRoute> {
     _userRef = database.reference().child("users/$userId");
     _userRef.onValue.listen((Event event) {
       setState(() {
-        try {
-          user = new User.fromSnapshot(event.snapshot);
-          print(user.toString());
-          print(
-              'Connected to the user database and read ${event.snapshot.value}');
-          print('Howdy, ${user.username}, user ID ${user.id}!');
-          print('We sent the verification link to ${user.email}.');
-          print('Your pw is ${user.password}.');
-          print('Your list of cheeses is ${user.cheeses}.');
-        } catch (e) {
-          print("error message: $e");
-        }
+        // try {
+        print("event.snapshot is:\n${event.snapshot.toString()}");
+        user = new User.fromSnapshot(event.snapshot);
+        print(user.toString());
+        print(
+            'Connected to the user database and read ${event.snapshot.value}');
+        print('Howdy, ${user.username}, user ID ${user.id}!');
+        print('We sent the verification link to ${user.email}.');
+        print('Your pw is ${user.password}.');
+        print(
+            'Your list of cheeses is a ${user.cheeses.runtimeType}:\n${user.cheeses}.');
+        // } catch (e) {
+        // print("error message: $e");
+        // }
       });
     });
   }
@@ -110,14 +115,16 @@ class _AllTimeCard extends State<AllTimeCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Text(
-          "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.cheeses.length} cheeses, and the first one was... ${user.cheeses.values.first["name"]}."),
+          "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.cheeses.length} cheeses, and the first one was... ${user.cheeses.values.first.name}."),
     );
   }
 }
 
 class HistoryDrawer extends StatelessWidget {
   final String drawerTitle = "History";
-  HistoryDrawer({Key key, cheeses}) : super(key: key);
+  // final Map<String, Cheese> cheeses;
+  final cheeses;
+  HistoryDrawer({Key key, this.cheeses}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -126,31 +133,12 @@ class HistoryDrawer extends StatelessWidget {
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the Drawer if there isn't enough vertical
       // space to fit everything.
-      child: ListView(
-        // Important: Remove any padding from the ListView.
+      child: ListView.builder(
+        itemCount: cheeses.length,
+        itemBuilder: (context, index) {
+          return Text("cheese $index");
+        },
         padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Text('History'),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-          ),
-          ListTile(
-            title: Text('Item 1'),
-            onTap: () {
-              // Update the state of the app
-              // ...
-            },
-          ),
-          ListTile(
-            title: Text('Item 2'),
-            onTap: () {
-              // Update the state of the app
-              // ...
-            },
-          ),
-        ],
       ),
     );
   }
