@@ -30,14 +30,15 @@ class _FeedRoute extends State<FeedRoute> {
     _userRef.onValue.listen((Event event) {
       setState(() {
         // try {
-        print("event.snapshot is:\n${event.snapshot.toString()}");
+        // print("event.snapshot is:\n${event.snapshot.toString()}");
         user = new User.fromSnapshot(event.snapshot);
-        print(user.toString());
-        print(
-            'Connected to the user database and read ${event.snapshot.value}');
-        print('Howdy, ${user.username}, user ID ${user.id}!');
-        print('We sent the verification link to ${user.email}.');
-        print('Your pw is ${user.password}.');
+
+        // print(user.toString());
+        // print(
+        //     'Connected to the user database and read ${event.snapshot.value}');
+        // print('Howdy, ${user.username}, user ID ${user.id}!');
+        // print('We sent the verification link to ${user.email}.');
+        // print('Your pw is ${user.password}.');
         print(
             'Your list of cheeses is a ${user.cheeses.runtimeType}:\n${user.cheeses}.');
         // } catch (e) {
@@ -79,11 +80,7 @@ class _FeedRoute extends State<FeedRoute> {
           ),
         ],
       ),
-      drawer: (user == null)
-          ? null
-          : HistoryDrawer(
-              cheeses: user.cheeses,
-            ),
+      drawer: (user == null) ? null : HistoryDrawer(),
     );
   }
 
@@ -120,25 +117,45 @@ class _AllTimeCard extends State<AllTimeCard> {
   }
 }
 
-class HistoryDrawer extends StatelessWidget {
+class HistoryDrawer extends StatefulWidget {
   final String drawerTitle = "History";
-  // final Map<String, Cheese> cheeses;
-  final cheeses;
-  HistoryDrawer({Key key, this.cheeses}) : super(key: key);
+  HistoryDrawer({Key key}) : super(key: key);
+
+  @override
+  _HistoryDrawerState createState() => new _HistoryDrawerState();
+}
+
+class _HistoryDrawerState extends State<HistoryDrawer> {
+  List<Cheese> cheeses;
+
+  @override
+  void initState() {
+    super.initState();
+    cheeses = listMyCheeses(user.cheeses);
+  }
+
+  Widget _builder(context, index) {
+    return Text("cheese # $index: ${cheeses[index].name}");
+  }
+
+  List<Cheese> listMyCheeses(Map cheeses) {
+    List<Cheese> res = new List();
+    cheeses.values.forEach((v) => res.add(v));
+    return res;
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Drawer(
-      // Add a ListView to the drawer. This ensures the user can scroll
-      // through the options in the Drawer if there isn't enough vertical
-      // space to fit everything.
-      child: ListView.builder(
-        itemCount: cheeses.length,
-        itemBuilder: (context, index) {
-          return Text("cheese $index");
-        },
-        padding: EdgeInsets.zero,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("History"),
+        ),
+        body: ListView.builder(
+          itemCount: user.cheeses.length,
+          itemBuilder: _builder,
+          padding: EdgeInsets.zero,
+        ),
       ),
     );
   }

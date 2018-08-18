@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:convert';
 import 'dart:async';
+import 'dart:collection';
 
 class User {
   final String username;
@@ -25,8 +26,8 @@ class User {
         password = snapshot.value["password"],
         // cheeses = snapshot.value["cheeses"],
 
-        cheeses = (snapshot.value["cheeses"] as Map)
-            .map((k, v) => new MapEntry(k.toString(), Cheese.fromJson(v as Map))),
+        cheeses = (snapshot.value["cheeses"] as Map).map(
+            (k, v) => new MapEntry(k.toString(), Cheese.fromJson(v as Map))),
 
         // cheeses = (snapshot.value["cheeses"] as dynamic)
         //     .map((str, snap) => new MapEntry(str, Cheese.fromSnapshot(snap))),
