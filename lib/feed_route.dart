@@ -115,7 +115,7 @@ class _AllTimeCard extends State<AllTimeCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Text(
-          "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.cheeses.length} cheeses, and the first one was... ${user.cheeses.values.first.name}."),
+          "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.cheeses.length} cheeses, and the first one was... ${user.cheeses.values.first.name}.\nThe latest one was... ${user.cheeses.values.last.name}."),
     );
   }
 }
