@@ -1,17 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'dart:convert';
-import 'dart:async';
-import 'dart:collection';
 
 class User {
   final String username;
   final String email;
   final int id;
   final String password;
-  // TODO: cheeses should be a Map<String, Cheese>
-  // final Map<String, Cheese> cheeses;
-  final cheeses;
-
+  final Map<String, Cheese> cheeses;
+  
   User(
     this.username,
     this.email,
@@ -24,14 +19,8 @@ class User {
       : username = snapshot.value["username"],
         email = snapshot.value["email"],
         password = snapshot.value["password"],
-        // cheeses = snapshot.value["cheeses"],
-
         cheeses = (snapshot.value["cheeses"] as Map).map(
             (k, v) => new MapEntry(k.toString(), Cheese.fromJson(v as Map))),
-
-        // cheeses = (snapshot.value["cheeses"] as dynamic)
-        //     .map((str, snap) => new MapEntry(str, Cheese.fromSnapshot(snap))),
-
         id = snapshot.value["id"];
 
   toJson() {
@@ -74,13 +63,6 @@ class Cheese {
         country = json["Country of origin"],
         image = json["image"];
 
-  // Cheese.fromJson(JSON json)
-  //     : id = jsonDecode(json["id"]),
-  //       name = jsonDecode(json["name"]),
-  //       region = jsonDecode(json["Region"]),
-  //       country = jsonDecode(json["Country of origin"]),
-  //       image = jsonDecode(json["image"]);
-
   toJson([Cheese cheese]) {
     return {
       "id": id,
@@ -91,6 +73,3 @@ class Cheese {
     };
   }
 }
-
-// error message: type '_InternalLinkedHashMap<dynamic, dynamic>'
-// is not a subtype of type 'DataSnapshot' in type cast

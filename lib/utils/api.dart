@@ -2,7 +2,7 @@
 //
 //
 import 'dart:async';
-import 'dart:convert' show JSON, UTF8;
+import 'dart:convert' show json, utf8;
 import 'dart:io';
 
 class Api {
@@ -16,9 +16,9 @@ class Api {
       }
       // The response is sent as a Stream of bytes that we need
       // to convert to a `String`.
-      final responseBody = await httpResponse.transform(UTF8.decoder).join();
+      final responseBody = await httpResponse.transform(utf8.decoder).join();
       // Finally, the string is parsed into a JSON object.
-      return JSON.decode(responseBody);
+      return json.decode(responseBody);
     } on Exception catch (e) {
       print('$e');
       return null;

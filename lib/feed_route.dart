@@ -1,9 +1,6 @@
 //
 //
 //
-import 'package:cheese_me_up/checkin_route.dart';
-import 'package:cheese_me_up/models/cheese.dart';
-import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/models/user_cheese.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
