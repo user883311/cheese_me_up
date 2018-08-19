@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 
-import './models/cheese.dart';
-
 class CheckinRoute extends StatefulWidget {
   CheckinRoute();
   @override
@@ -33,16 +31,15 @@ class _CheckinRoute extends State<CheckinRoute> {
     setState(() {
       cheeses.add(Cheese.fromSnapshot(event.snapshot));
     });
-    // print(cheeses);
   }
 
-  Future _checkCheeseInIntent(Cheese cheese) async {
-    print("onTap(${cheese.name}).. _checkCheeseInIntent --");
+  Future _checkCheeseInIntent(CheckIn checkin) async {
+    print("onTap($checkin).. _checkCheeseInIntent --");
     switch (await showDialog(
         context: context,
         builder: (BuildContext context) {
           return new SimpleDialog(
-            title: Text('Do you want to check ${cheese.name} in?'),
+            title: Text('Do you want to check $checkin in?'),
             children: <Widget>[
               new SimpleDialogOption(
                 onPressed: () {
@@ -60,24 +57,24 @@ class _CheckinRoute extends State<CheckinRoute> {
           );
         })) {
       case true:
-        _saveNewCheese(cheese);
+        _checkin(checkin);
         // TODO: create AlertBox to notify checkin successful
-        print("${cheese.name} was checked in, congrats!");
+        print("$checkin was checked in, congrats!");
         break;
       case false:
-        print("${cheese.name} was NOT checked in, too bad!");
+        print("$checkin was NOT checked in, too bad!");
         break;
     }
   }
 
-  Future<Null> _saveNewCheese(Cheese cheese) async {
+  Future<Null> _checkin(CheckIn checkin) async {
     final int userId = 0;
-    DatabaseReference _userCheesesRef =
-        FirebaseDatabase.instance.reference().child('users/$userId/cheeses');
+    DatabaseReference _userCheckinsRef =
+        FirebaseDatabase.instance.reference().child('users/$userId/checkins');
     final TransactionResult transactionResult =
-        await _userCheesesRef.runTransaction((MutableData mutableData) async {
+        await _userCheckinsRef.runTransaction((MutableData mutableData) async {
       print(mutableData.value);
-      _userCheesesRef.push(cheese.toJson()).set(cheese.toJson());
+      _userCheckinsRef.push(checkin.toJson()).set(checkin.toJson());
       return mutableData;
     });
 
@@ -138,7 +135,7 @@ Widget cheeseTile(Cheese cheese, onTap) {
       subtitle: new Text(cheese.region + ", " + cheese.country),
       onTap: () {
         print("Tapped dat ${cheese.name}!");
-        onTap(cheese);
+        onTap(CheckIn.fromCheeseDateTime(cheese, DateTime.now()));
       },
     ),
   );

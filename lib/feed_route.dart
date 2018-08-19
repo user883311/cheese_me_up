@@ -37,7 +37,7 @@ class _FeedRoute extends State<FeedRoute> {
         // print('We sent the verification link to ${user.email}.');
         // print('Your pw is ${user.password}.');
         print(
-            'Your list of cheeses is a ${user.cheeses.runtimeType}:\n${user.cheeses}.');
+            'Your list of checkins is a ${user.checkins.runtimeType}:\n${user.checkins}.');
         // } catch (e) {
         // print("error message: $e");
         // }
@@ -109,7 +109,7 @@ class _AllTimeCard extends State<AllTimeCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Text(
-          "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.cheeses.length} cheeses, and the first one was... ${user.cheeses.values.first.name}.\nThe latest one was... ${user.cheeses.values.last.name}."),
+          "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.checkins.length} checkins, and the first one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.first.cheese.name}.\nThe latest one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.last.cheese.name}."),
     );
   }
 }
@@ -128,7 +128,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
   @override
   void initState() {
     super.initState();
-    cheeses = listMyCheeses(user.cheeses);
+    cheeses = listMyCheeses(user.checkins);
   }
 
   Widget _builder(context, index) {
@@ -149,7 +149,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
           title: Text("History"),
         ),
         body: ListView.builder(
-          itemCount: user.cheeses.length,
+          itemCount: user.checkins.length,
           itemBuilder: _builder,
           padding: EdgeInsets.zero,
         ),
