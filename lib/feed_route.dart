@@ -123,22 +123,18 @@ class HistoryDrawer extends StatefulWidget {
 }
 
 class _HistoryDrawerState extends State<HistoryDrawer> {
-  List<Cheese> cheeses;
+  List<CheckIn> checkins=[];
 
   @override
   void initState() {
     super.initState();
-    cheeses = listMyCheeses(user.checkins);
+    for (CheckIn item in user.checkins.values) {
+      checkins.add(item);
+    }
   }
 
   Widget _builder(context, index) {
-    return Text("cheese # $index: ${cheeses[index].name}");
-  }
-
-  List<Cheese> listMyCheeses(Map cheeses) {
-    List<Cheese> res = new List();
-    cheeses.values.forEach((v) => res.add(v));
-    return res;
+    return Text("cheese # $index: ${checkins[index].cheese.name}");
   }
 
   @override
