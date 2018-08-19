@@ -123,7 +123,7 @@ class HistoryDrawer extends StatefulWidget {
 }
 
 class _HistoryDrawerState extends State<HistoryDrawer> {
-  List<CheckIn> checkins=[];
+  List<CheckIn> checkins = [];
 
   @override
   void initState() {
@@ -131,10 +131,40 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
     for (CheckIn item in user.checkins.values) {
       checkins.add(item);
     }
+
+    checkins.sort((a, b) => b.time.compareTo(a.time));
+    print("sorted checkins: \n $checkins");
+  }
+
+  Map<String, dynamic> relevantTimeSince(DateTime from) {
+    return relevantTime(DateTime.now().difference(from));
+  }
+
+  Map<String, dynamic> relevantTime(Duration duration) {
+    int seconds = duration.inSeconds;
+    int durationInt;
+    String unit;
+
+    if (seconds < 60) {
+      durationInt = duration.inSeconds;
+      unit = "seconds";
+    } else if (seconds < 60 * 60) {
+      durationInt = duration.inMinutes;
+      unit = "minutes";
+    } else if (seconds < 60 * 60 * 24) {
+      durationInt = duration.inHours;
+      unit = "hours";
+    } else {
+      durationInt = duration.inDays;
+      unit = "days";
+    }
+
+    return {"durationInt": durationInt, "unit": unit};
   }
 
   Widget _builder(context, index) {
-    return Text("cheese # $index: ${checkins[index].cheese.name}");
+    return Text(
+        "cheese # $index: ${checkins[index].cheese.name}, ${relevantTimeSince(checkins[index].time)["durationInt"]} ${relevantTimeSince(checkins[index].time)["unit"]} ago}");
   }
 
   @override
