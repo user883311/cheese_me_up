@@ -1,6 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:meta/meta.dart';
-import 'dart:convert';
 
 class User {
   final String username;

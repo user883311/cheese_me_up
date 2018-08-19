@@ -1,6 +1,3 @@
-//
-//
-//
 import 'package:cheese_me_up/models/user_cheese.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -26,21 +23,7 @@ class _FeedRoute extends State<FeedRoute> {
     _userRef = database.reference().child("users/$userId");
     _userRef.onValue.listen((Event event) {
       setState(() {
-        // try {
-        // print("event.snapshot is:\n${event.snapshot.toString()}");
         user = new User.fromSnapshot(event.snapshot);
-
-        // print(user.toString());
-        // print(
-        //     'Connected to the user database and read ${event.snapshot.value}');
-        // print('Howdy, ${user.username}, user ID ${user.id}!');
-        // print('We sent the verification link to ${user.email}.');
-        // print('Your pw is ${user.password}.');
-        print(
-            'Your list of checkins is a ${user.checkins.runtimeType}:\n${user.checkins}.');
-        // } catch (e) {
-        // print("error message: $e");
-        // }
       });
     });
   }
@@ -123,6 +106,7 @@ class HistoryDrawer extends StatefulWidget {
 }
 
 class _HistoryDrawerState extends State<HistoryDrawer> {
+  // Use a list to be able to sort checkins.
   List<CheckIn> checkins = [];
 
   @override
@@ -131,9 +115,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
     for (CheckIn item in user.checkins.values) {
       checkins.add(item);
     }
-
     checkins.sort((a, b) => b.time.compareTo(a.time));
-    print("sorted checkins: \n $checkins");
   }
 
   Map<String, dynamic> relevantTimeSince(DateTime from) {
