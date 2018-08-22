@@ -79,7 +79,6 @@ class LoginRouteState extends State<LoginRoute> {
               onPressed: () async {
                   await _tentativeSignInCreateAccount().then((String response) {
                     print(response);
-                    // userIdCopy = "5Inp12yjKSQCo54hh9D6HDAXoF12";
                     Navigator.pushNamed(context, '/feed_route/$userIdCopy');
                 });
               },
