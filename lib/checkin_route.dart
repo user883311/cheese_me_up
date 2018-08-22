@@ -7,10 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 
+String userIdCopy;
+
+
 class CheckinRoute extends StatefulWidget {
-  CheckinRoute();
+  
+  CheckinRoute({this.userId});
+  final String userId;
+
   @override
-  _CheckinRoute createState() => new _CheckinRoute();
+  _CheckinRoute createState() {
+    print("userIdCopy $userIdCopy");
+    userIdCopy = userId;
+    return _CheckinRoute();}
 }
 
 class _CheckinRoute extends State<CheckinRoute> {
@@ -68,9 +77,10 @@ class _CheckinRoute extends State<CheckinRoute> {
   }
 
   Future<Null> _checkin(CheckIn checkin) async {
-    final int userId = 0;
+    // final String userId = "5Inp12yjKSQCo54hh9D6HDAXoF12";
     DatabaseReference _userCheckinsRef =
-        FirebaseDatabase.instance.reference().child('users/$userId/checkins');
+        FirebaseDatabase.instance.reference().child('users/$userIdCopy/checkins');
+        print(userIdCopy);
     final TransactionResult transactionResult =
         await _userCheckinsRef.runTransaction((MutableData mutableData) async {
       print(mutableData.value);

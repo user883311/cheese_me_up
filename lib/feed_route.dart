@@ -3,24 +3,37 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 User user;
+String userIdCopy;
+
+// class FeedRouteStateless extends StatelessWidget {
+//   final String userIdBis;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return null;
+//   }
+// }
 
 class FeedRoute extends StatefulWidget {
-  FeedRoute();
+  FeedRoute({this.userId});
+  final String userId;
 
   @override
-  _FeedRoute createState() => new _FeedRoute();
+  _FeedRoute createState() {
+    userIdCopy = userId;
+    return new _FeedRoute();
+  }
 }
 
 class _FeedRoute extends State<FeedRoute> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference _userRef;
 
-  final int userId = 0;
-
   @override
   void initState() {
     super.initState();
-    _userRef = database.reference().child("users/$userId");
+    print("userId is: $userIdCopy");
+    _userRef = database.reference().child("users/$userIdCopy");
     _userRef.onValue.listen((Event event) {
       setState(() {
         user = new User.fromSnapshot(event.snapshot);
@@ -65,7 +78,7 @@ class _FeedRoute extends State<FeedRoute> {
   }
 
   void _goCheckinRoute() {
-    Navigator.pushNamed(context, '/checkin_route');
+    Navigator.pushNamed(context, '/checkin_route/$userIdCopy');
   }
 }
 

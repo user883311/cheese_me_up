@@ -22,14 +22,62 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       initialRoute: "/",
-      routes: {
-        // When we navigate to the "/" route, build the FirstScreen Widget
-        "/": (context) => LoginRoute(),
-        // When we navigate to the "/second" route, build the SecondScreen Widget
-        "/feed_route": (context) => FeedRoute(),
-        "/checkin_route": (context) => CheckinRoute(),
-        // "/settings_route": (context) => SettingsRoute(),
-        // "/history_route": (context) => HistoryRoute(),
+      routes: <String, WidgetBuilder>{
+        '/': (BuildContext context) => new LoginRoute(),
+        '/create_account_route': (BuildContext context) =>
+            new CreateAccountRoute(),
+        '/feed_route': (BuildContext context) => new FeedRoute(),
+        '/checkin_route': (BuildContext context) => new CheckinRoute(),
+        // '/settings_route': (BuildContext context) => new SettingsRoute(),
+        // '/history_route': (BuildContext context) => new HistoryRoute(),
+      },
+
+      // {
+      //   // When we navigate to the "/" route, build the FirstScreen Widget
+      //   "/": (context) => LoginRoute(),
+      //   "/create_account_route": (context)=> CreateAccountRoute(),
+      //   // When we navigate to the "/second" route, build the SecondScreen Widget
+      //   "/feed_route": (context) => FeedRoute(),
+      //   "/checkin_route": (context) => CheckinRoute(),
+      //   // "/settings_route": (context) => SettingsRoute(),
+      //   // "/history_route": (context) => HistoryRoute(),
+      // },
+
+      onGenerateRoute: (routeSettings) {
+        var path = routeSettings.name.split('/');
+        print("path is: $path");
+
+        switch (path[1]) {
+          case "feed_route":
+            final foo = path.length > 1 ? path[2] : null;
+            return new MaterialPageRoute(
+              builder: (context) => new FeedRoute(
+                    userId: foo,
+                  ),
+              settings: routeSettings,
+            );
+            break;
+          case "checkin_route":
+            final foo = path.length > 1 ? path[2] : null;
+            return new MaterialPageRoute(
+              builder: (context) => new CheckinRoute(
+                    userId: foo,
+                  ),
+              settings: routeSettings,
+            );
+          default:
+        }
+
+        // if (path[1] == "feed_route") {
+        //   final foo = path.length > 1 ? path[2] : null;
+        //   return new MaterialPageRoute(
+        //     builder: (context) => new FeedRoute(
+        //           userId: foo,
+        //         ),
+        //     settings: routeSettings,
+        //   );
+        // }
+        // fallback route here
       },
     );
   }
