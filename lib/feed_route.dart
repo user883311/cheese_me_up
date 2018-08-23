@@ -5,15 +5,6 @@ import 'package:flutter/material.dart';
 User user;
 String userIdCopy;
 
-// class FeedRouteStateless extends StatelessWidget {
-//   final String userIdBis;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return null;
-//   }
-// }
-
 class FeedRoute extends StatefulWidget {
   FeedRoute({this.userId});
   final String userId;
@@ -61,7 +52,9 @@ class _FeedRoute extends State<FeedRoute> {
         children: <Widget>[
           IconButton(
             icon: new Icon(Icons.history),
-            onPressed: () => null,
+            onPressed: () {
+              Navigator.pushNamed(context, '/history_route/$userIdCopy');
+            },
           ),
           IconButton(
             icon: new Icon(Icons.playlist_add_check),
@@ -73,7 +66,6 @@ class _FeedRoute extends State<FeedRoute> {
           ),
         ],
       ),
-      drawer: (user == null) ? null : HistoryDrawer(),
     );
   }
 
@@ -106,75 +98,6 @@ class _AllTimeCard extends State<AllTimeCard> {
     return Card(
       child: Text(
           "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.checkins.length} checkins, and the first one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.first.cheese.name}.\nThe latest one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.last.cheese.name}."),
-    );
-  }
-}
-
-class HistoryDrawer extends StatefulWidget {
-  final String drawerTitle = "History";
-  HistoryDrawer({Key key}) : super(key: key);
-
-  @override
-  _HistoryDrawerState createState() => new _HistoryDrawerState();
-}
-
-class _HistoryDrawerState extends State<HistoryDrawer> {
-  // Use a list to be able to sort checkins.
-  List<CheckIn> checkins = [];
-
-  @override
-  void initState() {
-    super.initState();
-    for (CheckIn item in user.checkins.values) {
-      checkins.add(item);
-    }
-    checkins.sort((a, b) => b.time.compareTo(a.time));
-  }
-
-  Map<String, dynamic> relevantTimeSince(DateTime from) {
-    return relevantTime(DateTime.now().difference(from));
-  }
-
-  Map<String, dynamic> relevantTime(Duration duration) {
-    int seconds = duration.inSeconds;
-    int durationInt;
-    String unit;
-
-    if (seconds < 60) {
-      durationInt = duration.inSeconds;
-      unit = "seconds";
-    } else if (seconds < 60 * 60) {
-      durationInt = duration.inMinutes;
-      unit = "minutes";
-    } else if (seconds < 60 * 60 * 24) {
-      durationInt = duration.inHours;
-      unit = "hours";
-    } else {
-      durationInt = duration.inDays;
-      unit = "days";
-    }
-
-    return {"durationInt": durationInt, "unit": unit};
-  }
-
-  Widget _builder(context, index) {
-    return Text(
-        "cheese # $index: ${checkins[index].cheese.name}, ${relevantTimeSince(checkins[index].time)["durationInt"]} ${relevantTimeSince(checkins[index].time)["unit"]} ago}");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("History"),
-        ),
-        body: ListView.builder(
-          itemCount: user.checkins.length,
-          itemBuilder: _builder,
-          padding: EdgeInsets.zero,
-        ),
-      ),
     );
   }
 }

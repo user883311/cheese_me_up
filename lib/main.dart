@@ -2,6 +2,7 @@
 //
 //
 import 'package:cheese_me_up/checkin_route.dart';
+import 'package:cheese_me_up/history_route.dart';
 import 'package:flutter/material.dart';
 
 import 'login_route.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         '/feed_route': (BuildContext context) => new FeedRoute(),
         '/checkin_route': (BuildContext context) => new CheckinRoute(),
         // '/settings_route': (BuildContext context) => new SettingsRoute(),
-        // '/history_route': (BuildContext context) => new HistoryRoute(),
+        '/history_route': (BuildContext context) => new HistoryRoute(),
       },
 
       // {
@@ -61,6 +62,14 @@ class MyApp extends StatelessWidget {
             final foo = path.length > 1 ? path[2] : null;
             return new MaterialPageRoute(
               builder: (context) => new CheckinRoute(
+                    userId: foo,
+                  ),
+              settings: routeSettings,
+            );
+          case "history_route":
+            final foo = path.length > 1 ? path[2] : null;
+            return new MaterialPageRoute(
+              builder: (context) => new HistoryRoute(
                     userId: foo,
                   ),
               settings: routeSettings,
