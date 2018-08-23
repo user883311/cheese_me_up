@@ -67,16 +67,6 @@ class MyApp extends StatelessWidget {
             );
           default:
         }
-
-        // if (path[1] == "feed_route") {
-        //   final foo = path.length > 1 ? path[2] : null;
-        //   return new MaterialPageRoute(
-        //     builder: (context) => new FeedRoute(
-        //           userId: foo,
-        //         ),
-        //     settings: routeSettings,
-        //   );
-        // }
         // fallback route here
       },
     );

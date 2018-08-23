@@ -25,13 +25,13 @@ class _CheckinRoute extends State<CheckinRoute> {
   List<Cheese> cheeses = List();
   Cheese cheese;
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference _cheesesRef;
+  Query _cheesesRef;
   TextEditingController searchText;
 
   @override
   void initState() {
     super.initState();
-    _cheesesRef = database.reference().child("cheeses");
+    _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
   }
 
@@ -51,6 +51,8 @@ class _CheckinRoute extends State<CheckinRoute> {
             children: <Widget>[
               new SimpleDialogOption(
                 onPressed: () {
+                  // go back to Feed Route
+                  Navigator.pop(context, true);
                   Navigator.pop(context, true);
                 },
                 child: const Text('Yes'),
@@ -99,11 +101,27 @@ class _CheckinRoute extends State<CheckinRoute> {
 
   void refreshSearch(String string) {
     // TODO: create responsive results, based on string
+    string = string.replaceAll("  ", " ");
+    string = string.trim();
     print("the search string is : $string");
+
     setState(() {
-      _cheesesRef =
-          database.reference().child("cheeses").orderByKey().equalTo(string);
-      _cheesesRef.onChildAdded.listen(_onEntryAdded);
+      if (string.isEmpty) {
+        for (Cheese cheese in cheeses) {
+          cheese.show = true;
+        }
+        print("done");
+      } else {
+        // do the search in local, removing unmatching entries
+        for (Cheese cheese in cheeses) {
+          // RegExp r = new RegExp(string, caseSensitive: false);
+          if (cheese.fullSearch.toLowerCase().contains(string.toLowerCase())) {
+            cheese.show = true;
+          } else {
+            cheese.show = false;
+          }
+        }
+      }
     });
   }
 
@@ -124,7 +142,9 @@ class _CheckinRoute extends State<CheckinRoute> {
               query: _cheesesRef,
               itemBuilder: (context, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
-                return cheeseTile(cheeses[index], _checkCheeseInIntent);
+                if (cheeses[index].show) {
+                  return cheeseTile(cheeses[index], _checkCheeseInIntent);
+                }
               },
             ),
           ),
