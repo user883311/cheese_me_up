@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-// String email, password;
 String userIdCopy;
 
 class LoginRoute extends StatefulWidget {
@@ -29,25 +28,21 @@ class LoginRouteState extends State<LoginRoute> {
       new TextEditingController(text: "user883311@gmail.com");
   final TextEditingController passwordController =
       new TextEditingController(text: "password");
-  String _testString = "before";
 
   Future _logInWithGoogle() {}
   Future _logInWithFacebook() {}
 
-  Future<String> _tentativeSignInCreateAccount() async {
+  Future<FirebaseUser> _tentativeSignInCreateAccount() async {
+    FirebaseUser user;
     try {
-      await _auth
-          .signInWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text)
-          .then((response) {
-        print("response.uid:\n${response.uid}");
-        print(response);
-        userIdCopy = response.uid;
-        return response.uid;
-      });
+      user = await _auth.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      print(user);
+      print("response.uid:\n${user.uid}");
+      userIdCopy = user.uid;
+      return user;
     } catch (e) {
       print("error:\n$e");
-      return "error ##";
     }
   }
 
@@ -72,14 +67,60 @@ class LoginRouteState extends State<LoginRoute> {
                 hintText: "Password",
               ),
             ),
-            Text(_testString),
             RaisedButton(
               child: Text(logIntoMyAccountButtonTitle),
-              // TODO: add authentification capabilities
               onPressed: () async {
-                  await _tentativeSignInCreateAccount().then((String response) {
+                await _tentativeSignInCreateAccount().then((response) {
+                  // try {
+                  //   print(response);
+                  //   Navigator.pushNamed(context, '/feed_route/$userIdCopy');
+                  // } catch (e) {
+                  //   print("Login failed..");
+                  //   showDialog(
+                  //       context: context,
+                  //       builder: (BuildContext context) {
+                  //         return new SimpleDialog(
+                  //           title: Text('Login failed.'),
+                  //           children: <Widget>[
+                  //             new SimpleDialogOption(
+                  //               onPressed: () {
+                  //                 // go back to Feed Route
+                  //                 Navigator.pop(context, true);
+                  //                 // Navigator.pop(context, true);
+                  //               },
+                  //               child: const Text('Try again'),
+                  //             ),
+                  //           ],
+                  //         );
+                  //       });
+                  // }
+                  if (response != null) {
                     print(response);
                     Navigator.pushNamed(context, '/feed_route/$userIdCopy');
+                  } else {
+                    print("Login failed..");
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return new SimpleDialog(
+                            title: Text(
+                                'Bummer! Your login failed. Check your username and/or password.'),
+                            children: <Widget>[
+                              new SimpleDialogOption(
+                                onPressed: () {
+                                  // go back to Feed Route
+                                  Navigator.pop(context, true);
+                                  // Navigator.pop(context, true);
+                                },
+                                child: const Text(
+                                  'OK',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          );
+                        });
+                  }
                 });
               },
             ),

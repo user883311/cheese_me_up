@@ -32,18 +32,6 @@ class MyApp extends StatelessWidget {
         // '/settings_route': (BuildContext context) => new SettingsRoute(),
         '/history_route': (BuildContext context) => new HistoryRoute(),
       },
-
-      // {
-      //   // When we navigate to the "/" route, build the FirstScreen Widget
-      //   "/": (context) => LoginRoute(),
-      //   "/create_account_route": (context)=> CreateAccountRoute(),
-      //   // When we navigate to the "/second" route, build the SecondScreen Widget
-      //   "/feed_route": (context) => FeedRoute(),
-      //   "/checkin_route": (context) => CheckinRoute(),
-      //   // "/settings_route": (context) => SettingsRoute(),
-      //   // "/history_route": (context) => HistoryRoute(),
-      // },
-
       onGenerateRoute: (routeSettings) {
         var path = routeSettings.name.split('/');
         print("path is: $path");

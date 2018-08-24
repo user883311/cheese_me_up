@@ -42,7 +42,7 @@ class _CheckinRoute extends State<CheckinRoute> {
   }
 
   Future _checkCheeseInIntent(CheckIn checkin) async {
-    print("onTap($checkin).. _checkCheeseInIntent --");
+    // print("onTap($checkin).. _checkCheeseInIntent --");
     switch (await showDialog(
         context: context,
         builder: (BuildContext context) {

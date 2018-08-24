@@ -36,8 +36,10 @@ class _FeedRoute extends State<FeedRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Feed / Home"),
+        leading: Text(""),
+        title: Text("Home"),
       ),
+      backgroundColor: Colors.yellow[100],
       body: ListView(
         children: <Widget>[
           user == null
