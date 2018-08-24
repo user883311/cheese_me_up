@@ -1,16 +1,17 @@
 # See https://www.dartlang.org/guides/libraries/private-files
-assets/**
-.assets
-/assets
-/assets/
-./assets
+.DS_Store
+.jpg
 assets
+android
+ios
+building
+.vscode
+
 # Files and directories created by pub
 .dart_tool/
 .packages
 .pub/
 build/
-
 
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
@@ -27,7 +28,6 @@ doc/api/
 *.ipr         // IntelliJ
 *.iws         // IntelliJ
 .idea/        // IntelliJ
-.DS_Store     // Mac
 
 *.dart.js
 *.info.json      # Produced by the --dump-info flag.
