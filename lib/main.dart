@@ -3,6 +3,7 @@
 //
 import 'package:cheese_me_up/checkin_route.dart';
 import 'package:cheese_me_up/history_route.dart';
+import 'package:cheese_me_up/settings_route.dart';
 import 'package:flutter/material.dart';
 
 import 'login_route.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
             new CreateAccountRoute(),
         '/feed_route': (BuildContext context) => new FeedRoute(),
         '/checkin_route': (BuildContext context) => new CheckinRoute(),
-        // '/settings_route': (BuildContext context) => new SettingsRoute(),
+        '/settings_route': (BuildContext context) => new SettingsRoute(),
         '/history_route': (BuildContext context) => new HistoryRoute(),
       },
       onGenerateRoute: (routeSettings) {
@@ -50,6 +51,14 @@ class MyApp extends StatelessWidget {
             final foo = path.length > 1 ? path[2] : null;
             return new MaterialPageRoute(
               builder: (context) => new CheckinRoute(
+                    userId: foo,
+                  ),
+              settings: routeSettings,
+            );
+          case "settings_route":
+            final foo = path.length > 1 ? path[2] : null;
+            return new MaterialPageRoute(
+              builder: (context) => new SettingsRoute(
                     userId: foo,
                   ),
               settings: routeSettings,

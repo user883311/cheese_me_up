@@ -64,7 +64,7 @@ class _FeedRoute extends State<FeedRoute> {
           ),
           IconButton(
             icon: new Icon(Icons.settings),
-            onPressed: () => null,
+            onPressed: () {Navigator.pushNamed(context, '/settings_route/$userIdCopy');},
           ),
         ],
       ),
