@@ -2,6 +2,7 @@
 //
 //
 import 'dart:async';
+import 'dart:io';
 import 'package:cheese_me_up/models/user_cheese.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -129,14 +130,16 @@ class _CheckinRoute extends State<CheckinRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Check in a new cheese!"),
+        title: TextField(
+          controller: searchText,
+          onChanged: refreshSearch,
+          decoration: InputDecoration(
+            hintText: "Search cheese...",
+          ),
+        ),
       ),
       body: Column(
         children: <Widget>[
-          TextField(
-            controller: searchText,
-            onChanged: refreshSearch,
-          ),
           Flexible(
             child: FirebaseAnimatedList(
               query: _cheesesRef,
@@ -157,8 +160,17 @@ class _CheckinRoute extends State<CheckinRoute> {
 Widget cheeseTile(Cheese cheese, onTap) {
   return Card(
     child: ListTile(
+      trailing: new Container(
+        width: 100.0,
+        height: 50.0,
+        child: new Image.asset(
+          "assets/media/img/cheese/" + cheese.image,
+          fit: BoxFit.cover,
+        ),
+      ),
       leading: CircleAvatar(
         backgroundColor: Colors.red,
+        child: new Text(cheese.name.substring(0, 2).toUpperCase()),
       ),
       title: new Text(cheese.name),
       subtitle: new Text(cheese.region + ", " + cheese.country),
