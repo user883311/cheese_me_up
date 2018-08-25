@@ -26,8 +26,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: <String, WidgetBuilder>{
         '/': (BuildContext context) => new LoginRoute(),
-        '/create_account_route': (BuildContext context) =>
-            new CreateAccountRoute(),
+        // '/create_account_route': (BuildContext context) => new CreateAccountRoute(),
         '/feed_route': (BuildContext context) => new FeedRoute(),
         '/checkin_route': (BuildContext context) => new CheckinRoute(),
         '/settings_route': (BuildContext context) => new SettingsRoute(),

@@ -2,191 +2,227 @@
 //
 //
 import 'dart:async';
+import 'package:cheese_me_up/models/user_cheese.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+final Map<String, dynamic> labels = {
+  "sign_in_link": "Already have an account? Sign in here!",
+  "create_account_link": "Don't have an account yet? Create one here!",
+  "sign_in_button_title": "Log into my account",
+  "create_account_button_title": "Create account",
+  "sign_in_appbar_title": "Sign in",
+  "create_account_appbar_title": "Create account",
+  "sign_in_function": ({String email, String password}) async {
+    FirebaseUser user;
+    try {
+      user = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      print("user: $user");
+      userIdCopy = user.uid;
+      return user;
+    } catch (e) {
+      print("Firebase sign-in error:\n$e");
+      return e;
+    }
+  },
+  "create_account_function": ({String email, String password}) async {
+    FirebaseUser user;
+    // throw exception is password1 and password2 do not match
+    try {
+      user = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      print("created user: $user");
+      userIdCopy = user.uid;
+      await addNewUserToDatabase(User.fromJson({
+        "id": user.uid,
+        "username": user.email,
+        "email": user.email,
+      }));
+      return user;
+    } catch (e) {
+      print("Firebase account creation error:\n$e");
+      return e;
+    }
+  },
+};
+
+Future<Null> addNewUserToDatabase(User user) async {
+  DatabaseReference _usersRef =
+      FirebaseDatabase.instance.reference().child('users/${user.id}');
+
+  final TransactionResult transactionResult =
+      await _usersRef.runTransaction((MutableData mutableData) async {
+    print("mutableData.value: ${mutableData.value}");
+    _usersRef.set(user.toJson());
+    return mutableData;
+  });
+
+  if (transactionResult.committed) {
+    print("transactionResult.committed");
+  } else {
+    print('Transaction not committed.');
+    if (transactionResult.error != null) {
+      print(
+          "transactionResult.error.message " + transactionResult.error.message);
+    }
+  }
+}
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 String userIdCopy;
+bool signInOrCreateAccountMode = true;
 
 class LoginRoute extends StatefulWidget {
   LoginRoute();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
 
   @override
   LoginRouteState createState() => new LoginRouteState();
 }
 
 class LoginRouteState extends State<LoginRoute> {
-  final String noAccountYetMessage =
-      "Don't have an account yet? Create one here!";
-  final String logIntoMyAccountButtonTitle = "Log into my account";
-  final String otherRoute = "/create_account_route";
-  final bool toggleSignInCreateAccount = true;
-  final String title = "Sign in";
-  final TextEditingController emailController =
-      new TextEditingController(text: "user883311@gmail.com");
-  final TextEditingController passwordController =
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController1 =
+      new TextEditingController(text: "password");
+  TextEditingController passwordController2 =
       new TextEditingController(text: "password");
 
   Future _logInWithGoogle() {}
   Future _logInWithFacebook() {}
 
-  Future<FirebaseUser> _tentativeSignInCreateAccount() async {
-    FirebaseUser user;
-    try {
-      user = await _auth.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-      print(user);
-      print("response.uid:\n${user.uid}");
-      userIdCopy = user.uid;
-      return user;
-    } catch (e) {
-      print("error:\n$e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text("CheesopediA"
+            // signInOrCreateAccountMode
+            //     ? labels["sign_in_appbar_title"]
+            //     : labels["create_account_appbar_title"],
+          ),
         ),
         body: Column(
           children: <Widget>[
             TextField(
               controller: emailController,
               decoration: InputDecoration(
-                hintText: "Email",
+                hintText: "Email address",
               ),
             ),
             TextField(
-              controller: passwordController,
+              controller: passwordController1,
               obscureText: true,
               decoration: InputDecoration(
                 hintText: "Password",
               ),
             ),
+            signInOrCreateAccountMode
+                ? Container()
+                : new TextField(
+                    controller: passwordController2,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: "Type your password again",
+                    ),
+                  ),
             RaisedButton(
-              child: Text(logIntoMyAccountButtonTitle),
+              // child: Text(logIntoMyAccountButtonTitle),
+              child: Text(
+                signInOrCreateAccountMode
+                    ? labels["sign_in_button_title"]
+                    : labels["create_account_button_title"],
+              ),
               onPressed: () async {
-                await _tentativeSignInCreateAccount().then((response) {
-                  // try {
-                  //   print(response);
-                  //   Navigator.pushNamed(context, '/feed_route/$userIdCopy');
-                  // } catch (e) {
-                  //   print("Login failed..");
-                  //   showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) {
-                  //         return new SimpleDialog(
-                  //           title: Text('Login failed.'),
-                  //           children: <Widget>[
-                  //             new SimpleDialogOption(
-                  //               onPressed: () {
-                  //                 // go back to Feed Route
-                  //                 Navigator.pop(context, true);
-                  //                 // Navigator.pop(context, true);
-                  //               },
-                  //               child: const Text('Try again'),
-                  //             ),
-                  //           ],
-                  //         );
-                  //       });
-                  // }
-                  if (response != null) {
-                    print(response);
-                    Navigator.pushNamed(context, '/feed_route/$userIdCopy');
-                  } else {
-                    print("Login failed..");
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return new SimpleDialog(
-                            title: Text(
-                                'Bummer! Your login failed. Check your username and/or password.'),
-                            children: <Widget>[
-                              new SimpleDialogOption(
-                                onPressed: () {
-                                  // go back to Feed Route
-                                  Navigator.pop(context, true);
-                                  // Navigator.pop(context, true);
-                                },
-                                child: const Text(
-                                  'OK',
-                                  textAlign: TextAlign.center,
-                                ),
+                var functionToUse = signInOrCreateAccountMode
+                    ? labels["sign_in_function"]
+                    : labels["create_account_function"];
+
+                if (!signInOrCreateAccountMode &&
+                    passwordController1.text != passwordController2.text) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return new SimpleDialog(
+                          title: Text('Bummer! Your 2 passwords do not match.'),
+                          children: <Widget>[
+                            new SimpleDialogOption(
+                              onPressed: () {
+                                Navigator.pop(context, true);
+                              },
+                              child: const Text(
+                                'OK',
+                                textAlign: TextAlign.center,
                               ),
-                            ],
-                          );
-                        });
-                  }
-                });
+                            ),
+                          ],
+                        );
+                      });
+                } else {
+                  await functionToUse(
+                          email: emailController.text,
+                          password1: passwordController1.text)
+                      .then((response) {
+                    if (response.runtimeType == FirebaseUser &&
+                        response.uid != null) {
+                      print(response);
+                      Navigator.pushNamed(context, '/feed_route/$userIdCopy');
+                    } else {
+                      print("Login failed.. Response:\n$response");
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return new SimpleDialog(
+                              title: Text(
+                                  'Bummer! It failed. ${response.details}'),
+                              children: <Widget>[
+                                new SimpleDialogOption(
+                                  onPressed: () {
+                                    Navigator.pop(context, true);
+                                  },
+                                  child: const Text(
+                                    'OK',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    }
+                  });
+                }
               },
             ),
             Divider(),
             RaisedButton(
-              // TODO: add authentification capabilities
+              // TODO: add Google authentification capabilities
               onPressed: _logInWithGoogle,
               child: Text("Google sign-in"),
             ),
             RaisedButton(
-              // TODO: add authentification capabilities
+              // TODO: add Facebook authentification capabilities
               onPressed: _logInWithFacebook,
               child: Text("Facebook sign-in"),
             ),
             FlatButton(
               child: Text(
-                noAccountYetMessage,
+                signInOrCreateAccountMode
+                    ? labels["create_account_link"]
+                    : labels["sign_in_link"],
                 style: TextStyle(color: Colors.blue[700]),
               ),
-              onPressed: toggleSignInCreateAccount
+              onPressed: signInOrCreateAccountMode
                   ? () {
-                      Navigator.pushNamed(context, otherRoute);
+                      setState(() {
+                        signInOrCreateAccountMode = false;
+                      });
                     }
                   : () {
-                      Navigator.pop(context);
+                      setState(() {
+                        signInOrCreateAccountMode = true;
+                      });
                     },
             ),
           ],
         ));
-  }
-}
-
-//==========================================================================================
-//==========================================================================================
-class CreateAccountRoute extends LoginRoute {
-  @override
-  final String noAccountYetMessage = "Already have an account? Sign in here!";
-  final String logIntoMyAccountButtonTitle = "Create my account";
-  final bool toggleSignInCreateAccount = false;
-  final String title = "Create account";
-
-  Future<String> _tentativeSignInCreateAccount() async {
-    print("${emailController.text}.|");
-    var response = _createAccountWithEmailPassword(
-        emailController.text, passwordController.text);
-    if (response != null) {
-      print("the account creation WAS successful...");
-    } else {
-      print("the account creation was not successful...");
-    }
-  }
-
-  Future<String> _createAccountWithEmailPassword(
-      String emailString, String passwordString) async {
-    try {
-      FirebaseUser user = await _auth
-          .createUserWithEmailAndPassword(
-              email: emailString, password: passwordString)
-          .then((resultUser) {
-        //return the user unique id
-        print("Success: resultUser is :\n$resultUser");
-        return resultUser;
-      });
-    } catch (e) {
-      print("Error in _createAccountWithEmailPassword: \n$e");
-      return null;
-    }
   }
 }

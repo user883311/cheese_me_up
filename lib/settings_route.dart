@@ -27,12 +27,20 @@ class _SettingsRoute extends State<SettingsRoute> {
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: RaisedButton(
-        child: Text("Log out"),
-        onPressed: () {
-          // TODO: Log Out function
-          Navigator.popUntil(context, ModalRoute.withName('/'));
-        },
+      body: Column(
+        children: [
+          RaisedButton(
+            child: Text("Log out"),
+            onPressed: () {
+              userIdCopy=null;
+              Navigator.popUntil(context, ModalRoute.withName('/'));
+            },
+          ),
+          RaisedButton(
+            child: Text("Delete my account"),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }

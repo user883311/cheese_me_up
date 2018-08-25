@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 class User {
   final String username;
   final String email;
-  final int id;
+  final String id;
   final String password;
   final Map<String, CheckIn> checkins;
 
@@ -23,6 +23,13 @@ class User {
         checkins = (snapshot.value["checkins"] as Map ?? {}).map(
             (k, v) => new MapEntry(k.toString(), CheckIn.fromJson(v as Map))),
         id = snapshot.value["id"];
+
+  User.fromJson(Map<dynamic, dynamic> json)
+      : id = json["id"],
+        username = json["username"],
+        email = json["email"],
+        password = json["password"],
+        checkins = json["checkins"];
 
   toJson() {
     return {
