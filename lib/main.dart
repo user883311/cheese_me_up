@@ -21,7 +21,11 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Cheese Me Up',
       theme: new ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
+        scaffoldBackgroundColor: Colors.orange[100],
+        cardColor: Colors.orange[50],
+        buttonColor: Colors.blue[100],
+        dividerColor: Colors.black,
       ),
       initialRoute: "/",
       routes: <String, WidgetBuilder>{

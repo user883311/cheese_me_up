@@ -162,13 +162,16 @@ Widget cheeseTile(Cheese cheese, onTap) {
       trailing: new Container(
         width: 100.0,
         height: 50.0,
-        child: new Image.asset(
-          "assets/media/img/cheese/" + cheese.image,
-          fit: BoxFit.cover,
+        child: Container(
+          child: new Image.asset(
+            "assets/media/img/cheese/" + cheese.image,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
       leading: CircleAvatar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.orange[100],
+        foregroundColor: Colors.black,
         child: new Text(cheese.name.substring(0, 2).toUpperCase()),
       ),
       title: new Text(cheese.name),

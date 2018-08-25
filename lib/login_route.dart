@@ -104,6 +104,7 @@ class LoginRouteState extends State<LoginRoute> {
       body: Container(
         margin: EdgeInsets.all(10.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             TextField(
               controller: emailController,
@@ -128,7 +129,6 @@ class LoginRouteState extends State<LoginRoute> {
                     ),
                   ),
             RaisedButton(
-              // child: Text(logIntoMyAccountButtonTitle),
               child: Text(
                 signInOrCreateAccountMode
                     ? labels["sign_in_button_title"]
@@ -224,9 +224,10 @@ class LoginRouteState extends State<LoginRoute> {
                       });
                     },
             ),
-          ],
+          Text("Crafted in Helvetia.")],
         ),
       ),
+      
     );
   }
 }

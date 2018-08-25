@@ -39,7 +39,6 @@ class _FeedRoute extends State<FeedRoute> {
         leading: Text(""),
         title: Text("Home"),
       ),
-      backgroundColor: Colors.yellow[100],
       body: ListView(
         children: <Widget>[
           user == null
@@ -49,24 +48,29 @@ class _FeedRoute extends State<FeedRoute> {
                 ),
         ],
       ),
-      bottomNavigationBar: ButtonBar(
-        alignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          IconButton(
-            icon: new Icon(Icons.history),
-            onPressed: () {
-              Navigator.pushNamed(context, '/history_route/$userIdCopy');
-            },
-          ),
-          IconButton(
-            icon: new Icon(Icons.playlist_add_check),
-            onPressed: _goCheckinRoute,
-          ),
-          IconButton(
-            icon: new Icon(Icons.settings),
-            onPressed: () {Navigator.pushNamed(context, '/settings_route/$userIdCopy');},
-          ),
-        ],
+      bottomNavigationBar: Container(
+        color: Colors.orange,
+        child: ButtonBar(
+          alignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+              icon: new Icon(Icons.history),
+              onPressed: () {
+                Navigator.pushNamed(context, '/history_route/$userIdCopy');
+              },
+            ),
+            IconButton(
+              icon: new Icon(Icons.playlist_add_check),
+              onPressed: _goCheckinRoute,
+            ),
+            IconButton(
+              icon: new Icon(Icons.settings),
+              onPressed: () {
+                Navigator.pushNamed(context, '/settings_route/$userIdCopy');
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -98,8 +102,12 @@ class _AllTimeCard extends State<AllTimeCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Text(
-          "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.checkins.length} checkins, and the first one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.first.cheese.name}.\nThe latest one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.last.cheese.name}."),
+      margin: EdgeInsets.all(10.0),
+      child: Container(
+        padding: EdgeInsets.all(10.0),
+        child: Text(
+            "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.checkins.length} checkins, and the first one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.first.cheese.name}.\nThe latest one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.last.cheese.name}."),
+      ),
     );
   }
 }
