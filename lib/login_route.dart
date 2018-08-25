@@ -94,14 +94,16 @@ class LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("CheesopediA"
+      appBar: AppBar(
+        title: Text("CheesopediA"
             // signInOrCreateAccountMode
             //     ? labels["sign_in_appbar_title"]
             //     : labels["create_account_appbar_title"],
-          ),
-        ),
-        body: Column(
+            ),
+      ),
+      body: Container(
+        margin: EdgeInsets.all(10.0),
+        child: Column(
           children: <Widget>[
             TextField(
               controller: emailController,
@@ -160,7 +162,7 @@ class LoginRouteState extends State<LoginRoute> {
                 } else {
                   await functionToUse(
                           email: emailController.text,
-                          password1: passwordController1.text)
+                          password: passwordController1.text)
                       .then((response) {
                     if (response.runtimeType == FirebaseUser &&
                         response.uid != null) {
@@ -223,6 +225,8 @@ class LoginRouteState extends State<LoginRoute> {
                     },
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
