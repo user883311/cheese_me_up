@@ -4,11 +4,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 
+/// This function writes a new node to a Firebase [DatabaseReference] point, based 
+/// off a Map [newJsonElement]. If [randomKey] is set to true, a new unique alphanumeric
+/// id will be added at the referenced node, before writing the new data. 
 Future<TransactionResult> writeNewElementToDatabase(
-    Map newJsonElement, DatabaseReference dbRef) async {
-  DatabaseReference newDbRef = dbRef.push("temporary transaction data");
+    Map newJsonElement, DatabaseReference dbRef,
+    {bool randomKey: true}) async {
+  if (randomKey) {
+    dbRef = dbRef.push("temporary transaction data");
+  }
   final TransactionResult transactionResult =
-      await newDbRef.runTransaction((MutableData mutableData) async {
+      await dbRef.runTransaction((MutableData mutableData) async {
     mutableData.value = newJsonElement;
     print("mutableData.value: \n${mutableData.value}");
     return (mutableData);

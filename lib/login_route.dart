@@ -36,15 +36,11 @@ final Map<String, dynamic> labels = {
           email: email, password: password);
       print("created user: $user");
       userIdCopy = user.uid;
-      await addNewUserToDatabase(
-        // User.fromJson(
-        {
+      await addNewUserToDatabase(User.fromJson({
         "id": user.uid,
         "username": user.email,
         "email": user.email,
-      }
-      // )
-      );
+      }));
       return user;
     } catch (e) {
       print("Firebase account creation error:\n$e");
@@ -58,7 +54,7 @@ Future<Null> addNewUserToDatabase(User user) async {
       FirebaseDatabase.instance.reference().child('users/${user.id}');
 
   final TransactionResult transactionResult =
-      await writeNewElementToDatabase(user.toJson(), _usersRef);
+      await writeNewElementToDatabase(user.toJson(), _usersRef, randomKey: false);
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
