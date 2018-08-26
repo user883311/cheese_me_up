@@ -15,7 +15,7 @@ class CheckinRoute extends StatefulWidget {
 
   @override
   _CheckinRoute createState() {
-    print("userIdCopy $userIdCopy");
+    // print("userIdCopy $userIdCopy");
     userIdCopy = userId;
     return _CheckinRoute();
   }
@@ -69,32 +69,37 @@ class _CheckinRoute extends State<CheckinRoute> {
       case true:
         _checkin(checkin);
         // TODO: create AlertBox to notify checkin successful
-        print("$checkin was checked in, congrats!");
+        
         break;
       case false:
-        print("$checkin was NOT checked in, too bad!");
+        
         break;
     }
   }
 
   Future<Null> _checkin(CheckIn checkin) async {
-    DatabaseReference _userCheckinsRef = FirebaseDatabase.instance
+    DatabaseReference _oldUserCheckinsRef = FirebaseDatabase.instance
         .reference()
         .child('users/$userIdCopy/checkins');
-    print(userIdCopy);
+    // print(userIdCopy);
+    DatabaseReference _newUserCheckinsRef = _oldUserCheckinsRef.push(checkin.toJson());
     final TransactionResult transactionResult =
-        await _userCheckinsRef.runTransaction((MutableData mutableData) async {
-      print(mutableData.value);
-      _userCheckinsRef.push(checkin.toJson()).set(checkin.toJson());
-      return mutableData;
+        await _newUserCheckinsRef.runTransaction((MutableData mutableData) async {
+          mutableData.value = checkin.toJson();
+      print("mutableData.value: \n${mutableData.value}");
+      // _userCheckinsRef.push(checkin.toJson()).set(checkin.toJson());
+      return(mutableData);
     });
 
     if (transactionResult.committed) {
       print("transactionResult.committed");
+      print("transactionResult.dataSnapshot.value: \n${transactionResult.dataSnapshot.value}");
+      print("${checkin.cheese.name} was checked in, congrats!");
     } else {
       print('Transaction not committed.');
       if (transactionResult.error != null) {
         print(transactionResult.error.message);
+        print("${checkin.cheese.name} was NOT checked in, too bad!");
       }
     }
   }
