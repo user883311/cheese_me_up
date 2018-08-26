@@ -53,8 +53,9 @@ Future<Null> addNewUserToDatabase(User user) async {
   DatabaseReference _usersRef =
       FirebaseDatabase.instance.reference().child('users/${user.id}');
 
-  final TransactionResult transactionResult =
-      await writeNewElementToDatabase(user.toJson(), _usersRef, randomKey: false);
+  final TransactionResult transactionResult = await writeNewElementToDatabase(
+      user.toJson(), _usersRef,
+      randomKey: false);
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -82,11 +83,10 @@ class LoginRouteState extends State<LoginRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("CheesopediA"
-            // signInOrCreateAccountMode
-            //     ? labels["sign_in_appbar_title"]
-            //     : labels["create_account_appbar_title"],
-            ),
+        leading: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Image.asset("assets/media/icons/cheese_color.png")),
+        title: Text("CheesopediA"),
       ),
       body: Container(
         margin: EdgeInsets.all(10.0),

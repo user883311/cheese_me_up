@@ -44,6 +44,11 @@ flutter:
    - assets/media/img/cheese/abbaye-de-belloc.jpg
    - assets/media/img/cheese/Boulette_dAvesnes.jpg
    - assets/media/img/cheese/cantal.jpg
+   # cheese icons:
+   - assets/media/icons/cheese_color.png
+   - assets/media/icons/cheese_bw.png
+   - assets/media/icons/cheese_wb.png
+   
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
