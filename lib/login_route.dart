@@ -3,6 +3,7 @@
 //
 import 'dart:async';
 import 'package:cheese_me_up/models/user_cheese.dart';
+import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,11 +36,15 @@ final Map<String, dynamic> labels = {
           email: email, password: password);
       print("created user: $user");
       userIdCopy = user.uid;
-      await addNewUserToDatabase(User.fromJson({
+      await addNewUserToDatabase(
+        // User.fromJson(
+        {
         "id": user.uid,
         "username": user.email,
         "email": user.email,
-      }));
+      }
+      // )
+      );
       return user;
     } catch (e) {
       print("Firebase account creation error:\n$e");
@@ -53,21 +58,7 @@ Future<Null> addNewUserToDatabase(User user) async {
       FirebaseDatabase.instance.reference().child('users/${user.id}');
 
   final TransactionResult transactionResult =
-      await _usersRef.runTransaction((MutableData mutableData) async {
-    print("mutableData.value: ${mutableData.value}");
-    _usersRef.set(user.toJson());
-    return mutableData;
-  });
-
-  if (transactionResult.committed) {
-    print("transactionResult.committed");
-  } else {
-    print('Transaction not committed.');
-    if (transactionResult.error != null) {
-      print(
-          "transactionResult.error.message " + transactionResult.error.message);
-    }
-  }
+      await writeNewElementToDatabase(user.toJson(), _usersRef);
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -224,10 +215,10 @@ class LoginRouteState extends State<LoginRoute> {
                       });
                     },
             ),
-          Text("Crafted in Helvetia.")],
+            Text("Crafted in Helvetia.")
+          ],
         ),
       ),
-      
     );
   }
 }

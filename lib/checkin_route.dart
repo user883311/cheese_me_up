@@ -3,6 +3,7 @@
 //
 import 'dart:async';
 import 'package:cheese_me_up/models/user_cheese.dart';
+import 'package:cheese_me_up/utils/database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -47,61 +48,48 @@ class _CheckinRoute extends State<CheckinRoute> {
         context: context,
         builder: (BuildContext context) {
           return new SimpleDialog(
-            title: Text('Do you want to check $checkin in?'),
+            title: Text('Do you want to check ${checkin.cheese.name} in?'),
             children: <Widget>[
               new SimpleDialogOption(
-                onPressed: () {
-                  // go back to Feed Route
-                  Navigator.pop(context, true);
-                  Navigator.pop(context, true);
-                },
-                child: const Text('Yes'),
-              ),
+                  onPressed: () async {
+                    TransactionResult resultTransaction =
+                        await _checkin(checkin);
+                    Navigator.pop(context, resultTransaction.committed);
+                    // return resultTransaction.committed;
+                  },
+                  child: const Text('Yes')),
               new SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(context, false);
-                },
-                child: const Text('No'),
-              ),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('No')),
             ],
           );
         })) {
       case true:
-        _checkin(checkin);
         // TODO: create AlertBox to notify checkin successful
         
+        // go back to Feed Route
+        Navigator.pop(context);
         break;
+
       case false:
-        
+        // TODO: create AlertBox to notify checkin UNsuccessful
+
+        Navigator.pop(context);
+        break;
+
+      default:
         break;
     }
   }
 
-  Future<Null> _checkin(CheckIn checkin) async {
+  Future<TransactionResult> _checkin(CheckIn checkin) async {
     DatabaseReference _oldUserCheckinsRef = FirebaseDatabase.instance
         .reference()
         .child('users/$userIdCopy/checkins');
-    // print(userIdCopy);
-    DatabaseReference _newUserCheckinsRef = _oldUserCheckinsRef.push(checkin.toJson());
-    final TransactionResult transactionResult =
-        await _newUserCheckinsRef.runTransaction((MutableData mutableData) async {
-          mutableData.value = checkin.toJson();
-      print("mutableData.value: \n${mutableData.value}");
-      // _userCheckinsRef.push(checkin.toJson()).set(checkin.toJson());
-      return(mutableData);
-    });
 
-    if (transactionResult.committed) {
-      print("transactionResult.committed");
-      print("transactionResult.dataSnapshot.value: \n${transactionResult.dataSnapshot.value}");
-      print("${checkin.cheese.name} was checked in, congrats!");
-    } else {
-      print('Transaction not committed.');
-      if (transactionResult.error != null) {
-        print(transactionResult.error.message);
-        print("${checkin.cheese.name} was NOT checked in, too bad!");
-      }
-    }
+    TransactionResult result =
+        await writeNewElementToDatabase(checkin.toJson(), _oldUserCheckinsRef);
+    return result;
   }
 
   void refreshSearch(String string) {
