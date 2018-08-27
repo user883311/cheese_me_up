@@ -14,6 +14,9 @@ void main() {
   runApp(MyApp());
 }
 
+// TODO: App icon is cheese slice on orange/yellow sun (Japanese 
+// flag sun rays design) in the background.
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override

@@ -16,7 +16,6 @@ class CheckinRoute extends StatefulWidget {
 
   @override
   _CheckinRoute createState() {
-    // print("userIdCopy $userIdCopy");
     userIdCopy = userId;
     return _CheckinRoute();
   }
