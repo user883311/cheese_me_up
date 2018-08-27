@@ -42,6 +42,13 @@ class User {
   }
 
   // TODO: add method to get user's total points
+  num getSumPoints() {
+    int sumPoints = 0;
+    for (var checkin in checkins.values) {
+      sumPoints += checkin.points ?? 0;
+    }
+    return sumPoints;
+  }
 }
 
 class Cheese {
