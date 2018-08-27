@@ -40,6 +40,8 @@ class User {
       "checkins": checkins,
     };
   }
+
+  // TODO: add method to get user's total points
 }
 
 class Cheese {
@@ -122,6 +124,7 @@ class CheckIn {
     return {
       "time": time.millisecondsSinceEpoch,
       "cheese": cheese.toJson(),
+      "points": points,
     };
   }
 }

@@ -4,11 +4,13 @@
 import 'dart:async';
 import 'package:cheese_me_up/models/user_cheese.dart';
 import 'package:cheese_me_up/utils/database.dart';
+import 'package:cheese_me_up/utils/points_scorer.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 String userIdCopy;
+User user;
 
 class CheckinRoute extends StatefulWidget {
   CheckinRoute({this.userId});
@@ -26,6 +28,7 @@ class _CheckinRoute extends State<CheckinRoute> {
   Cheese cheese;
   final FirebaseDatabase database = FirebaseDatabase.instance;
   Query _cheesesRef;
+  DatabaseReference _userRef;
   TextEditingController searchText;
 
   @override
@@ -33,6 +36,12 @@ class _CheckinRoute extends State<CheckinRoute> {
     super.initState();
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
+
+    // We need to know th user to attribute points. 
+    _userRef = database.reference().child("users/$userIdCopy");
+    _userRef.onValue.listen((Event event) {
+      user = new User.fromSnapshot(event.snapshot);
+    });
   }
 
   void _onEntryAdded(Event event) {
@@ -65,7 +74,7 @@ class _CheckinRoute extends State<CheckinRoute> {
         })) {
       case true:
         // TODO: create AlertBox to notify checkin successful
-        
+
         // go back to Feed Route
         Navigator.pop(context);
         break;
@@ -168,9 +177,13 @@ Widget cheeseTile(Cheese cheese, onTap) {
       ),
       title: new Text(cheese.name),
       subtitle: new Text(cheese.region + ", " + cheese.country),
-      onTap: () {
+      onTap: () async {
         print("Tapped dat ${cheese.name}!");
-        onTap(CheckIn.fromCheeseDateTime(cheese, DateTime.now()));
+        onTap(CheckIn.fromCheeseDateTime(
+          cheese,
+          DateTime.now(),
+          pointsForNewCheese(cheese, user),
+        ));
       },
     ),
   );
