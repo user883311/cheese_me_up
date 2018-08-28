@@ -11,7 +11,7 @@ class Api {
     try {
       final httpRequest = await _httpClient.getUrl(uri);
       final httpResponse = await httpRequest.close();
-      if (httpResponse.statusCode != HttpStatus.OK) {
+      if (httpResponse.statusCode != HttpStatus.ok) {
         return null;
       }
       // The response is sent as a Stream of bytes that we need

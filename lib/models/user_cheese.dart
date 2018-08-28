@@ -42,12 +42,25 @@ class User {
   }
 
   // TODO: add method to get user's total points
-  num getSumPoints() {
+  int get sumPoints {
     int sumPoints = 0;
-    for (var checkin in checkins.values) {
+    for (CheckIn checkin in checkins.values) {
       sumPoints += checkin.points ?? 0;
     }
     return sumPoints;
+  }
+
+  // TODO: add method to get user's number of unique cheeses tried
+  Set<Cheese> get uniqueCheeses {
+    var uniqueCheeses = new Set<Cheese>();
+    var uniqueCheesesId = new Set<String>();
+    for (CheckIn checkin in checkins.values) {
+      if (uniqueCheesesId.contains(checkin.cheese.id) == false) {
+        uniqueCheeses.add(checkin.cheese);
+      }
+      uniqueCheesesId.add(checkin.cheese.id);
+    }
+    return uniqueCheeses;
   }
 }
 

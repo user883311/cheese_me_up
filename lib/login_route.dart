@@ -2,7 +2,6 @@
 //
 //
 import 'dart:async';
-import 'package:cheese_me_up/flag_divider.dart';
 import 'package:cheese_me_up/models/user_cheese.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_database/firebase_database.dart';

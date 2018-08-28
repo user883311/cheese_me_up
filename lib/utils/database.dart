@@ -1,7 +1,6 @@
 // This module contains the read and write functions to the database. abstract
 
 import 'dart:async';
-import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 
 /// This function writes a new node to a Firebase [DatabaseReference] point, based 

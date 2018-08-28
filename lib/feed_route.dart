@@ -1,9 +1,22 @@
 import 'package:cheese_me_up/models/user_cheese.dart';
+import 'package:cheese_me_up/sentence.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 User user;
 String userIdCopy;
+
+void updateCheckins() async {
+  final FirebaseDatabase database = FirebaseDatabase.instance;
+  DatabaseReference _userRef, _checkinRef;
+  _checkinRef = database.reference().child("users/$userIdCopy/checkins");
+  _checkinRef.onChildAdded.listen((_) {
+    _userRef = database.reference().child("users/$userIdCopy");
+    _userRef.onValue.listen((Event event) {
+      user = new User.fromSnapshot(event.snapshot);
+    });
+  });
+}
 
 class FeedRoute extends StatefulWidget {
   FeedRoute({this.userId});
@@ -23,13 +36,15 @@ class _FeedRoute extends State<FeedRoute> {
   @override
   void initState() {
     super.initState();
-    print("userId is: $userIdCopy");
+    print("initState()...");
     _userRef = database.reference().child("users/$userIdCopy");
     _userRef.onValue.listen((Event event) {
-      setState(() {
-        user = new User.fromSnapshot(event.snapshot);
-      });
+      user = new User.fromSnapshot(event.snapshot);
     });
+  }
+
+  void _goCheckinRoute() {
+    Navigator.pushNamed(context, '/checkin_route/$userIdCopy');
   }
 
   @override
@@ -40,12 +55,12 @@ class _FeedRoute extends State<FeedRoute> {
         title: Text("Home"),
       ),
       body: ListView(
-        // TODO: add cards, take inspiration from Wikipedia app: 
-        // All time best, Today's cheese, Country Focus, etc. 
+        // TODO: add cards, take inspiration from Wikipedia app:
+        // All time best, Today's cheese, Country Focus, etc.
         children: <Widget>[
           user == null
               ? Text("Loading...")
-              : AllTimeCard(
+              : new AllTimeCard(
                   user: user,
                 ),
         ],
@@ -76,10 +91,6 @@ class _FeedRoute extends State<FeedRoute> {
       ),
     );
   }
-
-  void _goCheckinRoute() {
-    Navigator.pushNamed(context, '/checkin_route/$userIdCopy');
-  }
 }
 
 class AllTimeCard extends StatefulWidget {
@@ -87,6 +98,7 @@ class AllTimeCard extends StatefulWidget {
   // if only one user is ever going to be using the
   // app at one given time?
   final User user;
+
   const AllTimeCard({Key key, @required this.user})
       : assert(user != null),
         super(key: key);
@@ -96,9 +108,12 @@ class AllTimeCard extends StatefulWidget {
 }
 
 class _AllTimeCard extends State<AllTimeCard> {
+  var sentence;
+
   @override
   void initState() {
     super.initState();
+    sentence = new Sentence(user: user);
   }
 
   @override
@@ -108,7 +123,7 @@ class _AllTimeCard extends State<AllTimeCard> {
       child: Container(
         padding: EdgeInsets.all(10.0),
         child: Text(
-            "Howdy, ${user.username}!\n\nTo this day, you have scored ${user.checkins.length} checkins, and the first one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.first.cheese.name}.\nThe latest one was... ${(user.checkins.length == 0) ? "NONE" : user.checkins.values.last.cheese.name}."),
+            "${sentence.greetings} \n\n${sentence.recapTotalPointsToDate}.\n ${user.checkins.length} cheeses ever, and ${user.uniqueCheeses.length} unique cheeses: ${user.uniqueCheeses.toString()}"),
       ),
     );
   }
