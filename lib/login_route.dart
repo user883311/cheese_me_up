@@ -182,11 +182,19 @@ class LoginRouteState extends State<LoginRoute> {
               },
             ),
             Divider(),
-            RaisedButton(
-              // TODO: add Google authentification capabilities
-              onPressed: _logInWithGoogle,
-              child: Text("Google sign-in"),
-            ),
+            new Builder(builder: (context) {
+              return new RaisedButton(
+                // TODO: add Google authentification capabilities
+                onPressed: () {
+                  Scaffold.of(context).showSnackBar(
+                    new SnackBar(
+                      content: new Text("This functionality isn't built yet"),
+                    ),
+                  );
+                },
+                child: Text("Google sign-in"),
+              );
+            }),
             RaisedButton(
               // TODO: add Facebook authentification capabilities
               onPressed: _logInWithFacebook,

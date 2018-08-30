@@ -6,17 +6,17 @@ import 'package:flutter/material.dart';
 User user;
 String userIdCopy;
 
-void updateCheckins() async {
-  final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference _userRef, _checkinRef;
-  _checkinRef = database.reference().child("users/$userIdCopy/checkins");
-  _checkinRef.onChildAdded.listen((_) {
-    _userRef = database.reference().child("users/$userIdCopy");
-    _userRef.onValue.listen((Event event) {
-      user = new User.fromSnapshot(event.snapshot);
-    });
-  });
-}
+// void updateCheckins() async {
+//   final FirebaseDatabase database = FirebaseDatabase.instance;
+//   DatabaseReference _userRef, _checkinRef;
+//   _checkinRef = database.reference().child("users/$userIdCopy/checkins");
+//   _checkinRef.onChildAdded.listen((_) {
+//     _userRef = database.reference().child("users/$userIdCopy");
+//     _userRef.onValue.listen((Event event) {
+//       user = new User.fromSnapshot(event.snapshot);
+//     });
+//   });
+// }
 
 class FeedRoute extends StatefulWidget {
   FeedRoute({this.userId});
@@ -49,6 +49,9 @@ class _FeedRoute extends State<FeedRoute> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+        print(user.email);
+        });
     return Scaffold(
       appBar: AppBar(
         leading: Text(""),

@@ -37,7 +37,7 @@ class _CheckinRoute extends State<CheckinRoute> {
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
 
-    // We need to know th user to attribute points.
+    // We need to know the user to attribute points.
     _userRef = database.reference().child("users/$userIdCopy");
     _userRef.onValue.listen((Event event) {
       user = new User.fromSnapshot(event.snapshot);
@@ -62,9 +62,7 @@ class _CheckinRoute extends State<CheckinRoute> {
                   onPressed: () async {
                     TransactionResult resultTransaction =
                         await _checkin(checkin);
-
                     Navigator.pop(context, resultTransaction.committed);
-                    // return resultTransaction.committed;
                   },
                   child: const Text('Yes')),
               new SimpleDialogOption(
@@ -75,6 +73,7 @@ class _CheckinRoute extends State<CheckinRoute> {
         })) {
       case true:
         // TODO: create AlertBox to notify checkin successful
+        
         // go back to Feed Route
         Navigator.pop(context);
         // push replacement to reinitialized the feed automatically
