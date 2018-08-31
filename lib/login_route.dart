@@ -154,7 +154,7 @@ class LoginRouteState extends State<LoginRoute> {
                     if (response.runtimeType == FirebaseUser &&
                         response.uid != null) {
                       print(response);
-                      Navigator.pushNamed(context, '/feed_route/$userIdCopy');
+                      Navigator.pushNamed(context, '/feed_route/${response.uid}');
                     } else {
                       print("Login failed.. Response:\n$response");
                       showDialog(

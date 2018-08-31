@@ -40,7 +40,9 @@ class _CheckinRoute extends State<CheckinRoute> {
     // We need to know the user to attribute points.
     _userRef = database.reference().child("users/$userIdCopy");
     _userRef.onValue.listen((Event event) {
-      user = new User.fromSnapshot(event.snapshot);
+      setState(() {
+        user = new User.fromSnapshot(event.snapshot);
+      });
     });
   }
 
@@ -72,17 +74,11 @@ class _CheckinRoute extends State<CheckinRoute> {
           );
         })) {
       case true:
-        // TODO: create AlertBox to notify checkin successful
-        
-        // go back to Feed Route
         Navigator.pop(context);
-        // push replacement to reinitialized the feed automatically
         Navigator.pushReplacementNamed(context, "/feed_route");
         break;
 
       case false:
-        // TODO: create AlertBox to notify checkin UNsuccessful
-
         Navigator.pop(context);
         break;
 
@@ -102,7 +98,6 @@ class _CheckinRoute extends State<CheckinRoute> {
   }
 
   void refreshSearch(String string) {
-    // TODO: create responsive results, based on string
     string = string.replaceAll("  ", " ");
     string = string.trim();
     print("the search string is : $string");

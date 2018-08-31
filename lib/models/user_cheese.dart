@@ -41,7 +41,6 @@ class User {
     };
   }
 
-  // TODO: add method to get user's total points
   int get sumPoints {
     int sumPoints = 0;
     for (CheckIn checkin in checkins.values) {
@@ -50,7 +49,6 @@ class User {
     return sumPoints;
   }
 
-  // TODO: add method to get user's number of unique cheeses tried
   Set<Cheese> get uniqueCheeses {
     var uniqueCheeses = new Set<Cheese>();
     var uniqueCheesesId = new Set<String>();
