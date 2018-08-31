@@ -75,7 +75,8 @@ class _CheckinRoute extends State<CheckinRoute> {
         })) {
       case true:
         Navigator.pop(context);
-        Navigator.pushReplacementNamed(context, "/feed_route");
+        
+        Navigator.pushReplacementNamed(context, "/feed_route/$userIdCopy");
         break;
 
       case false:
