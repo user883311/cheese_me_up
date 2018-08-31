@@ -1,5 +1,5 @@
-import 'package:cheese_me_up/models/user_cheese.dart';
-
+import 'package:cheese_me_up/models/cheese.dart';
+import 'package:cheese_me_up/models/user.dart';
 
 /// This function returns the number of points attributed for a 
 /// given [CheckIn] by a particular [User].

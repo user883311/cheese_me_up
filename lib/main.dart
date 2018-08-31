@@ -1,13 +1,9 @@
-//
-//
-//
-import 'package:cheese_me_up/checkin_route.dart';
-import 'package:cheese_me_up/history_route.dart';
-import 'package:cheese_me_up/settings_route.dart';
+import 'package:cheese_me_up/routes/checkin_route.dart';
+import 'package:cheese_me_up/routes/feed_route.dart';
+import 'package:cheese_me_up/routes/history_route.dart';
+import 'package:cheese_me_up/routes/login_route.dart';
+import 'package:cheese_me_up/routes/settings_route.dart';
 import 'package:flutter/material.dart';
-
-import 'login_route.dart';
-import 'feed_route.dart';
 
 void main() {
   print("runApp...");
@@ -16,6 +12,7 @@ void main() {
 
 // TODO: App icon is cheese slice on orange/yellow sun (Japanese 
 // flag sun rays design) in the background.
+// Start with 1024x1024
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

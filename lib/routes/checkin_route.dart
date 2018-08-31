@@ -1,10 +1,9 @@
-//
-//
-//
 import 'dart:async';
-import 'package:cheese_me_up/models/user_cheese.dart';
+import 'package:cheese_me_up/elements/cheese_tile.dart';
+import 'package:cheese_me_up/models/checkin.dart';
+import 'package:cheese_me_up/models/cheese.dart';
+import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
-import 'package:cheese_me_up/utils/points_scorer.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -37,7 +36,6 @@ class _CheckinRoute extends State<CheckinRoute> {
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
 
-    // We need to know the user to attribute points.
     _userRef = database.reference().child("users/$userIdCopy");
     _userRef.onValue.listen((Event event) {
       setState(() {
@@ -75,7 +73,7 @@ class _CheckinRoute extends State<CheckinRoute> {
         })) {
       case true:
         Navigator.pop(context);
-        
+
         Navigator.pushReplacementNamed(context, "/feed_route/$userIdCopy");
         break;
 
@@ -143,7 +141,7 @@ class _CheckinRoute extends State<CheckinRoute> {
               itemBuilder: (context, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
                 if (cheeses[index].show) {
-                  return cheeseTile(cheeses[index], _checkCheeseInIntent);
+                  return cheeseTile(user, cheeses[index], _checkCheeseInIntent);
                 }
               },
             ),
@@ -152,36 +150,4 @@ class _CheckinRoute extends State<CheckinRoute> {
       ),
     );
   }
-}
-
-Widget cheeseTile(Cheese cheese, onTap) {
-  return Card(
-    child: ListTile(
-      trailing: new Container(
-        width: 100.0,
-        height: 50.0,
-        child: Container(
-          child: new Image.asset(
-            "assets/media/img/cheese/" + cheese.image,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      leading: CircleAvatar(
-        backgroundColor: Colors.orange[100],
-        foregroundColor: Colors.black,
-        child: new Text(cheese.name.substring(0, 2).toUpperCase()),
-      ),
-      title: new Text(cheese.name),
-      subtitle: new Text(cheese.region + ", " + cheese.country),
-      onTap: () async {
-        print("Tapped dat ${cheese.name}!");
-        onTap(CheckIn.fromCheeseDateTime(
-          cheese,
-          DateTime.now(),
-          pointsForNewCheese(cheese, user),
-        ));
-      },
-    ),
-  );
 }

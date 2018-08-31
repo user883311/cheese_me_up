@@ -1,5 +1,5 @@
-import 'package:cheese_me_up/models/user_cheese.dart';
-import 'package:cheese_me_up/sentence.dart';
+import 'package:cheese_me_up/elements/sentence.dart';
+import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 

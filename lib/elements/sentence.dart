@@ -1,4 +1,4 @@
-import 'package:cheese_me_up/models/user_cheese.dart';
+import 'package:cheese_me_up/models/user.dart';
 import 'package:meta/meta.dart';
 
 class Sentence {
@@ -8,7 +8,7 @@ class Sentence {
     @required this.user,
   });
 
-  String get greetings => "Howdy ${user.username}!";
+  String get greetings => "Howdy ${user.displayName?? ""}!";
 
   String get recapTotalPointsToDate {
     String response = "";

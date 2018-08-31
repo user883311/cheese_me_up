@@ -2,7 +2,7 @@
 //
 //
 import 'dart:async';
-import 'package:cheese_me_up/models/user_cheese.dart';
+import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ final Map<String, dynamic> labels = {
       userIdCopy = user.uid;
       await addNewUserToDatabase(User.fromJson({
         "id": user.uid,
-        "username": user.email,
+        "displayName": user.email,
         "email": user.email,
       }));
       return user;

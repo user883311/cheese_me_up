@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FlagDivider extends StatelessWidget {
-  // TODO: create a Swiss FLag divider (2 or 3 flag colors)
+  // TODO: create a Swiss Flag divider (2 or 3 flag colors)
   final Color color1;
   final Color color2;
   final Color color3;
