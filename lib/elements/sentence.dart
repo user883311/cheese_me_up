@@ -59,6 +59,6 @@ class Sentence {
   }
 
   String rememberCheckin(CheckIn checkin) {
-    return "On the ${checkin.time.day} of ${checkin.time.month}, ${checkin.time.year}, you had some ${checkin.cheese.name}.";
+    return "On the ${checkin.time.day} of ${checkin.time.month}, ${checkin.time.year}, you had some ${checkin.cheese.name}";
   }
 }

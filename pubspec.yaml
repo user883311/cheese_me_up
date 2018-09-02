@@ -21,11 +21,22 @@ dependencies:
   firebase_core: ^0.2.4
   firebase_database: ^1.0.2
   google_sign_in: ^3.0.5
+  flutter_launcher_icons: ^0.6.1
+
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: "^0.6.1"
+  
+flutter_icons:
+  image_path: "assets/media/icons/cheese_launch_icon.png"
+  android: true 
+  ios: true 
+  
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

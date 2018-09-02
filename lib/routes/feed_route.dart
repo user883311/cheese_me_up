@@ -54,9 +54,7 @@ class _FeedRoute extends State<FeedRoute> {
         children: <Widget>[
           user == null ? Text("Loading...") : new AllTimeCard(),
           (user == null || user.checkins.isEmpty)
-              
               ? new Icon(Icons.arrow_downward)
-              
               : new RememberCard(),
         ],
       ),
@@ -224,4 +222,3 @@ class RememberCardState extends State<RememberCard> {
 //     );
 //   }
 // }
-
