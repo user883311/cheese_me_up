@@ -13,6 +13,7 @@ building
 .packages
 .pub/
 build/
+sandbox/
 
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock

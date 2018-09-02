@@ -39,7 +39,7 @@ class _HistoryRouteState extends State<HistoryRoute> {
         user = new User.fromSnapshot(event.snapshot);
       });
     });
-
+    // checkinsCopy = user.checkins.values;
     checkinsCopy.sort((a, b) => b.time.compareTo(a.time));
   }
 
@@ -75,14 +75,16 @@ class _HistoryRouteState extends State<HistoryRoute> {
       appBar: AppBar(
         title: Text("History"),
       ),
-      body: ListView.builder(
-        itemCount: user.checkins.length,
-        itemBuilder: (context, index) {
-          return Text(
-              "cheese # $index: ${user.checkins.values.elementAt(index).cheese.name}, ${relevantTimeSince(user.checkins.values.elementAt(index).time)["durationInt"]} ${relevantTimeSince(user.checkins.values.elementAt(index).time)["unit"]} ago");
-        },
-        padding: EdgeInsets.zero,
-      ),
+      body: user == null
+          ? null
+          : ListView.builder(
+              itemCount: user.checkins.length,
+              itemBuilder: (context, index) {
+                return Text(
+                    "$index: ${user.checkins.values.elementAt(index).cheese.name}, ${relevantTimeSince(user.checkins.values.elementAt(index).time)["durationInt"]} ${relevantTimeSince(user.checkins.values.elementAt(index).time)["unit"]} ago");
+              },
+              padding: EdgeInsets.zero,
+            ),
     );
   }
 }

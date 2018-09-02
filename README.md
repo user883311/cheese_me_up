@@ -1,5 +1,5 @@
 # CheesopediA
-Flutter playground. 
+Flutter playground. I learnt about the Flutter Widget tree, serialization, authentification methods. 
 Material design. 
 
 ## Credits: 
