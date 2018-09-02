@@ -24,9 +24,6 @@ class HistoryRoute extends StatefulWidget {
 }
 
 class _HistoryRouteState extends State<HistoryRoute> {
-  // Use a list to be able to sort checkins.
-  // List<CheckIn> checkins = [];
-
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference _userRef;
 
@@ -80,10 +77,35 @@ class _HistoryRouteState extends State<HistoryRoute> {
           : ListView.builder(
               itemCount: checkinsCopy.length,
               itemBuilder: (context, index) {
-                return Text(
-                    "$index: ${checkinsCopy[index].cheese.name}, ${relevantTimeSince(checkinsCopy[index].time)["durationInt"]} ${relevantTimeSince(checkinsCopy[index].time)["unit"]} ago");
+                return Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${checkinsCopy.length - index}, ${checkinsCopy[index].cheese.name} ",
+                            textScaleFactor: 1.2,
+                          ),
+                          Text(
+                              "${relevantTimeSince(checkinsCopy[index].time)["durationInt"]} ${relevantTimeSince(checkinsCopy[index].time)["unit"]} ago"),
+                          Row(children: [
+                            IconButton(
+                              iconSize: 3.0,
+                              icon: new Image.asset(
+                                  'assets/media/icons/trophy.png'),
+                              onPressed: () {},
+                            ),
+                            Text("+ ${checkinsCopy[index].points} points"),
+                          ]),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
               },
-              padding: EdgeInsets.zero,
             ),
     );
   }

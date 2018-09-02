@@ -20,13 +20,12 @@ dependencies:
   firebase_auth: ^0.5.18
   firebase_core: ^0.2.4
   firebase_database: ^1.0.2
-
+  google_sign_in: ^3.0.5
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -48,6 +47,7 @@ flutter:
    - assets/media/icons/cheese_color.png
    - assets/media/icons/cheese_bw.png
    - assets/media/icons/cheese_wb.png
+   - assets/media/icons/trophy.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see

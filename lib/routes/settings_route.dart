@@ -1,5 +1,6 @@
-
 import 'package:cheese_me_up/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -48,10 +49,10 @@ class _SettingsRoute extends State<SettingsRoute> {
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               },
             ),
-            RaisedButton(
-              child: Text("Delete my account"),
-              onPressed: () {},
-            ),
+            // RaisedButton(
+            //   child: Text("Delete my account"),
+            //   onPressed: () {},
+            // ),
           ],
         ),
       ),

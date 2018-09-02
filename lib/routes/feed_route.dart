@@ -103,8 +103,17 @@ class _AllTimeCard extends State<AllTimeCard> {
       margin: EdgeInsets.all(10.0),
       child: Container(
         padding: EdgeInsets.all(10.0),
-        child: Text(
-            "${sentence.greetings} \n\n${sentence.recapTotalPointsToDate}.\n ${user.checkins.length} cheeses ever, and ${user.uniqueCheeses.length} unique cheeses: ${sentence.uniqueCheesesListSentence}"),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "${sentence.greetings}\n",
+              textScaleFactor: 1.2,
+            ),
+            Text("${sentence.recapTotalPointsToDate}.\n "),
+            Text("${sentence.uniqueCheesesListSentence}.")
+          ],
+        ),
       ),
     );
   }

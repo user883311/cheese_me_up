@@ -4,3 +4,4 @@ Material design.
 
 ## Credits: 
 Cheese icon made by Smashicons from www.flaticon.com, Creative Commons BY 3.0. 
+Trophy icon made by Vectors Market from www.flaticon.com, Creative Commons BY 3.0. 

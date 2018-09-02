@@ -8,7 +8,7 @@ class Sentence {
     @required this.user,
   });
 
-  String get greetings => "Howdy ${user.displayName?? ""}!";
+  String get greetings => "Howdy ${user.displayName ?? ""}!";
 
   String get recapTotalPointsToDate {
     String response = "";
@@ -33,8 +33,12 @@ class Sentence {
   String get uniqueCheesesListSentence {
     if (user.uniqueCheeses.isEmpty) {
       return null;
+    } else if (user.uniqueCheeses.length == 1) {
+      String response = "You have only tried ${user.uniqueCheeses.length} cheese: a ${user.uniqueCheeses.first.name}";
+      return response;
     } else {
-      String response = "";
+      String response =
+          "You have tried ${user.uniqueCheeses.length} different cheeses: ";
 
       for (var i = 0; i < user.uniqueCheeses.length; i++) {
         var cheese = user.uniqueCheeses.toList()[i];
