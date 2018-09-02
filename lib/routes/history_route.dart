@@ -72,8 +72,14 @@ class _HistoryRouteState extends State<HistoryRoute> {
       appBar: AppBar(
         title: Text("History"),
       ),
-      body: user == null
-          ? null
+      body: (user == null || user.checkins.isEmpty)
+          ? Card(
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                    "Your history section is empty. Go check out some new cheeses! "),
+              ),
+            )
           : ListView.builder(
               itemCount: checkinsCopy.length,
               itemBuilder: (context, index) {
@@ -86,11 +92,10 @@ class _HistoryRouteState extends State<HistoryRoute> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${checkinsCopy.length - index}, ${checkinsCopy[index].cheese.name} ",
+                            "${relevantTimeSince(checkinsCopy[index].time)["durationInt"]} ${relevantTimeSince(checkinsCopy[index].time)["unit"]} ago",
                             textScaleFactor: 1.2,
                           ),
-                          Text(
-                              "${relevantTimeSince(checkinsCopy[index].time)["durationInt"]} ${relevantTimeSince(checkinsCopy[index].time)["unit"]} ago"),
+                          Text("\n${checkinsCopy[index].cheese.name}"),
                           Row(children: [
                             IconButton(
                               iconSize: 3.0,

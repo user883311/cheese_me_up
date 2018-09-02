@@ -37,12 +37,11 @@ class _SettingsRoute extends State<SettingsRoute> {
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(),
-            TextField(),
-            TextField(),
-            TextField(),
             RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
               child: Text("Log out"),
               onPressed: () {
                 userIdCopy = null;

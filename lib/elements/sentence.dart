@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:meta/meta.dart';
 
@@ -34,7 +37,8 @@ class Sentence {
     if (user.uniqueCheeses.isEmpty) {
       return null;
     } else if (user.uniqueCheeses.length == 1) {
-      String response = "You have only tried ${user.uniqueCheeses.length} cheese: a ${user.uniqueCheeses.first.name}";
+      String response =
+          "You have only tried ${user.uniqueCheeses.length} cheese: a ${user.uniqueCheeses.first.name}";
       return response;
     } else {
       String response =
@@ -52,5 +56,9 @@ class Sentence {
 
       return response;
     }
+  }
+
+  String rememberCheckin(CheckIn checkin) {
+    return "On the ${checkin.time.day} of ${checkin.time.month}, ${checkin.time.year}, you had some ${checkin.cheese.name}.";
   }
 }

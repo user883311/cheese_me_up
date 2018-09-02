@@ -19,9 +19,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Cheese Me Up',
       theme: new ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.brown,
         scaffoldBackgroundColor: Colors.orange[100],
         cardColor: Colors.orange[50],
         buttonColor: Colors.blue[100],

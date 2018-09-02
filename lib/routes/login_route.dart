@@ -199,6 +199,7 @@ class LoginRouteState extends State<LoginRoute> {
                   ),
             // TODO :add a forgot password option to retrieve password
             RaisedButton(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
               child: Text(
                 signInOrCreateAccountMode
                     ? labels["sign_in_button_title"]
@@ -235,34 +236,6 @@ class LoginRouteState extends State<LoginRoute> {
                           password: passwordController1.text)
                       .then((response) {
                     handleSignInResponse(response);
-
-                    // if (response.runtimeType == FirebaseUser &&
-                    //     response.uid != null) {
-                    //   print(response);
-                    //   Navigator.pushNamed(
-                    //       context, '/feed_route/${response.uid}');
-                    // } else {
-                    //   print("Login failed.. Response:\n$response");
-                    //   showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context) {
-                    //         return new SimpleDialog(
-                    //           title: Text(
-                    //               'Bummer! It failed. ${response.details}'),
-                    //           children: <Widget>[
-                    //             new SimpleDialogOption(
-                    //               onPressed: () {
-                    //                 Navigator.pop(context, true);
-                    //               },
-                    //               child: const Text(
-                    //                 'OK',
-                    //                 textAlign: TextAlign.center,
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         );
-                    //       });
-                    // }
                   });
                 }
               },
@@ -270,7 +243,7 @@ class LoginRouteState extends State<LoginRoute> {
             Divider(),
             new Builder(builder: (context) {
               return new RaisedButton(
-                // TODO: add Google authentification capabilities
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 onPressed: () async {
                   handleSignInResponse(await _testSignInWithGoogle());
                 },
@@ -279,6 +252,7 @@ class LoginRouteState extends State<LoginRoute> {
             }),
             RaisedButton(
               // TODO: add Facebook authentification capabilities
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
               onPressed: _logInWithFacebook,
               child: Text("Facebook sign-in"),
             ),

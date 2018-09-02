@@ -7,35 +7,43 @@ import 'package:flutter/material.dart';
 
 /// Creates a tile representing a given [Cheese] object. Upon tapping
 /// on the tile, a callback function [onTap] is called, for a given [user].
-Widget cheeseTile(User user, Cheese cheese, onTap) {
+Widget cheeseTile(User user, Cheese cheese, [onTap, bool circleAvatar = true]) {
   return Card(
     child: ListTile(
       trailing: new Container(
+        // decoration: BoxDecoration(
+        //   color: Colors.blue,
+        //   borderRadius: BorderRadius.all(
+        //     Radius.circular(50.0),
+        //   ),
+        // ),
         width: 100.0,
         height: 50.0,
-        child: Container(
-          child: new Image.asset(
-            "assets/media/img/cheese/" + cheese.image,
-            fit: BoxFit.cover,
-          ),
+        child: new Image.asset(
+          "assets/media/img/cheese/" + cheese.image,
+          fit: BoxFit.cover,
         ),
       ),
-      leading: CircleAvatar(
-        backgroundColor: Colors.orange[100],
-        foregroundColor: Colors.black,
-        child: new Text(cheese.name.substring(0, 2).toUpperCase()),
-      ),
+      leading: circleAvatar
+          ? CircleAvatar(
+              backgroundColor: Colors.orange[100],
+              foregroundColor: Colors.black,
+              child: new Text(cheese.name.substring(0, 2).toUpperCase()),
+            )
+          : null,
       title: new Text(cheese.name),
       subtitle: new Text(cheese.region + ", " + cheese.country),
       onTap: () async {
         print("Tapped dat ${cheese.name}!");
-        onTap(
-          CheckIn.fromCheeseDateTime(
-            cheese,
-            DateTime.now(),
-            pointsForNewCheese(cheese, user),
-          ),
-        );
+        if (onTap != null) {
+          onTap(
+            CheckIn.fromCheeseDateTime(
+              cheese,
+              DateTime.now(),
+              pointsForNewCheese(cheese, user),
+            ),
+          );
+        }
       },
     ),
   );

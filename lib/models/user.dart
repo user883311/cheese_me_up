@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -67,5 +69,13 @@ class User {
     }
     return uniqueCheeses;
   }
-}
 
+  CheckIn get randomCheckin {
+    var random = new Random();
+    if (checkins.isNotEmpty) {
+      return checkins.values.toList()[random.nextInt(checkins.length)];
+    } else {
+      return null;
+    }
+  }
+}
