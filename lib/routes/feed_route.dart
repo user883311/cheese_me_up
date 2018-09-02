@@ -1,5 +1,6 @@
 import 'package:cheese_me_up/elements/cheese_tile.dart';
 import 'package:cheese_me_up/elements/sentence.dart';
+import 'package:cheese_me_up/elements/vertical_divider.dart';
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -53,7 +54,9 @@ class _FeedRoute extends State<FeedRoute> {
         children: <Widget>[
           user == null ? Text("Loading...") : new AllTimeCard(),
           (user == null || user.checkins.isEmpty)
-              ? Text("")
+              
+              ? new Icon(Icons.arrow_downward)
+              
               : new RememberCard(),
         ],
       ),
@@ -89,10 +92,6 @@ class _FeedRoute extends State<FeedRoute> {
                 ],
               ),
             ),
-            // IconButton(
-            //   icon: Image.asset("assets/media/icons/cheese_color.png"),
-            //   onPressed: _goCheckinRoute,
-            // ),
             IconButton(
               icon: Image.asset("assets/media/icons/settings.png"),
               onPressed: () {
@@ -177,7 +176,7 @@ class RememberCardState extends State<RememberCard> {
               "Remember?\n",
               textScaleFactor: 1.2,
             ),
-            Text("${sentence.rememberCheckin(randomCheckin)}.\n "),
+            Text("${sentence.rememberCheckin(randomCheckin)}."),
             cheeseTile(user, randomCheckin.cheese, () {}, false),
           ],
         ),
@@ -185,3 +184,44 @@ class RememberCardState extends State<RememberCard> {
     );
   }
 }
+
+// class FirstCheckinPointer extends StatelessWidget {
+//   const FirstCheckinPointer();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return VerticalDivider();
+//     // return Icon(Icons.arrow_downward, size: 100.0,);
+//   }
+// }
+
+// class VerticalDivider extends Divider {
+//   const VerticalDivider();
+
+//   static BorderSide createBorderSide(BuildContext context, { Color color, double width = 5.0 }) {
+//     assert(width != null);
+//     return new BorderSide(
+//       color: color ?? Theme.of(context).dividerColor,
+//       width: width,
+//     );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return new SizedBox(
+//       height: height,
+//       child: new Center(
+//         child: new Container(
+//           height: 0.0,
+//           margin: new EdgeInsetsDirectional.only(start: indent),
+//           decoration: new BoxDecoration(
+//             border: new Border(
+//               left: createBorderSide(context, color: color),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
