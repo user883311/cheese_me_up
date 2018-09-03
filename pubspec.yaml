@@ -54,6 +54,34 @@ flutter:
    - assets/media/img/cheese/abbaye-de-belloc.jpg
    - assets/media/img/cheese/Boulette_dAvesnes.jpg
    - assets/media/img/cheese/cantal.jpg
+   - assets/media/img/cheese/Belval-biere.jpg
+   - assets/media/img/cheese/Boulette_dAvesnes.jpg
+   - assets/media/img/cheese/Fromage_citeaux.jpg
+   - assets/media/img/cheese/cantal.jpg
+   - assets/media/img/cheese/Abbots-Gold.jpg
+   - assets/media/img/cheese/Gran-Reserva-2.jpg
+   - assets/media/img/cheese/Gruy-laib-keil_klein.jpg
+   - assets/media/img/cheese/Appenzeller.jpg
+   - assets/media/img/cheese/Danish_Blue.jpg
+   - assets/media/img/cheese/abbaye-de-belloc.jpg
+   - assets/media/img/cheese/1_3.JPG
+   - assets/media/img/cheese/Abondance1.jpg
+   - assets/media/img/cheese/Laiib-Offen-Klein.jpg
+   - assets/media/img/cheese/1_12.JPG
+   - assets/media/img/cheese/Acapella_Cheese...jpg
+   - assets/media/img/cheese/emmental.jpg
+   - assets/media/img/cheese/Kaltbach_Emmentaler_AOP.jpg
+   - assets/media/img/cheese/Kaltbach_Le_Gruyere_AOP.jpg
+   - assets/media/img/cheese/Gruyere1.jpg
+   - assets/media/img/cheese/holzofer.jpg
+   - assets/media/img/cheese/Tilsit_cheese_1.jpg
+   - assets/media/img/cheese/SbrinzAOC.jpg
+   - assets/media/img/cheese/reggi2113.jpg
+   - assets/media/img/cheese/tete-de-moine.jpg
+   - assets/media/img/cheese/Vacherin_Fribourgeois.png
+   - assets/media/img/cheese/Tomme.jpg
+   - assets/media/img/cheese/vacherin_france.jpg
+   - assets/media/img/cheese/691px-Washed-rind_cheese.jpg
    # cheese icons:
    - assets/media/icons/cheese_color.png
    - assets/media/icons/cheese_bw.png
@@ -61,7 +89,6 @@ flutter:
    - assets/media/icons/trophy.png
    - assets/media/icons/history.png
    - assets/media/icons/settings.png
-   
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
