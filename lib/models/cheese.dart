@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:meta/meta.dart';
 
@@ -24,21 +22,21 @@ class Cheese {
   Cheese.fromSnapshot(DataSnapshot snapshot)
       : id = snapshot.value["id"],
         name = snapshot.value["name"],
-        region = snapshot.value["Region"],
-        country = snapshot.value["Country of origin"],
+        region = snapshot.value["region"],
+        country = snapshot.value["country"],
         image = snapshot.value["image"],
         show = true,
         fullSearch = snapshot.value["name"] +
             " " +
-            snapshot.value["Region"] +
+            snapshot.value["region"] +
             " " +
-            snapshot.value["Country of origin"];
+            snapshot.value["country"];
 
   Cheese.fromJson(Map<dynamic, dynamic> json)
       : id = json["id"],
         name = json["name"],
-        region = json["Region"],
-        country = json["Country of origin"],
+        region = json["region"],
+        country = json["country"],
         image = json["image"],
         fullSearch = json["fullSearch"];
 
@@ -46,11 +44,10 @@ class Cheese {
     return {
       "id": id,
       "name": name,
-      "Region": region,
-      "Country of origin": country,
+      "region": region,
+      "country": country,
       "image": image,
       fullSearch: fullSearch,
     };
   }
-
 }
