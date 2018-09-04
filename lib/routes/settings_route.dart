@@ -40,8 +40,6 @@ class _SettingsRoute extends State<SettingsRoute> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
               child: Text("Log out"),
               onPressed: () {
                 userIdCopy = null;

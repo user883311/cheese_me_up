@@ -18,11 +18,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Cheese Me Up',
       theme: new ThemeData(
+        buttonColor: Colors.blue[100],
+        buttonTheme: ButtonThemeData(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)))),
+        cardColor: Colors.orange[50],
+        dividerColor: Colors.black,
         primarySwatch: Colors.brown,
         scaffoldBackgroundColor: Colors.orange[100],
-        cardColor: Colors.orange[50],
-        buttonColor: Colors.blue[100],
-        dividerColor: Colors.black,
+        inputDecorationTheme: InputDecorationTheme(
+          border: UnderlineInputBorder(),
+        ),
+        bottomAppBarColor: Colors.blue,
       ),
       initialRoute: "/",
       routes: <String, WidgetBuilder>{
