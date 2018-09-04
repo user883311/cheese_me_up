@@ -6,13 +6,9 @@ import 'package:cheese_me_up/routes/settings_route.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  print("runApp...");
+  // print("runApp...");
   runApp(MyApp());
 }
-
-// TODO: App icon is cheese slice on orange/yellow sun (Japanese 
-// flag sun rays design) in the background.
-// Start with 1024x1024
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -31,7 +27,6 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: <String, WidgetBuilder>{
         '/': (BuildContext context) => new LoginRoute(),
-        // '/create_account_route': (BuildContext context) => new CreateAccountRoute(),
         '/feed_route': (BuildContext context) => new FeedRoute(),
         '/checkin_route': (BuildContext context) => new CheckinRoute(),
         '/settings_route': (BuildContext context) => new SettingsRoute(),
@@ -39,7 +34,7 @@ class MyApp extends StatelessWidget {
       },
       onGenerateRoute: (routeSettings) {
         var path = routeSettings.name.split('/');
-        print("path is: $path");
+        // print("path is: $path");
 
         switch (path[1]) {
           case "feed_route":

@@ -13,7 +13,7 @@ class SettingsRoute extends StatefulWidget {
 
   @override
   _SettingsRoute createState() {
-    print("userIdCopy $userIdCopy");
+    // print("userIdCopy $userIdCopy");
     userIdCopy = userId;
     return _SettingsRoute();
   }

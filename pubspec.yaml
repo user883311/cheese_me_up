@@ -23,8 +23,6 @@ dependencies:
   google_sign_in: ^3.0.5
   flutter_launcher_icons: ^0.6.1
 
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -32,11 +30,10 @@ dev_dependencies:
   flutter_launcher_icons: "^0.6.1"
   
 flutter_icons:
-  image_path: "assets/media/icons/cheese_launch_icon.png"
+  image_path: "assets/media/icons/cheese4.png"
   android: true 
   ios: true 
   
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

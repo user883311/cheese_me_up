@@ -22,7 +22,7 @@ final Map<String, dynamic> labels = {
     try {
       user = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      print("user: $user");
+      // print("user: $user");
       userIdCopy = user.uid;
       return user;
     } catch (e) {
@@ -168,114 +168,128 @@ class LoginRouteState extends State<LoginRoute> {
         leading: Padding(
             padding: EdgeInsets.all(10.0),
             child: Image.asset("assets/media/icons/cheese_color.png")),
-        title: Text("CheesopediA"),
+        title: Text(
+          "CheesopediA",
+          style: TextStyle(fontFamily: "Calibri"),
+        ),
       ),
       body: Container(
         margin: EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: ListView(
+          // itemExtent: 0.0,
           children: <Widget>[
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                hintText: "Email address",
-              ),
-            ),
-            TextField(
-              controller: passwordController1,
-              obscureText: true,
-              decoration: InputDecoration(
-                hintText: "Password",
-              ),
-            ),
-            signInOrCreateAccountMode
-                ? Container()
-                : new TextField(
-                    controller: passwordController2,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: "Type your password again",
-                    ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    hintText: "Email address",
                   ),
-            // TODO :add a forgot password option to retrieve password
-            RaisedButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              child: Text(
+                ),
+                TextField(
+                  controller: passwordController1,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                  ),
+                ),
                 signInOrCreateAccountMode
-                    ? labels["sign_in_button_title"]
-                    : labels["create_account_button_title"],
-              ),
-              onPressed: () async {
-                var functionToUse = signInOrCreateAccountMode
-                    ? labels["sign_in_function"]
-                    : labels["create_account_function"];
+                    ? Container()
+                    : new TextField(
+                        controller: passwordController2,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Type your password again",
+                        ),
+                      ),
+                // TODO :add a forgot password option to retrieve password
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  child: Text(
+                    signInOrCreateAccountMode
+                        ? labels["sign_in_button_title"]
+                        : labels["create_account_button_title"],
+                  ),
+                  onPressed: () async {
+                    var functionToUse = signInOrCreateAccountMode
+                        ? labels["sign_in_function"]
+                        : labels["create_account_function"];
 
-                if (!signInOrCreateAccountMode &&
-                    passwordController1.text != passwordController2.text) {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return new SimpleDialog(
-                          title: Text('Bummer! Your 2 passwords do not match.'),
-                          children: <Widget>[
-                            new SimpleDialogOption(
-                              onPressed: () {
-                                Navigator.pop(context, true);
-                              },
-                              child: const Text(
-                                'OK',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                } else {
-                  await functionToUse(
-                          email: emailController.text,
-                          password: passwordController1.text)
-                      .then((response) {
-                    handleSignInResponse(response);
-                  });
-                }
-              },
-            ),
-            Divider(),
-            new Builder(builder: (context) {
-              return new RaisedButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                onPressed: () async {
-                  handleSignInResponse(await _testSignInWithGoogle());
-                },
-                child: Text("Google sign-in"),
-              );
-            }),
-            RaisedButton(
-              // TODO: add Facebook authentification capabilities
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              onPressed: _logInWithFacebook,
-              child: Text("Facebook sign-in"),
-            ),
-            FlatButton(
-              child: Text(
-                signInOrCreateAccountMode
-                    ? labels["create_account_link"]
-                    : labels["sign_in_link"],
-                style: TextStyle(color: Colors.blue[700]),
-              ),
-              onPressed: signInOrCreateAccountMode
-                  ? () {
-                      setState(() {
-                        signInOrCreateAccountMode = false;
+                    if (!signInOrCreateAccountMode &&
+                        passwordController1.text != passwordController2.text) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return new SimpleDialog(
+                              title: Text(
+                                  'Bummer! Your 2 passwords do not match.'),
+                              children: <Widget>[
+                                new SimpleDialogOption(
+                                  onPressed: () {
+                                    Navigator.pop(context, true);
+                                  },
+                                  child: const Text(
+                                    'OK',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    } else {
+                      await functionToUse(
+                              email: emailController.text,
+                              password: passwordController1.text)
+                          .then((response) {
+                        handleSignInResponse(response);
                       });
                     }
-                  : () {
-                      setState(() {
-                        signInOrCreateAccountMode = true;
-                      });
+                  },
+                ),
+                Divider(),
+                new Builder(builder: (context) {
+                  return new RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                    onPressed: () async {
+                      handleSignInResponse(await _testSignInWithGoogle());
                     },
+                    child: Text("Google sign-in"),
+                  );
+                }),
+                RaisedButton(
+                  // TODO: add Facebook authentification capabilities
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  onPressed: _logInWithFacebook,
+                  child: Text("Facebook sign-in"),
+                ),
+                FlatButton(
+                  child: Text(
+                    signInOrCreateAccountMode
+                        ? labels["create_account_link"]
+                        : labels["sign_in_link"],
+                    style: TextStyle(color: Colors.blue[700]),
+                  ),
+                  onPressed: signInOrCreateAccountMode
+                      ? () {
+                          setState(() {
+                            signInOrCreateAccountMode = false;
+                          });
+                        }
+                      : () {
+                          setState(() {
+                            signInOrCreateAccountMode = true;
+                          });
+                        },
+                ),
+                Center(
+                  child: Text("Crafted in Helvetia."),
+                ),
+              ],
             ),
-            Text("Crafted in Helvetia."),
           ],
         ),
       ),

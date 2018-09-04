@@ -126,7 +126,7 @@ class _CheckinRoute extends State<CheckinRoute> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          autofocus: true,
+          autofocus: false,
           controller: searchText,
           onChanged: refreshSearch,
           decoration: InputDecoration(

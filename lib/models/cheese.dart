@@ -20,17 +20,17 @@ class Cheese {
       this.fullSearch});
 
   Cheese.fromSnapshot(DataSnapshot snapshot)
-      : id = snapshot.value["id"],
-        name = snapshot.value["name"],
-        region = snapshot.value["region"],
-        country = snapshot.value["country"],
-        image = snapshot.value["image"],
+      : id = snapshot.value["id"].toString(),
+        name = snapshot.value["name"].toString(),
+        region = snapshot.value["region"].toString(),
+        country = snapshot.value["country"].toString(),
+        image = snapshot.value["image"].toString(),
         show = true,
-        fullSearch = snapshot.value["name"] +
+        fullSearch = snapshot.value["name"].toString() +
             " " +
-            snapshot.value["region"] +
+            snapshot.value["region"].toString() +
             " " +
-            snapshot.value["country"];
+            snapshot.value["country"].toString();
 
   Cheese.fromJson(Map<dynamic, dynamic> json)
       : id = json["id"],

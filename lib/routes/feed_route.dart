@@ -86,7 +86,7 @@ class _FeedRoute extends State<FeedRoute> {
                     icon: Image.asset("assets/media/icons/cheese_color.png"),
                     onPressed: _goCheckinRoute,
                   ),
-                  Text("+1")
+                  Text("+1",style: TextStyle(color:Colors.orange[200]),)
                 ],
               ),
             ),
