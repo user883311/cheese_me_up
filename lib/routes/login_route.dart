@@ -1,6 +1,3 @@
-//
-//
-//
 import 'dart:async';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';

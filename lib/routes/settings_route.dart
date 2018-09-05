@@ -1,6 +1,4 @@
 import 'package:cheese_me_up/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +20,6 @@ class SettingsRoute extends StatefulWidget {
 class _SettingsRoute extends State<SettingsRoute> {
   // TODO: add dropdown form to change user's profile fields:
   // display name, isEmailVerified
-
   @override
   void initState() {
     super.initState();
@@ -46,10 +43,6 @@ class _SettingsRoute extends State<SettingsRoute> {
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               },
             ),
-            // RaisedButton(
-            //   child: Text("Delete my account"),
-            //   onPressed: () {},
-            // ),
           ],
         ),
       ),

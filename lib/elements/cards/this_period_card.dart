@@ -1,0 +1,90 @@
+import 'package:cheese_me_up/elements/sentence.dart';
+import 'package:cheese_me_up/models/checkin.dart';
+import 'package:cheese_me_up/models/cheese.dart';
+import 'package:cheese_me_up/models/user.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+class ThisPeriodCard extends StatefulWidget {
+  final String periodName;
+  final User user;
+
+  const ThisPeriodCard({
+    Key key,
+    this.periodName,
+    this.user,
+  })  : assert(periodName != null),
+        assert(user != null);
+
+  @override
+  ThisPeriodCardState createState() =>
+      new ThisPeriodCardState(user: user, periodName: periodName);
+}
+
+class ThisPeriodCardState extends State<ThisPeriodCard> {
+  final String periodName;
+  final User user;
+
+  ThisPeriodCardState({
+    this.periodName,
+    this.user,
+  })  : assert(periodName != null),
+        assert(user != null);
+
+  DateTime from;
+  DateTime to;
+  Iterable<Cheese> cheeseList;
+  Sentence sentence;
+
+  @override
+  void initState() {
+    super.initState();
+    switch (periodName) {
+      case "week":
+        to = DateTime.now();
+        from = to.subtract(Duration(days: 7));
+        break;
+
+      case "month":
+        to = DateTime.now();
+        from = DateTime(to.year, to.month, 1);
+        break;
+
+      case "year":
+        to = DateTime.now();
+        from = DateTime(to.year, 1, 1);
+        break;
+
+      default:
+    }
+
+    cheeseList = user.getCheckinsFromPeriod(from, to).map((CheckIn checkin) {
+      return checkin.cheese;
+    });
+
+    sentence = new Sentence(user: user);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(10.0),
+      child: Container(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "This $periodName\n",
+              textScaleFactor: 1.2,
+            ),
+            (from == null && to == null)
+                ? null
+                : Text(
+                    "${cheeseList.length} cheeses! ${sentence.listOfCheeseNames(cheeseList)}."),
+          ],
+        ),
+      ),
+    );
+  }
+}

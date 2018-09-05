@@ -1,7 +1,6 @@
 # CheesopediA
 ## Cheese lovers companion
-Flutter playground. I learnt about the Flutter Widget tree, serialization, authentification methods. 
-Material design. 
+Flutter playground. I learnt about Object Oriented Programming (OOP), the Flutter Widget tree, serialization, authentification methods, and material design. 
 
 ## Credits: 
 Cheese icon made by Smashicons from www.flaticon.com, Creative Commons BY 3.0. 
