@@ -78,4 +78,11 @@ class User {
       return null;
     }
   }
+
+  List<CheckIn> getCheckinsFromPeriod(DateTime from, DateTime to) {
+    myFilter(checkin) =>
+        checkin.time.isAfter(from) || checkin.time.isBefore(to);
+    List<CheckIn> result = checkins.values.where(myFilter).toList();
+    return result;
+  }
 }

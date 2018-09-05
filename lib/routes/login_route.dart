@@ -44,7 +44,7 @@ final Map<String, dynamic> labels = {
       userIdCopy = user.uid;
       await addNewUserToDatabase(User.fromJson({
         "id": user.uid,
-        "displayName": user.email,
+        "displayName": user.email.replaceAll(new RegExp(r"@\w*\.\w*"), ""),
         "email": user.email,
       })).catchError((error) {
         throw Exception(error);
@@ -215,6 +215,8 @@ class LoginRouteState extends State<LoginRoute> {
                           : labels["create_account_button_title"],
                     ),
                     onPressed: () async {
+                      // TODO: create a mask screen to prevent user input
+                      // while waiting for logging response
                       var functionToUse = signInOrCreateAccountMode
                           ? labels["sign_in_function"]
                           : labels["create_account_function"];
@@ -270,7 +272,7 @@ class LoginRouteState extends State<LoginRoute> {
                   onPressed: _logInWithFacebook,
                   child: Text("Facebook sign-in"),
                 ),
-                
+
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 25.0),
                   child: FlatButton(

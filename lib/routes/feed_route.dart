@@ -2,6 +2,7 @@ import 'package:cheese_me_up/elements/cheese_tile.dart';
 import 'package:cheese_me_up/elements/sentence.dart';
 import 'package:cheese_me_up/elements/vertical_divider.dart';
 import 'package:cheese_me_up/models/checkin.dart';
+import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -51,12 +52,20 @@ class _FeedRoute extends State<FeedRoute> {
       body: ListView(
         // TODO: add cards, take inspiration from Wikipedia app:
         // All time best, Today's cheese, Country Focus, etc.
-        children: <Widget>[
-          user == null ? Text("Loading...") : new AllTimeCard(),
-          (user == null || user.checkins.isEmpty)
-              ? new Icon(Icons.arrow_downward)
-              : new RememberCard(),
-        ],
+        children: user == null
+            ? [Text("Loading...")]
+            : <Widget>[
+                new AllTimeCard(),
+                (user.checkins.isEmpty)
+                    ? new Icon(Icons.arrow_downward)
+                    : new RememberCard(),
+                (user.checkins.isEmpty)
+                    ? null
+                    : new ThisPeriodCard(
+                        user: user,
+                        periodName: "week",
+                      ),
+              ],
       ),
       bottomNavigationBar: Container(
         color: Colors.brown,
@@ -86,7 +95,10 @@ class _FeedRoute extends State<FeedRoute> {
                     icon: Image.asset("assets/media/icons/cheese_color.png"),
                     onPressed: _goCheckinRoute,
                   ),
-                  Text("+1",style: TextStyle(color:Colors.orange[200]),)
+                  Text(
+                    "+1",
+                    style: TextStyle(color: Colors.orange[200]),
+                  )
                 ],
               ),
             ),
@@ -183,42 +195,84 @@ class RememberCardState extends State<RememberCard> {
   }
 }
 
-// class FirstCheckinPointer extends StatelessWidget {
-//   const FirstCheckinPointer();
+class ThisPeriodCard extends StatefulWidget {
+  final String periodName;
+  final User user;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return VerticalDivider();
-//     // return Icon(Icons.arrow_downward, size: 100.0,);
-//   }
-// }
+  const ThisPeriodCard({
+    Key key,
+    this.periodName,
+    this.user,
+  })  : assert(periodName != null),
+        assert(user != null);
 
-// class VerticalDivider extends Divider {
-//   const VerticalDivider();
+  @override
+  ThisPeriodCardState createState() =>
+      new ThisPeriodCardState(user: user, periodName: periodName);
+}
 
-//   static BorderSide createBorderSide(BuildContext context, { Color color, double width = 5.0 }) {
-//     assert(width != null);
-//     return new BorderSide(
-//       color: color ?? Theme.of(context).dividerColor,
-//       width: width,
-//     );
-//   }
+class ThisPeriodCardState extends State<ThisPeriodCard> {
+  final String periodName;
+  final User user;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return new SizedBox(
-//       height: height,
-//       child: new Center(
-//         child: new Container(
-//           height: 0.0,
-//           margin: new EdgeInsetsDirectional.only(start: indent),
-//           decoration: new BoxDecoration(
-//             border: new Border(
-//               left: createBorderSide(context, color: color),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  ThisPeriodCardState({
+    this.periodName,
+    this.user,
+  });
+
+  DateTime from;
+  DateTime to;
+  Iterable<Cheese> cheeseList;
+  Sentence sentence ;
+
+  @override
+  void initState() {
+    super.initState();
+    switch (periodName) {
+      case "week":
+        to = DateTime.now();
+        from = to.subtract(Duration(days: 7));
+        break;
+
+      case "month":
+        to = DateTime.now();
+        from = DateTime(to.year, to.month, 1);
+        break;
+
+      case "year":
+        to = DateTime.now();
+        from = DateTime(to.year, 1, 1);
+        break;
+
+      default:
+    }
+
+    cheeseList = user.getCheckinsFromPeriod(from, to).map((CheckIn checkin) {
+      return checkin.cheese;
+    });
+
+    sentence = new Sentence(user: user);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(10.0),
+      child: Container(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "This $periodName\n",
+              textScaleFactor: 1.2,
+            ),
+            (from == null && to == null)
+                ? null
+                : Text("This $periodName: ${cheeseList.length} cheeses! ${sentence.listOfCheeseNames(cheeseList)}."),
+          ],
+        ),
+      ),
+    );
+  }
+}

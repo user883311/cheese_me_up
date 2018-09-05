@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cheese_me_up/models/checkin.dart';
+import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:meta/meta.dart';
 
@@ -59,6 +60,28 @@ class Sentence {
   }
 
   String rememberCheckin(CheckIn checkin) {
-    return "On the ${checkin.time.day} of ${checkin.time.month}, ${checkin.time.year}, you had some ${checkin.cheese.name}";
+    return "On the ${DateTime.parse(checkin.time.toString())}, you had some ${checkin.cheese.name}";
+  }
+
+  String listOfCheeseNames(Iterable<Cheese> iterable) {
+    if (iterable.isEmpty) {
+      return null;
+    } else if (iterable.length == 1) {
+      return "${iterable.first}";
+    } else {
+      String response = "";
+      List list = iterable.toList();
+      Cheese cheese;
+      for (var i = 0; i < list.length; i++) {
+        cheese = list[i];
+        if (i == list.length - 1) {
+          response += " and ";
+        } else if (i != 0) {
+          response += ", ";
+        }
+        response += cheese.name;
+      }
+      return response;
+    }
   }
 }
