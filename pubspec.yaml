@@ -30,7 +30,7 @@ dev_dependencies:
     sdk: flutter
   
 flutter_icons:
-  image_path: "assets/media/icons/cheese4.png"
+  image_path: "assets/media/icons/cheese_jpg.jpg"
   android: true 
   ios: true 
   
