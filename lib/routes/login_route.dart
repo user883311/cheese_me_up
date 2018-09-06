@@ -173,12 +173,9 @@ class LoginRouteState extends State<LoginRoute> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            // margin: EdgeInsets.all(10.0),
             padding:
                 const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
             child: Column(
-              // direction: Axis.vertical,
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 TextField(
                   controller: emailController,

@@ -1,5 +1,5 @@
 # CheesopediA
-## Cheese lovers companion
+## Cheese lovers' companion
 Flutter playground. I learnt about Object Oriented Programming (OOP), the Flutter Widget tree, serialization, authentification methods, and material design. 
 
 ## Credits: 
