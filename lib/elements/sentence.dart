@@ -58,6 +58,7 @@ class Sentence {
   }
 
   String rememberCheckin(CheckIn checkin) {
+    // TODO: add a date wording more casual
     return "On the ${DateTime.parse(checkin.time.toString())}, you had some ${checkin.cheese.name}";
   }
 

@@ -38,9 +38,9 @@ class _CheckinRoute extends State<CheckinRoute> {
 
     _userRef = database.reference().child("users/$userIdCopy");
     _userRef.onValue.listen((Event event) {
-      setState(() {
+      // setState(() {
         user = new User.fromSnapshot(event.snapshot);
-      });
+      // });
     });
   }
 
@@ -130,6 +130,7 @@ class _CheckinRoute extends State<CheckinRoute> {
           controller: searchText,
           onChanged: refreshSearch,
           decoration: InputDecoration(
+            hintStyle: TextStyle(color:Colors.white70),
             hintText: "Search cheese...",
           ),
         ),

@@ -26,12 +26,14 @@ class _FeedRoute extends State<FeedRoute> {
   @override
   void initState() {
     super.initState();
-    // print("initState()...");
     _userRef = database.reference().child("users/$userIdCopy");
     _userRef.onValue.listen((Event event) {
       setState(() {
         user = new User.fromSnapshot(event.snapshot);
       });
+    }).onError((error) {
+      print(error);
+      Navigator.popUntil(context, ModalRoute.withName('/'));
     });
   }
 

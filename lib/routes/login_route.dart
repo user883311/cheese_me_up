@@ -76,12 +76,9 @@ class LoginRoute extends StatefulWidget {
 }
 
 class LoginRouteState extends State<LoginRoute> {
-  TextEditingController emailController =
-      new TextEditingController(text: "user883311@gmail.com");
-  TextEditingController passwordController1 =
-      new TextEditingController(text: "password");
-  TextEditingController passwordController2 =
-      new TextEditingController(text: "password");
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController1 = new TextEditingController();
+  TextEditingController passwordController2 = new TextEditingController();
 
   Future _testSignInWithGoogle() async {
     try {
@@ -94,6 +91,7 @@ class LoginRouteState extends State<LoginRoute> {
       if (googleAuth == null) {
         throw "Authentification failed.";
       }
+
       final FirebaseUser user = await _auth.signInWithGoogle(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -128,7 +126,7 @@ class LoginRouteState extends State<LoginRoute> {
   }
 
   void handleSignInResponse(dynamic response) {
-    print("response:\n$response");
+    // print("response:\n$response");
     if (response.runtimeType == FirebaseUser && response.uid != null) {
       Navigator.pushNamed(context, '/feed_route/${response.uid}');
     } else {
@@ -156,7 +154,7 @@ class LoginRouteState extends State<LoginRoute> {
     }
   }
 
-  Future _logInWithFacebook() {}
+  Future _logInWithFacebook() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -261,11 +259,11 @@ class LoginRouteState extends State<LoginRoute> {
                   // child: ImageIcon(new AssetImage("assets/media/icons/google.png")),
                   child: Text("Google sign-in"),
                 ),
-                RaisedButton(
-                  // TODO: add Facebook authentification capabilities
-                  onPressed: _logInWithFacebook,
-                  child: Text("Facebook sign-in"),
-                ),
+                // RaisedButton(
+                //   // TODO: add Facebook authentification capabilities
+                //   onPressed: _logInWithFacebook,
+                //   child: Text("Facebook sign-in"),
+                // ),
 
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 25.0),
