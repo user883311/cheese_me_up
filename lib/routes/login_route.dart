@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+bool _disableButtons = false;
+
 final Map<String, dynamic> labels = {
   "sign_in_link": "Already have an account? Sign in here!",
   "create_account_link": "Don't have an account yet? Create one here!",
@@ -127,30 +129,36 @@ class LoginRouteState extends State<LoginRoute> {
 
   void handleSignInResponse(dynamic response) {
     // print("response:\n$response");
-    if (response.runtimeType == FirebaseUser && response.uid != null) {
-      Navigator.pushNamed(context, '/feed_route/${response.uid}');
-    } else {
-      // ERROR HANDLING
-      print("Login failed.. Response:\n$response");
+    try {
+      if (response.runtimeType == FirebaseUser && response.uid != null) {
+        Navigator.pushNamed(context, '/feed_route/${response.uid}');
+      } else {
+        // ERROR HANDLING
+        print("Login failed.. Response:\n$response");
 
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return new SimpleDialog(
-              title: Text('Bummer! It failed. $response'),
-              children: <Widget>[
-                new SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
-                  child: const Text(
-                    'OK',
-                    textAlign: TextAlign.center,
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return new SimpleDialog(
+                title: Text('Bummer! It failed. $response'),
+                children: <Widget>[
+                  new SimpleDialogOption(
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                    child: const Text(
+                      'OK',
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-              ],
-            );
-          });
+                ],
+              );
+            });
+      }
+    } finally {
+      setState(() {
+        _disableButtons = false;
+      });
     }
   }
 
@@ -200,50 +208,57 @@ class LoginRouteState extends State<LoginRoute> {
                 // TODO :add a forgot password option to retrieve password
                 Padding(
                   padding: EdgeInsets.only(top: 15.0),
-                  child: RaisedButton(
-                    child: Text(
-                      signInOrCreateAccountMode
-                          ? labels["sign_in_button_title"]
-                          : labels["create_account_button_title"],
-                    ),
-                    onPressed: () async {
-                      // TODO: create a mask screen to prevent user input
-                      // while waiting for logging response
-                      var functionToUse = signInOrCreateAccountMode
-                          ? labels["sign_in_function"]
-                          : labels["create_account_function"];
-
-                      if (!signInOrCreateAccountMode &&
-                          passwordController1.text !=
-                              passwordController2.text) {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return new SimpleDialog(
-                                title: Text(
-                                    'Bummer! Your 2 passwords do not match.'),
-                                children: <Widget>[
-                                  new SimpleDialogOption(
-                                    onPressed: () {
-                                      Navigator.pop(context, true);
-                                    },
-                                    child: const Text(
-                                      'OK',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            });
-                      } else {
-                        await functionToUse(
-                                email: emailController.text,
-                                password: passwordController1.text)
-                            .then((response) {
-                          handleSignInResponse(response);
+                  child: IgnorePointer(
+                    ignoring: _disableButtons,
+                    child: RaisedButton(
+                      child: Text(
+                        signInOrCreateAccountMode
+                            ? labels["sign_in_button_title"]
+                            : labels["create_account_button_title"],
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          _disableButtons = true;
                         });
-                      }
-                    },
+
+                        // TODO: create a mask screen to prevent user input
+                        // while waiting for logging response
+                        var functionToUse = signInOrCreateAccountMode
+                            ? labels["sign_in_function"]
+                            : labels["create_account_function"];
+
+                        if (!signInOrCreateAccountMode &&
+                            passwordController1.text !=
+                                passwordController2.text) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return new SimpleDialog(
+                                  title: Text(
+                                      'Bummer! Your 2 passwords do not match.'),
+                                  children: <Widget>[
+                                    new SimpleDialogOption(
+                                      onPressed: () {
+                                        Navigator.pop(context, true);
+                                      },
+                                      child: const Text(
+                                        'OK',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              });
+                        } else {
+                          await functionToUse(
+                                  email: emailController.text,
+                                  password: passwordController1.text)
+                              .then((response) {
+                            handleSignInResponse(response);
+                          });
+                        }
+                      },
+                    ),
                   ),
                 ),
 
@@ -252,13 +267,22 @@ class LoginRouteState extends State<LoginRoute> {
                   child: Divider(),
                 ),
 
-                RaisedButton(
-                  onPressed: () async {
-                    handleSignInResponse(await _testSignInWithGoogle());
-                  },
-                  // child: ImageIcon(new AssetImage("assets/media/icons/google.png")),
-                  child: Text("Google sign-in"),
+                IgnorePointer(
+                  ignoring: _disableButtons,
+                  child: RaisedButton(
+                    // TODO: add disabled property
+                    onPressed: () async {
+                      setState(() {
+                        _disableButtons = true;
+                      });
+
+                      handleSignInResponse(await _testSignInWithGoogle());
+                    },
+                    // child: ImageIcon(new AssetImage("assets/media/icons/google.png")),
+                    child: Text("Google sign-in"),
+                  ),
                 ),
+
                 // RaisedButton(
                 //   // TODO: add Facebook authentification capabilities
                 //   onPressed: _logInWithFacebook,

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 User user;
 String userIdCopy;
 
+// TODO: add ability to pull body and release to refresh State
+
 class FeedRoute extends StatefulWidget {
   FeedRoute({this.userId});
   final String userId;

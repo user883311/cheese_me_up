@@ -1,6 +1,17 @@
 # CheesopediA
 ## Cheese lovers' companion
-Flutter playground. I learnt about Object Oriented Programming (OOP), the Flutter Widget tree, serialization, authentification methods, and material design. 
+Start curating your cheese right on your phone. Keep track of your favorite cheeses and never forget the ones you fell in love with. Download Cheespedia now on your iOS or Android devices and easily add any cheese you like.
+
+Born as a Flutter playground. I learnt about Object Oriented Programming (OOP), the Flutter Widget tree, serialization, authentification methods, and material design. 
+
+## User stories
+I can: 
+- login into my user account
+- get information about an exensive list of world cheeses
+- sort cheeses by relevant tags: type of milk flavor, texture, country, etc.
+- check a new cheese in my list of cheeses
+- rate a cheese
+- see a feed with curated infrmation about the cheeses I have checked in
 
 ## Credits: 
 Cheese icon made by Smashicons from www.flaticon.com, Creative Commons BY 3.0. 
@@ -9,3 +20,4 @@ Settings icon made by Freepik from www.flaticon.com, Creative Commons BY 3.0.
 History clock icon made by Freepik from www.flaticon.com, Creative Commons BY 3.0. 
 Google clock icon made by Freepik from www.flaticon.com, Creative Commons BY 3.0. 
 Facebook clock icon made by Freepik from www.flaticon.com, Creative Commons BY 3.0. 
+Cheese and flower wallpaper photo by Alice Donovan Rouse on Unsplash. 

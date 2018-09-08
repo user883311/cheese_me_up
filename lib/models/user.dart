@@ -59,9 +59,11 @@ class User {
   }
 
   Set<Cheese> get uniqueCheeses {
+    var checkinsSorted = checkins.values.toList();
+    checkinsSorted.sort((a, b) => a.time.compareTo(b.time));
     var uniqueCheeses = new Set<Cheese>();
     var uniqueCheesesId = new Set<String>();
-    for (CheckIn checkin in checkins.values) {
+    for (CheckIn checkin in checkinsSorted) {
       if (uniqueCheesesId.contains(checkin.cheese.id) == false) {
         uniqueCheeses.add(checkin.cheese);
       }
@@ -84,6 +86,7 @@ class User {
     timeFilter(checkin) =>
         checkin.time.isAfter(from) || checkin.time.isBefore(to);
     List<CheckIn> result = checkins.values.where(timeFilter).toList();
+    result.sort((a, b) => a.time.compareTo(b.time));
     return result;
   }
 }
