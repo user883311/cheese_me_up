@@ -6,7 +6,6 @@ import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 String userIdCopy;
 User user;
@@ -24,22 +23,26 @@ class CheckinRoute extends StatefulWidget {
 
 class _CheckinRoute extends State<CheckinRoute> {
   List<Cheese> cheeses = List();
+  List<Cheese> _cheesesShortlist = List();
+
   Cheese cheese;
   final FirebaseDatabase database = FirebaseDatabase.instance;
   Query _cheesesRef;
   DatabaseReference _userRef;
-  TextEditingController searchText;
+  TextEditingController _searchStringController;
 
   @override
   void initState() {
     super.initState();
+    // TODO: query for searchString
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
+    // _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
 
     _userRef = database.reference().child("users/$userIdCopy");
     _userRef.onValue.listen((Event event) {
       // setState(() {
-        user = new User.fromSnapshot(event.snapshot);
+      user = new User.fromSnapshot(event.snapshot);
       // });
     });
   }
@@ -47,11 +50,11 @@ class _CheckinRoute extends State<CheckinRoute> {
   void _onEntryAdded(Event event) {
     setState(() {
       cheeses.add(Cheese.fromSnapshot(event.snapshot));
+      _cheesesShortlist.add(Cheese.fromSnapshot(event.snapshot));
     });
   }
 
   Future _checkCheeseInIntent(CheckIn checkin) async {
-    // print("onTap($checkin).. _checkCheeseInIntent --");
     switch (await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -73,7 +76,6 @@ class _CheckinRoute extends State<CheckinRoute> {
         })) {
       case true:
         Navigator.pop(context);
-
         Navigator.pushReplacementNamed(context, "/feed_route/$userIdCopy");
         break;
 
@@ -97,27 +99,15 @@ class _CheckinRoute extends State<CheckinRoute> {
   }
 
   void refreshSearch(String string) {
-    string = string.replaceAll("  ", " ");
-    string = string.trim();
-    print("the search string is : $string");
-
     setState(() {
-      if (string.isEmpty) {
-        for (Cheese cheese in cheeses) {
-          cheese.show = true;
-        }
-        print("done");
-      } else {
-        // do the search in local, removing unmatching entries
-        for (Cheese cheese in cheeses) {
-          // RegExp r = new RegExp(string, caseSensitive: false);
-          if (cheese.fullSearch.toLowerCase().contains(string.toLowerCase())) {
-            cheese.show = true;
-          } else {
-            cheese.show = false;
-          }
+      print(string);
+      _cheesesShortlist = [];
+      for (Cheese cheese in cheeses) {
+        if (cheese.fullSearch.toLowerCase().contains(string.toLowerCase())) {
+          _cheesesShortlist.add(cheese);
         }
       }
+      print(cheeses);
     });
   }
 
@@ -127,10 +117,10 @@ class _CheckinRoute extends State<CheckinRoute> {
       appBar: AppBar(
         title: TextField(
           autofocus: false,
-          controller: searchText,
+          controller: _searchStringController,
           onChanged: refreshSearch,
           decoration: InputDecoration(
-            hintStyle: TextStyle(color:Colors.white70),
+            hintStyle: TextStyle(color: Colors.white70),
             hintText: "Search cheese...",
           ),
         ),
@@ -138,13 +128,11 @@ class _CheckinRoute extends State<CheckinRoute> {
       body: Column(
         children: <Widget>[
           Flexible(
-            child: FirebaseAnimatedList(
-              query: _cheesesRef,
-              itemBuilder: (context, DataSnapshot snapshot,
-                  Animation<double> animation, int index) {
-                if (cheeses[index].show) {
-                  return cheeseTile(user, cheeses[index], _checkCheeseInIntent);
-                }
+            child: ListView.builder(
+              itemCount: _cheesesShortlist.length,
+              itemBuilder: (context, index) {
+                return cheeseTile(
+                    user, _cheesesShortlist[index], _checkCheeseInIntent);
               },
             ),
           ),

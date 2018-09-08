@@ -42,7 +42,7 @@ class Sentence {
     } else {
       String response =
           "You have tried ${user.uniqueCheeses.length} different cheeses: ";
-
+      // TODO: sort Cheeses by date added
       for (var i = 0; i < user.uniqueCheeses.length; i++) {
         var cheese = user.uniqueCheeses.toList()[i];
         if (i == user.uniqueCheeses.length - 1) {

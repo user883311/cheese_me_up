@@ -38,7 +38,7 @@ class AllTimeCardState extends State<AllTimeCard> {
             Text("${sentence.recapTotalPointsToDate}."),
             (sentence.uniqueCheesesListSentence == null)
                 ? Text("")
-                : Text("\n${sentence.uniqueCheesesListSentence}."),
+                : Text("\n${sentence.uniqueCheesesListSentence}"),
           ],
         ),
       ),

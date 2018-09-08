@@ -67,6 +67,7 @@ class User {
       }
       uniqueCheesesId.add(checkin.cheese.id);
     }
+    
     return uniqueCheeses;
   }
 
