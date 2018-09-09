@@ -134,7 +134,7 @@ class LoginRouteState extends State<LoginRoute> {
     // print("response:\n$response");
     try {
       if (response.runtimeType == FirebaseUser && response.uid != null) {
-        Navigator.pushNamed(context, '/feed_route/${response.uid}');
+        Navigator.pushReplacementNamed(context, '/feed_route/${response.uid}');
       } else {
         // ERROR HANDLING
         print("Login failed.. Response:\n$response");

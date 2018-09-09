@@ -71,6 +71,13 @@ class _HistoryRouteState extends State<HistoryRoute> {
     return Scaffold(
       appBar: AppBar(
         title: Text("History"),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              print("pressed back button");
+              Navigator.pushReplacementNamed(
+                  context, '/feed_route/$userIdCopy');
+            }),
       ),
       body: (user == null || user.checkins.isEmpty)
           ? Card(

@@ -80,7 +80,7 @@ class _CheckinRoute extends State<CheckinRoute> {
         })) {
       case true:
         Navigator.pop(context);
-        Navigator.pushNamed(context, "/feed_route/$userIdCopy");
+        Navigator.pushReplacementNamed(context, "/feed_route/$userIdCopy");
         break;
 
       case false:
@@ -119,6 +119,10 @@ class _CheckinRoute extends State<CheckinRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(icon:Icon(Icons.arrow_back_ios),onPressed:(){
+          print("pressed back button");
+          Navigator.pushReplacementNamed(context, '/feed_route/$userIdCopy');
+        }),
         title: TextField(
           autofocus: false,
           controller: _searchStringController,

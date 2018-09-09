@@ -39,7 +39,8 @@ class _SettingsRoute extends State<SettingsRoute> {
               child: Text("Log out"),
               onPressed: () {
                 userIdCopy = null;
-                Navigator.popUntil(context, ModalRoute.withName('/'));
+                // Navigator.popUntil(context, ModalRoute.withName('/'));
+                Navigator.pushReplacementNamed(context, "/");
                 // _auth.signOut();
               },
             ),

@@ -53,7 +53,7 @@ class _FeedRoute extends State<FeedRoute> {
   }
 
   void _goCheckinRoute() {
-    Navigator.pushNamed(context, '/checkin_route/$userIdCopy');
+    Navigator.pushReplacementNamed(context, '/checkin_route/$userIdCopy');
   }
 
   @override
