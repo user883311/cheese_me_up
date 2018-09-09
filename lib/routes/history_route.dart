@@ -1,3 +1,4 @@
+import 'package:cheese_me_up/elements/cards/history_card.dart';
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -11,10 +12,7 @@ class HistoryRoute extends StatefulWidget {
   final String userId;
   final String drawerTitle = "History";
 
-  HistoryRoute({
-    Key key,
-    this.userId,
-  });
+  HistoryRoute({Key key, this.userId});
 
   @override
   _HistoryRouteState createState() {
@@ -40,37 +38,12 @@ class _HistoryRouteState extends State<HistoryRoute> {
     });
   }
 
-  Map<String, dynamic> relevantTimeSince(DateTime from) {
-    return relevantTime(DateTime.now().difference(from));
-  }
-
-  Map<String, dynamic> relevantTime(Duration duration) {
-    int seconds = duration.inSeconds;
-    int durationInt;
-    String unit;
-
-    if (seconds < 60) {
-      durationInt = duration.inSeconds;
-      unit = "seconds";
-    } else if (seconds < 60 * 60) {
-      durationInt = duration.inMinutes;
-      unit = "minutes";
-    } else if (seconds < 60 * 60 * 24) {
-      durationInt = duration.inHours;
-      unit = "hours";
-    } else {
-      durationInt = duration.inDays;
-      unit = "days";
-    }
-
-    return {"durationInt": durationInt, "unit": unit};
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("History"),
+        
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
@@ -92,30 +65,7 @@ class _HistoryRouteState extends State<HistoryRoute> {
               itemBuilder: (context, index) {
                 return Container(
                   padding: EdgeInsets.all(5.0),
-                  child: Card(
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${relevantTimeSince(checkinsCopy[index].time)["durationInt"]} ${relevantTimeSince(checkinsCopy[index].time)["unit"]} ago",
-                            textScaleFactor: 1.2,
-                          ),
-                          Text("\n${checkinsCopy[index].cheese.name}"),
-                          Row(children: [
-                            IconButton(
-                              iconSize: 3.0,
-                              icon: new Image.asset(
-                                  'assets/media/icons/trophy.png'),
-                              onPressed: () {},
-                            ),
-                            Text("+ ${checkinsCopy[index].points} points"),
-                          ]),
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: HistoryCard(checkin: checkinsCopy[index]),
                 );
               },
             ),
