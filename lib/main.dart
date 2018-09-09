@@ -4,9 +4,9 @@ import 'package:cheese_me_up/routes/history_route.dart';
 import 'package:cheese_me_up/routes/login_route.dart';
 import 'package:cheese_me_up/routes/settings_route.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
-  // print("runApp...");
   runApp(MyApp());
 }
 
@@ -15,21 +15,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      locale: Locale("en"),
       debugShowCheckedModeBanner: false,
       title: 'Cheese Me Up',
       theme: new ThemeData(
-        buttonColor: Colors.blue[100],
+        buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
         buttonTheme: ButtonThemeData(
+            height: 50.0,
+            minWidth: 200.0,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)))),
+                borderRadius: BorderRadius.all(Radius.circular(20.0)))),
         cardColor: Colors.orange[50],
         dividerColor: Colors.black,
         primarySwatch: Colors.brown,
         scaffoldBackgroundColor: Colors.orange[100],
         inputDecorationTheme: InputDecorationTheme(
-          border: UnderlineInputBorder(),
+          focusedBorder: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: Color.fromRGBO(255, 241, 0, 0.6), width: 2.0),
+          ),
+          hintStyle: TextStyle(color: Colors.black54),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.black54),
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          ),
+          filled: true,
+          fillColor: Colors.white30,
         ),
-        bottomAppBarColor: Colors.blue,
       ),
       initialRoute: "/",
       routes: <String, WidgetBuilder>{
@@ -41,7 +53,6 @@ class MyApp extends StatelessWidget {
       },
       onGenerateRoute: (routeSettings) {
         var path = routeSettings.name.split('/');
-        // print("path is: $path");
 
         switch (path[1]) {
           case "feed_route":
@@ -53,6 +64,7 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
             );
             break;
+
           case "checkin_route":
             final foo = path.length > 1 ? path[2] : null;
             return new MaterialPageRoute(
@@ -61,6 +73,7 @@ class MyApp extends StatelessWidget {
                   ),
               settings: routeSettings,
             );
+
           case "settings_route":
             final foo = path.length > 1 ? path[2] : null;
             return new MaterialPageRoute(
@@ -69,6 +82,7 @@ class MyApp extends StatelessWidget {
                   ),
               settings: routeSettings,
             );
+
           case "history_route":
             final foo = path.length > 1 ? path[2] : null;
             return new MaterialPageRoute(
@@ -77,6 +91,7 @@ class MyApp extends StatelessWidget {
                   ),
               settings: routeSettings,
             );
+
           default:
         }
         // fallback route here

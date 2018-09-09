@@ -11,7 +11,6 @@ class SettingsRoute extends StatefulWidget {
 
   @override
   _SettingsRoute createState() {
-    // print("userIdCopy $userIdCopy");
     userIdCopy = userId;
     return _SettingsRoute();
   }
@@ -41,6 +40,7 @@ class _SettingsRoute extends State<SettingsRoute> {
               onPressed: () {
                 userIdCopy = null;
                 Navigator.popUntil(context, ModalRoute.withName('/'));
+                // _auth.signOut();
               },
             ),
           ],

@@ -1,11 +1,11 @@
 # CheesopediA
 ## Cheese lovers' companion
-Start curating your cheese right on your phone. Keep track of your favorite cheeses and never forget the ones you fell in love with. Download Cheespedia now on your iOS or Android devices and easily add any cheese you like.
+Start curating your cheese right on your phone. Keep track of your favorite cheeses and never forget the ones you fell in love with. Download Cheespedia now on your iOS or Android devices, and easily add any cheese you like.
 
-Born as a Flutter playground. I learnt about Object Oriented Programming (OOP), the Flutter Widget tree, serialization, authentification methods, and material design. 
+This app was born as a Flutter playground. I learnt about classes and Object Oriented Programming (OOP), the Flutter Widget tree, stateless and stateful widgets, data serialization, user authentification methods, and material design. 
 
 ## User stories
-I can: 
+The user can: 
 - login into my user account
 - get information about an exensive list of world cheeses
 - sort cheeses by relevant tags: type of milk flavor, texture, country, etc.

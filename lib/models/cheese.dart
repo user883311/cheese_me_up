@@ -47,7 +47,7 @@ class Cheese {
       "region": region,
       "country": country,
       "image": image,
-      fullSearch: fullSearch,
+      "fullSearch": fullSearch,
     };
   }
 }

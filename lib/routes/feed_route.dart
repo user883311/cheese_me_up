@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cheese_me_up/elements/cards/all_time_card.dart';
 import 'package:cheese_me_up/elements/cards/remember_card.dart';
 import 'package:cheese_me_up/elements/cards/this_period_card.dart';
@@ -24,19 +26,30 @@ class FeedRoute extends StatefulWidget {
 class _FeedRoute extends State<FeedRoute> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference _userRef;
+  StreamSubscription streamSubscription;
 
   @override
   void initState() {
     super.initState();
+    // user=null;
     _userRef = database.reference().child("users/$userIdCopy");
-    _userRef.onValue.listen((Event event) {
+
+    streamSubscription = _userRef.onValue.listen((Event event) {
       setState(() {
         user = new User.fromSnapshot(event.snapshot);
       });
-    }).onError((error) {
-      print(error);
-      Navigator.popUntil(context, ModalRoute.withName('/'));
     });
+    // .onError((error) {
+    //   print(error);
+    //   Navigator.popUntil(context, ModalRoute.withName('/'));
+    // });
+  }
+
+  @override
+  void dispose() {
+    user=null;
+    streamSubscription.cancel();
+    super.dispose();
   }
 
   void _goCheckinRoute() {

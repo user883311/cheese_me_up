@@ -35,7 +35,7 @@ class AllTimeCardState extends State<AllTimeCard> {
               "${sentence.greetings}\n",
               textScaleFactor: 1.2,
             ),
-            Text("${sentence.recapTotalPointsToDate}."),
+            Text("${sentence.recapTotalPointsToDate}"),
             (sentence.uniqueCheesesListSentence == null)
                 ? Text("")
                 : Text("\n${sentence.uniqueCheesesListSentence}."),

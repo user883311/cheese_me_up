@@ -22,7 +22,7 @@ dependencies:
   firebase_database: ^1.0.2
   google_sign_in: ^3.0.5
   flutter_launcher_icons: ^0.6.1
-  flutter_facebook_login: ^1.1.1
+  intl: ^0.15.7
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +87,9 @@ flutter:
    - assets/media/icons/settings.png
    - assets/media/icons/facebook.png
    - assets/media/icons/google.png
+   # wallpapers
+   - assets/media/img/wallpapers/wp_cheese_001.jpg
+   
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

@@ -30,21 +30,25 @@ class _CheckinRoute extends State<CheckinRoute> {
   Query _cheesesRef;
   DatabaseReference _userRef;
   TextEditingController _searchStringController;
+  StreamSubscription streamSubscription;
 
   @override
   void initState() {
     super.initState();
-    // TODO: query for searchString
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
-    // _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
 
     _userRef = database.reference().child("users/$userIdCopy");
-    _userRef.onValue.listen((Event event) {
-      // setState(() {
+    streamSubscription = _userRef.onValue.listen((Event event) {
       user = new User.fromSnapshot(event.snapshot);
-      // });
     });
+  }
+
+  @override
+  void dispose() {
+    // user=null;
+    streamSubscription.cancel();
+    super.dispose();
   }
 
   void _onEntryAdded(Event event) {
@@ -76,7 +80,7 @@ class _CheckinRoute extends State<CheckinRoute> {
         })) {
       case true:
         Navigator.pop(context);
-        Navigator.pushReplacementNamed(context, "/feed_route/$userIdCopy");
+        Navigator.pushNamed(context, "/feed_route/$userIdCopy");
         break;
 
       case false:

@@ -21,7 +21,6 @@ final Map<String, dynamic> labels = {
     try {
       user = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      // print("user: $user");
       userIdCopy = user.uid;
       return user;
     } catch (e) {
@@ -68,13 +67,14 @@ Future<Null> addNewUserToDatabase(User user) async {
 final FirebaseAuth _auth = FirebaseAuth.instance;
 String userIdCopy;
 bool signInOrCreateAccountMode = true;
-final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
 class LoginRoute extends StatefulWidget {
   LoginRoute();
 
   @override
-  LoginRouteState createState() => new LoginRouteState();
+  LoginRouteState createState() {
+    return new LoginRouteState();
+  }
 }
 
 class LoginRouteState extends State<LoginRoute> {
@@ -83,6 +83,8 @@ class LoginRouteState extends State<LoginRoute> {
   TextEditingController passwordController2 = new TextEditingController();
 
   Future _testSignInWithGoogle() async {
+    final GoogleSignIn _googleSignIn = new GoogleSignIn();
+    _googleSignIn.signOut();
     try {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
@@ -108,6 +110,7 @@ class LoginRouteState extends State<LoginRoute> {
 
       print('signInWithGoogle succeeded: $user');
 
+      // TODO addNewUserToDatabase ONLY IF user not in db yet
       await addNewUserToDatabase(User.fromJson({
         "id": user.uid,
         "displayName": user.displayName,
@@ -167,159 +170,180 @@ class LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Image.asset("assets/media/icons/cheese_color.png")),
-        title: Text(
-          "CheesopediA",
-          style: TextStyle(fontFamily: "Calibri"),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding:
-                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    hintText: "Email address",
-                  ),
-                ),
-                TextField(
-                  controller: passwordController1,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                  ),
-                ),
-                signInOrCreateAccountMode
-                    ? Container()
-                    : new TextField(
-                        controller: passwordController2,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          hintText: "Type your password again",
-                        ),
-                      ),
-                // TODO :add a forgot password option to retrieve password
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0),
-                  child: IgnorePointer(
-                    ignoring: _disableButtons,
-                    child: RaisedButton(
-                      child: Text(
-                        signInOrCreateAccountMode
-                            ? labels["sign_in_button_title"]
-                            : labels["create_account_button_title"],
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          _disableButtons = true;
-                        });
-
-                        // TODO: create a mask screen to prevent user input
-                        // while waiting for logging response
-                        var functionToUse = signInOrCreateAccountMode
-                            ? labels["sign_in_function"]
-                            : labels["create_account_function"];
-
-                        if (!signInOrCreateAccountMode &&
-                            passwordController1.text !=
-                                passwordController2.text) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return new SimpleDialog(
-                                  title: Text(
-                                      'Bummer! Your 2 passwords do not match.'),
-                                  children: <Widget>[
-                                    new SimpleDialogOption(
-                                      onPressed: () {
-                                        Navigator.pop(context, true);
-                                      },
-                                      child: const Text(
-                                        'OK',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              });
-                        } else {
-                          await functionToUse(
-                                  email: emailController.text,
-                                  password: passwordController1.text)
-                              .then((response) {
-                            handleSignInResponse(response);
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15.0),
-                  child: Divider(),
-                ),
-
-                IgnorePointer(
-                  ignoring: _disableButtons,
-                  child: RaisedButton(
-                    // TODO: add disabled property
-                    onPressed: () async {
-                      setState(() {
-                        _disableButtons = true;
-                      });
-
-                      handleSignInResponse(await _testSignInWithGoogle());
-                    },
-                    // child: ImageIcon(new AssetImage("assets/media/icons/google.png")),
-                    child: Text("Google sign-in"),
-                  ),
-                ),
-
-                // RaisedButton(
-                //   // TODO: add Facebook authentification capabilities
-                //   onPressed: _logInWithFacebook,
-                //   child: Text("Facebook sign-in"),
-                // ),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 25.0),
-                  child: FlatButton(
-                    child: Text(
-                      signInOrCreateAccountMode
-                          ? labels["create_account_link"]
-                          : labels["sign_in_link"],
-                      style: TextStyle(color: Colors.blue[700]),
-                    ),
-                    onPressed: signInOrCreateAccountMode
-                        ? () {
-                            setState(() {
-                              signInOrCreateAccountMode = false;
-                            });
-                          }
-                        : () {
-                            setState(() {
-                              signInOrCreateAccountMode = true;
-                            });
-                          },
-                  ),
-                ),
-
-                Center(
-                  child: Text("Crafted in Helvetia."),
-                ),
-              ],
+        resizeToAvoidBottomPadding: false,
+        body: Container(
+          decoration: new BoxDecoration(
+            image: DecorationImage(
+              image:
+                  AssetImage("assets/media/img/wallpapers/wp_cheese_001.jpg"),
+              fit: BoxFit.cover,
             ),
           ),
-        ),
-      ),
-    );
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: ListView(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 30.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Brie.",
+                          style:
+                              TextStyle(fontSize: 40.0, color: Colors.white70),
+                        ),
+                        Text(
+                          "/briː/ French [bʁi]",
+                          style:
+                              TextStyle(fontSize: 25.0, color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            hintText: "Email address",
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        TextField(
+                          controller: passwordController1,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            hintText: "Password",
+                          ),
+                        ),
+                        signInOrCreateAccountMode
+                            ? Container()
+                            : new TextField(
+                                controller: passwordController2,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  hintText: "Type your password again",
+                                ),
+                              ),
+
+                        // TODO :add a forgot password option to retrieve password
+                        Padding(
+                          padding: EdgeInsets.only(top: 15.0),
+                          child: IgnorePointer(
+                            ignoring: _disableButtons,
+                            child: RaisedButton(
+                              child: Text(
+                                signInOrCreateAccountMode
+                                    ? labels["sign_in_button_title"]
+                                    : labels["create_account_button_title"],
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  _disableButtons = true;
+                                });
+
+                                var functionToUse = signInOrCreateAccountMode
+                                    ? labels["sign_in_function"]
+                                    : labels["create_account_function"];
+
+                                if (!signInOrCreateAccountMode &&
+                                    passwordController1.text !=
+                                        passwordController2.text) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return new SimpleDialog(
+                                          title: Text(
+                                              'Bummer! Your 2 passwords do not match.'),
+                                          children: <Widget>[
+                                            new SimpleDialogOption(
+                                              onPressed: () {
+                                                Navigator.pop(context, true);
+                                              },
+                                              child: const Text(
+                                                'OK',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                } else {
+                                  await functionToUse(
+                                          email: emailController.text,
+                                          password: passwordController1.text)
+                                      .then((response) {
+                                    handleSignInResponse(response);
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Divider(color: Colors.black45),
+                  
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    child: IgnorePointer(
+                      ignoring: _disableButtons,
+                      child: RaisedButton(
+                        // TODO: add disabled property
+                        onPressed: () async {
+                          setState(() {
+                            _disableButtons = true;
+                          });
+
+                          handleSignInResponse(await _testSignInWithGoogle());
+                        },
+                        child: Text("Google sign-in"),
+                      ),
+                    ),
+                  ),
+                  
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 25.0),
+                    child: IgnorePointer(
+                      ignoring: _disableButtons,
+                      child: FlatButton(
+                        child: Text(
+                          signInOrCreateAccountMode
+                              ? labels["create_account_link"]
+                              : labels["sign_in_link"],
+                          style: TextStyle(color: Colors.blue[900]),
+                        ),
+                        onPressed: signInOrCreateAccountMode
+                            ? () {
+                                setState(() {
+                                  signInOrCreateAccountMode = false;
+                                });
+                              }
+                            : () {
+                                setState(() {
+                                  signInOrCreateAccountMode = true;
+                                });
+                              },
+                      ),
+                    ),
+                  ),
+
+                  Center(
+                    child: Text("Crafted in Helvetia.",
+                        style: TextStyle(color: Colors.black87)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ));
   }
 }
