@@ -4,7 +4,6 @@ import 'package:cheese_me_up/routes/history_route.dart';
 import 'package:cheese_me_up/routes/login_route.dart';
 import 'package:cheese_me_up/routes/settings_route.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());

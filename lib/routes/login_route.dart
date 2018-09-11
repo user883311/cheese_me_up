@@ -170,180 +170,173 @@ class LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Container(
-          decoration: new BoxDecoration(
-            image: DecorationImage(
-              image:
-                  AssetImage("assets/media/img/wallpapers/wp_cheese_001.jpg"),
-              fit: BoxFit.cover,
-            ),
+      resizeToAvoidBottomPadding: false,
+      body: Container(
+        decoration: new BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/media/img/wallpapers/wp_cheese_001.jpg"),
+            fit: BoxFit.cover,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: ListView(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 30.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Brie.",
-                          style:
-                              TextStyle(fontSize: 40.0, color: Colors.white70),
-                        ),
-                        Text(
-                          "/briː/ French [bʁi]",
-                          style:
-                              TextStyle(fontSize: 25.0, color: Colors.white70),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            hintText: "Email address",
-                          ),
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                        TextField(
-                          controller: passwordController1,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            hintText: "Password",
-                          ),
-                        ),
-                        signInOrCreateAccountMode
-                            ? Container()
-                            : new TextField(
-                                controller: passwordController2,
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                  hintText: "Type your password again",
-                                ),
-                              ),
-
-                        // TODO :add a forgot password option to retrieve password
-                        Padding(
-                          padding: EdgeInsets.only(top: 15.0),
-                          child: IgnorePointer(
-                            ignoring: _disableButtons,
-                            child: RaisedButton(
-                              child: Text(
-                                signInOrCreateAccountMode
-                                    ? labels["sign_in_button_title"]
-                                    : labels["create_account_button_title"],
-                              ),
-                              onPressed: () async {
-                                setState(() {
-                                  _disableButtons = true;
-                                });
-
-                                var functionToUse = signInOrCreateAccountMode
-                                    ? labels["sign_in_function"]
-                                    : labels["create_account_function"];
-
-                                if (!signInOrCreateAccountMode &&
-                                    passwordController1.text !=
-                                        passwordController2.text) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return new SimpleDialog(
-                                          title: Text(
-                                              'Bummer! Your 2 passwords do not match.'),
-                                          children: <Widget>[
-                                            new SimpleDialogOption(
-                                              onPressed: () {
-                                                Navigator.pop(context, true);
-                                              },
-                                              child: const Text(
-                                                'OK',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                } else {
-                                  await functionToUse(
-                                          email: emailController.text,
-                                          password: passwordController1.text)
-                                      .then((response) {
-                                    handleSignInResponse(response);
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Divider(color: Colors.black45),
-                  
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: IgnorePointer(
-                      ignoring: _disableButtons,
-                      child: RaisedButton(
-                        // TODO: add disabled property
-                        onPressed: () async {
-                          setState(() {
-                            _disableButtons = true;
-                          });
-
-                          handleSignInResponse(await _testSignInWithGoogle());
-                        },
-                        child: Text("Google sign-in"),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        child: ListView(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 30.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Brie.",
+                        style: TextStyle(fontSize: 40.0, color: Colors.white70),
                       ),
-                    ),
+                      Text(
+                        "/briː/ French [bʁi]",
+                        style: TextStyle(fontSize: 25.0, color: Colors.white70),
+                      ),
+                    ],
                   ),
-                  
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 25.0),
-                    child: IgnorePointer(
-                      ignoring: _disableButtons,
-                      child: FlatButton(
-                        child: Text(
-                          signInOrCreateAccountMode
-                              ? labels["create_account_link"]
-                              : labels["sign_in_link"],
-                          style: TextStyle(color: Colors.blue[900]),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          hintText: "Email address",
                         ),
-                        onPressed: signInOrCreateAccountMode
-                            ? () {
-                                setState(() {
-                                  signInOrCreateAccountMode = false;
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      TextField(
+                        controller: passwordController1,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                        ),
+                      ),
+                      signInOrCreateAccountMode
+                          ? Container()
+                          : new TextField(
+                              controller: passwordController2,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                hintText: "Type your password again",
+                              ),
+                            ),
+
+                      // TODO :add a forgot password option to retrieve password
+                      Padding(
+                        padding: EdgeInsets.only(top: 15.0),
+                        child: IgnorePointer(
+                          ignoring: _disableButtons,
+                          child: RaisedButton(
+                            child: Text(
+                              signInOrCreateAccountMode
+                                  ? labels["sign_in_button_title"]
+                                  : labels["create_account_button_title"],
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                _disableButtons = true;
+                              });
+
+                              var functionToUse = signInOrCreateAccountMode
+                                  ? labels["sign_in_function"]
+                                  : labels["create_account_function"];
+
+                              if (!signInOrCreateAccountMode &&
+                                  passwordController1.text !=
+                                      passwordController2.text) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return new SimpleDialog(
+                                        title: Text(
+                                            'Bummer! Your 2 passwords do not match.'),
+                                        children: <Widget>[
+                                          new SimpleDialogOption(
+                                            onPressed: () {
+                                              Navigator.pop(context, true);
+                                            },
+                                            child: const Text(
+                                              'OK',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              } else {
+                                await functionToUse(
+                                        email: emailController.text,
+                                        password: passwordController1.text)
+                                    .then((response) {
+                                  handleSignInResponse(response);
                                 });
                               }
-                            : () {
-                                setState(() {
-                                  signInOrCreateAccountMode = true;
-                                });
-                              },
+                            },
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+                ),
+                Divider(color: Colors.black45),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: IgnorePointer(
+                    ignoring: _disableButtons,
+                    child: RaisedButton(
+                      // TODO: add disabled property
+                      onPressed: () async {
+                        setState(() {
+                          _disableButtons = true;
+                        });
+
+                        handleSignInResponse(await _testSignInWithGoogle());
+                      },
+                      child: Text("Google sign-in"),
                     ),
                   ),
-
-                  Center(
-                    child: Text("Crafted in Helvetia.",
-                        style: TextStyle(color: Colors.black87)),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 25.0),
+                  child: IgnorePointer(
+                    ignoring: _disableButtons,
+                    child: FlatButton(
+                      child: Text(
+                        signInOrCreateAccountMode
+                            ? labels["create_account_link"]
+                            : labels["sign_in_link"],
+                        style: TextStyle(color: Colors.blue[900]),
+                      ),
+                      onPressed: signInOrCreateAccountMode
+                          ? () {
+                              setState(() {
+                                signInOrCreateAccountMode = false;
+                              });
+                            }
+                          : () {
+                              setState(() {
+                                signInOrCreateAccountMode = true;
+                              });
+                            },
+                    ),
                   ),
-                ],
-              ),
-            ],
-          ),
-        ));
+                ),
+                Center(
+                  child: Text("Crafted in Helvetia.",
+                      style: TextStyle(color: Colors.black87)),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -31,19 +31,61 @@ class _SettingsRoute extends State<SettingsRoute> {
         title: Text("Settings"),
       ),
       body: Container(
-        padding: EdgeInsets.all(20.0),
+        decoration: new BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/media/img/wallpapers/wp_cows_001.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            RaisedButton(
-              child: Text("Log out"),
-              onPressed: () {
-                userIdCopy = null;
-                // Navigator.popUntil(context, ModalRoute.withName('/'));
-                Navigator.pushReplacementNamed(context, "/");
-                // _auth.signOut();
-              },
+            Spacer(),
+            Flexible(
+              // flex: 4,
+              // fit: FlexFit.loose,
+              child: RaisedButton(
+                child: Text("Log out"),
+                onPressed: () {
+                  userIdCopy = null;
+                  // Navigator.popUntil(context, ModalRoute.withName('/'));
+                  Navigator.pushReplacementNamed(context, "/");
+                  // _auth.signOut();
+                },
+              ),
             ),
+            Expanded(
+                child: Divider(
+              color: Colors.white70,
+            )),
+            Text(
+              "You do not own your data. You can delete it forever from our servers.",
+              style: TextStyle(
+                color: Colors.white70,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            RaisedButton(
+              child: Text("Delete my account forever"),
+              onPressed: () {},
+            ),
+            Spacer(),
+            Text(
+              "Credits: Cassandra, my first beta tester, for her merciless bug reports.",
+              style: TextStyle(
+                color: Colors.white70,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Spacer(),
+            Text(
+              "Heartfelt thanks from the Cheese Head team!",
+              style: TextStyle(
+                color: Colors.white70,
+              ),
+              textAlign: TextAlign.center,
+            )
           ],
         ),
       ),

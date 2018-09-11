@@ -89,6 +89,7 @@ flutter:
    - assets/media/icons/google.png
    # wallpapers
    - assets/media/img/wallpapers/wp_cheese_001.jpg
+   - assets/media/img/wallpapers/wp_cows_001.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see

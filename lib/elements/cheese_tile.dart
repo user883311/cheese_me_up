@@ -11,12 +11,6 @@ Widget cheeseTile(User user, Cheese cheese, [onTap, bool circleAvatar = true]) {
   return Card(
     child: ListTile(
       trailing: new Container(
-        // decoration: BoxDecoration(
-        //   color: Colors.blue,
-        //   borderRadius: BorderRadius.all(
-        //     Radius.circular(50.0),
-        //   ),
-        // ),
         width: 100.0,
         height: 50.0,
         child: new Image.asset(

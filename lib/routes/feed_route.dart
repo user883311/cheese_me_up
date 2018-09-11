@@ -47,7 +47,7 @@ class _FeedRoute extends State<FeedRoute> {
 
   @override
   void dispose() {
-    user=null;
+    user = null;
     streamSubscription.cancel();
     super.dispose();
   }
