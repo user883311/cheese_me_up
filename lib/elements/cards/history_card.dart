@@ -14,6 +14,7 @@ class HistoryCard extends StatelessWidget {
   });
 
   @override
+  // TODO: add 2 separate tabs: CHECKINS and RATINGS
   Widget build(BuildContext context) {
     return Card(
       child: Padding(

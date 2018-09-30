@@ -1,37 +1,35 @@
 import 'package:meta/meta.dart';
 
-class CheckIn {
+class Rating {
   final DateTime time;
   final String cheeseId;
-  final int points;
+  final int rating;
 
-  CheckIn({
+  Rating({
     @required this.time,
     @required this.cheeseId,
-    this.points,
+    this.rating,
   });
 
   dynamic myEncode(DateTime item) {
     return item.toIso8601String();
   }
 
-  CheckIn.fromCheeseDateTime(String cheeseId, DateTime time, [int points])
+  Rating.fromCheeseDateTime(String cheeseId, DateTime time, [int rating])
       : time = time,
         cheeseId = cheeseId,
-        points = points;
+        rating = rating;
 
-  // from database
-  CheckIn.fromJson(Map<dynamic, dynamic> jsonMap)
+  Rating.fromJson(Map<dynamic, dynamic> jsonMap)
       : time = DateTime.fromMillisecondsSinceEpoch(jsonMap["time"] as int),
         cheeseId = jsonMap["cheeseId"],
-        points = jsonMap["points"];
+        rating = jsonMap["rating"];
 
-  // to database
-  toJson([CheckIn checkin]) {
+  toJson([Rating checkin]) {
     return {
       "time": time.millisecondsSinceEpoch,
       "cheeseId": cheeseId,
-      "points": points,
+      "rating": rating,
     };
   }
 }

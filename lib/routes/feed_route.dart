@@ -76,8 +76,6 @@ class _FeedRoute extends State<FeedRoute> {
         title: Text("Home"),
       ),
       body: ListView(
-        // TODO: add cards, take inspiration from Wikipedia app:
-        // All time best, Today's cheese, Country Focus, etc.
         children: user == null
             ? [Text("Loading...")]
             : <Widget>[

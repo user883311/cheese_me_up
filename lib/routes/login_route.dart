@@ -69,10 +69,12 @@ String userIdCopy;
 bool signInOrCreateAccountMode = true;
 
 class LoginRoute extends StatefulWidget {
+
   LoginRoute();
 
   @override
   LoginRouteState createState() {
+    userIdCopy=null;
     return new LoginRouteState();
   }
 }

@@ -39,20 +39,14 @@ class _SettingsRoute extends State<SettingsRoute> {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Spacer(),
             Flexible(
-              // flex: 4,
-              // fit: FlexFit.loose,
               child: RaisedButton(
                 child: Text("Log out"),
                 onPressed: () {
                   userIdCopy = null;
                   Navigator.pushNamedAndRemoveUntil(context, "/", ModalRoute.withName('/'));
-                  
-                  // Navigator.pushReplacementNamed(context, "/");
-                  // _auth.signOut();
                 },
               ),
             ),
