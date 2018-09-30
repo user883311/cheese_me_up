@@ -58,19 +58,16 @@ class User {
     return sumPoints;
   }
 
-  Set<Cheese> get uniqueCheeses {
+  Set<String> get uniqueCheeseIds {
     var checkinsSorted = checkins.values.toList();
     checkinsSorted.sort((a, b) => a.time.compareTo(b.time));
-    var uniqueCheeses = new Set<Cheese>();
     var uniqueCheesesId = new Set<String>();
     for (CheckIn checkin in checkinsSorted) {
-      if (uniqueCheesesId.contains(checkin.cheese.id) == false) {
-        uniqueCheeses.add(checkin.cheese);
+      if (uniqueCheesesId.contains(checkin.cheeseId) == false) {
+        uniqueCheesesId.add(checkin.cheeseId);
       }
-      uniqueCheesesId.add(checkin.cheese.id);
     }
-    
-    return uniqueCheeses;
+    return uniqueCheesesId;
   }
 
   CheckIn get randomCheckin {

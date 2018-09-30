@@ -8,26 +8,30 @@ import 'package:flutter/widgets.dart';
 class ThisPeriodCard extends StatefulWidget {
   final String periodName;
   final User user;
+  final Map<String, Cheese> cheeses;
 
   const ThisPeriodCard({
     Key key,
     this.periodName,
     this.user,
+    this.cheeses,
   })  : assert(periodName != null),
         assert(user != null);
 
   @override
   ThisPeriodCardState createState() =>
-      new ThisPeriodCardState(user: user, periodName: periodName);
+      new ThisPeriodCardState(user: user, periodName: periodName, cheeses:cheeses);
 }
 
 class ThisPeriodCardState extends State<ThisPeriodCard> {
-  final String periodName;
-  final User user;
+   String periodName;
+   User user;
+   Map<String, Cheese> cheeses;
 
   ThisPeriodCardState({
     this.periodName,
     this.user,
+    this.cheeses,
   })  : assert(periodName != null),
         assert(user != null);
 
@@ -59,10 +63,10 @@ class ThisPeriodCardState extends State<ThisPeriodCard> {
     }
 
     cheeseList = user.getCheckinsFromPeriod(from, to).map((CheckIn checkin) {
-      return checkin.cheese;
+      return cheeses[checkin.cheeseId];//checkin.cheese
     });
 
-    sentence = new Sentence(user: user);
+    sentence = new Sentence(user: user, cheeses: cheeses);
   }
 
   @override

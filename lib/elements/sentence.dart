@@ -6,15 +6,17 @@ import 'package:intl/intl.dart';
 
 class Sentence {
   final User user;
+  final Map<String, Cheese> cheeses;
 
   Sentence({
     @required this.user,
+    @required this.cheeses,
   });
 
   String get greetings => "Howdy ${user.displayName ?? ""}!";
 
   String get recapTotalPointsToDate {
-    List< CheckIn> checkins = user.checkins.values.toList();
+    List<CheckIn> checkins = user.checkins.values.toList();
     checkins.sort((a, b) => a.time.compareTo(b.time));
     String response = "";
     if (checkins.length == 0) {
@@ -23,32 +25,32 @@ class Sentence {
     } else if (checkins.length > 1) {
       response += "To this day, you have scored ${user.sumPoints} points! ";
       response +=
-          "\nYour very first cheese (as far as we remember) was ${checkins.first.cheese.name}. ";
-      response +=
-          "The latest one was... ${checkins.last.cheese.name}. ";
+          "\nYour very first cheese (as far as we remember) was ${cheeses[checkins.first.cheeseId].name}. "; // checkins.first.cheese.name
+      response += "The latest one was... ${cheeses[checkins.last.cheeseId].name}. ";
     } else if (user.checkins.length == 1) {
       response += "To this day, you have scored ${user.sumPoints} points!";
       response +=
-          "\nYou've already checked in your very first cheese: a ${checkins.first.cheese.name}. ";
+          "\nYou've already checked in your very first cheese: a ${cheeses[checkins.first.cheeseId].name}. ";
       response += "Congratulations!";
     }
     return response;
   }
 
-  String get uniqueCheesesListSentence {
-    if (user.uniqueCheeses.isEmpty) {
+  String get uniqueCheeseIdsListSentence {
+    if (user.uniqueCheeseIds.isEmpty) {
       return null;
-    } else if (user.uniqueCheeses.length == 1) {
+    } else if (user.uniqueCheeseIds.length == 1) {
       String response =
-          "You have only tried ${user.uniqueCheeses.length} cheese: a ${user.uniqueCheeses.first.name}";
+          "You have only tried 1 cheese: a ${cheeses[user.uniqueCheeseIds.first].name}";
       return response;
     } else {
       String response =
-          "You have tried ${user.uniqueCheeses.length} different cheeses: ";
+          "You have tried ${user.uniqueCheeseIds.length} different cheeses: ";
       // TODO: sort Cheeses by date added
-      for (var i = 0; i < user.uniqueCheeses.length; i++) {
-        var cheese = user.uniqueCheeses.toList()[i];
-        if (i == user.uniqueCheeses.length - 1) {
+      // List cheesesList = user.uniqueCheeseIds.map((String id){return });
+      for (var i = 0; i < user.uniqueCheeseIds.length; i++) {
+        Cheese cheese = cheeses[user.uniqueCheeseIds.toList()[i]]; // user.uniqueCheeseIds.toList()[i]
+        if (i == user.uniqueCheeseIds.length - 1) {
           response += " and ";
         } else if (i != 0) {
           response += ", ";
@@ -61,7 +63,7 @@ class Sentence {
   }
 
   String rememberCheckin(CheckIn checkin) {
-    return "On ${DateFormat("EEEEE, MMM d, ''yy").format(checkin.time)}, you had some ${checkin.cheese.name}";
+    return "On ${DateFormat("EEEEE, MMM d, ''yy").format(checkin.time)}, you had some ${cheeses[checkin.cheeseId].name}";//checkin.cheese.name
   }
 
   String listOfCheeseNames(Iterable<Cheese> iterable) {

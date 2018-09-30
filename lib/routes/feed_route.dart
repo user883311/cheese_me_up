@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cheese_me_up/elements/cards/all_time_card.dart';
 import 'package:cheese_me_up/elements/cards/remember_card.dart';
 import 'package:cheese_me_up/elements/cards/this_period_card.dart';
+import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +26,17 @@ class FeedRoute extends StatefulWidget {
 
 class _FeedRoute extends State<FeedRoute> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
+  Query _cheesesRef;
+  Map<String, Cheese> cheeses = new Map();
   DatabaseReference _userRef;
   StreamSubscription streamSubscription;
 
   @override
   void initState() {
     super.initState();
-    // user=null;
+    _cheesesRef = database.reference().child("cheeses").orderByChild("name");
+    _cheesesRef.onChildAdded.listen(_onEntryAdded);
+
     _userRef = database.reference().child("users/$userIdCopy");
 
     streamSubscription = _userRef.onValue.listen((Event event) {
@@ -43,6 +48,13 @@ class _FeedRoute extends State<FeedRoute> {
     //   print(error);
     //   Navigator.popUntil(context, ModalRoute.withName('/'));
     // });
+  }
+
+  void _onEntryAdded(Event event) {
+    setState(() {
+      var cheese = Cheese.fromSnapshot(event.snapshot);
+      cheeses[cheese.id.toString()] = cheese;
+    });
   }
 
   @override
@@ -73,18 +85,27 @@ class _FeedRoute extends State<FeedRoute> {
                     ? null
                     : new AllTimeCard(
                         user: user,
+                        cheeses: cheeses,
                       ),
-                // new AllTimeCard(),
                 (user.checkins.isEmpty)
                     ? new Icon(Icons.arrow_downward)
                     : new RememberCard(
                         user: user,
+                        cheeses: cheeses,
                       ),
                 (user.checkins.isEmpty)
                     ? null
                     : new ThisPeriodCard(
                         user: user,
                         periodName: "week",
+                        cheeses: cheeses,
+                      ),
+                (user.checkins.isEmpty)
+                    ? null
+                    : new ThisPeriodCard(
+                        user: user,
+                        periodName: "month",
+                        cheeses: cheeses,
                       ),
               ],
       ),

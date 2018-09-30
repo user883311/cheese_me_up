@@ -43,7 +43,7 @@ class CheeseRouteState extends State<CheeseRoute> {
         .equalTo("$cheeseId");
     _cheeseRef.onChildAdded.listen(_onEntryAdded);
 
-    if (userIdCopy != null && userIdCopy != "") {
+    if (userId != null && userId != "") {
       userIdCopy = userId;
       _userRef = database.reference().child("users/$userIdCopy");
       streamSubscription = _userRef.onValue.listen((Event event) {
@@ -81,7 +81,7 @@ class CheeseRouteState extends State<CheeseRoute> {
                     // send user back to login page
                     if (user != null) {
                       CheckIn checkin = CheckIn.fromCheeseDateTime(
-                        cheese,
+                        cheese.id,
                         DateTime.now(),
                         pointsForNewCheese(cheese, user),
                       );

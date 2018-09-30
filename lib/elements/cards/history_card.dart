@@ -1,12 +1,17 @@
 import 'package:cheese_me_up/elements/time.dart';
 import 'package:cheese_me_up/models/checkin.dart';
+import 'package:cheese_me_up/models/cheese.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class HistoryCard extends StatelessWidget {
   final CheckIn checkin;
+  final Cheese cheese;
 
-  HistoryCard({this.checkin});
+  HistoryCard({
+    this.checkin,
+    @required this.cheese,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class HistoryCard extends StatelessWidget {
               "${relevantTimeSince(checkin.time)["durationInt"]} ${relevantTimeSince(checkin.time)["unit"]} ago",
               textScaleFactor: 1.2,
             ),
-            Text("\n${checkin.cheese.name}"),
+            Text("\n${cheese.name}"), //checkin.cheese.name
             Row(children: [
               IconButton(
                 iconSize: 3.0,

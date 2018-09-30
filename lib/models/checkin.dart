@@ -3,12 +3,12 @@ import 'package:meta/meta.dart';
 
 class CheckIn {
   final DateTime time;
-  final Cheese cheese;
+  final String cheeseId;
   final int points;
 
   CheckIn({
     @required this.time,
-    @required this.cheese,
+    @required this.cheeseId,
     this.points,
   });
 
@@ -16,20 +16,22 @@ class CheckIn {
     return item.toIso8601String();
   }
 
-  CheckIn.fromCheeseDateTime(Cheese cheese, DateTime time, [int points])
+  CheckIn.fromCheeseDateTime(String cheeseId, DateTime time, [int points])
       : time = time,
-        cheese = cheese,
+        cheeseId = cheeseId,
         points = points;
 
+  // from database
   CheckIn.fromJson(Map<dynamic, dynamic> jsonMap)
       : time = DateTime.fromMillisecondsSinceEpoch(jsonMap["time"] as int),
-        cheese = Cheese.fromJson(jsonMap["cheese"]),
+        cheeseId = jsonMap["cheeseId"],
         points = jsonMap["points"];
 
+  // to database
   toJson([CheckIn checkin]) {
     return {
       "time": time.millisecondsSinceEpoch,
-      "cheese": cheese.toJson(),
+      "cheeseId": cheeseId,
       "points": points,
     };
   }

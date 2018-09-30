@@ -10,18 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11ba03b6-b2cb-4d1b-bffd-b7032b732c76" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/elements/cards/remember_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/elements/cards/remember_card.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/elements/cheese_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/elements/cheese_tile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/cheese.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/cheese.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/routes/checkin_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes/checkin_route.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/routes/feed_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes/feed_route.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/routes/login_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes/login_route.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/routes/settings_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes/settings_route.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -52,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/lib/routes/login_route.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="234">
-              <caret line="177" column="35" lean-forward="true" selection-start-line="177" selection-start-column="35" selection-end-line="177" selection-end-column="35" />
+              <caret line="177" column="23" lean-forward="true" selection-start-line="177" selection-start-column="23" selection-end-line="177" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -228,7 +217,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="2" y="23" width="1259" height="831" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49688336" weight="0.32880434" />
@@ -250,7 +238,7 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.483977" visible="true" weight="0.1839237" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.483977" weight="0.1839237" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="3" weight="0.23336072" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -494,7 +482,7 @@
     <entry file="file://$PROJECT_DIR$/lib/routes/login_route.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
-          <caret line="177" column="35" lean-forward="true" selection-start-line="177" selection-start-column="35" selection-end-line="177" selection-end-column="35" />
+          <caret line="177" column="23" lean-forward="true" selection-start-line="177" selection-start-column="23" selection-end-line="177" selection-end-column="23" />
         </state>
       </provider>
     </entry>
