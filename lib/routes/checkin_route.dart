@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cheese_me_up/elements/cheese_tile.dart';
+import 'package:cheese_me_up/elements/points_scorer.dart';
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
@@ -15,17 +16,17 @@ class CheckinRoute extends StatefulWidget {
   final String userId;
 
   @override
-  _CheckinRoute createState() {
+  CheckinRouteState createState() {
     userIdCopy = userId;
-    return _CheckinRoute();
+    return CheckinRouteState();
   }
 }
 
-class _CheckinRoute extends State<CheckinRoute> {
+class CheckinRouteState extends State<CheckinRoute> {
   List<Cheese> cheeses = List();
   List<Cheese> _cheesesShortlist = List();
-
   Cheese cheese;
+
   final FirebaseDatabase database = FirebaseDatabase.instance;
   Query _cheesesRef;
   DatabaseReference _userRef;
@@ -38,17 +39,21 @@ class _CheckinRoute extends State<CheckinRoute> {
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
 
-    _userRef = database.reference().child("users/$userIdCopy");
-    streamSubscription = _userRef.onValue.listen((Event event) {
-      user = new User.fromSnapshot(event.snapshot);
-    });
+    if (userIdCopy != null && userIdCopy != "") {
+      _userRef = database.reference().child("users/$userIdCopy");
+      streamSubscription = _userRef.onValue.listen((Event event) {
+        user = new User.fromSnapshot(event.snapshot);
+      });
+    }
   }
 
   @override
   void dispose() {
     // user=null;
-    streamSubscription.cancel();
-    super.dispose();
+    if (streamSubscription != null) {
+      streamSubscription.cancel();
+      super.dispose();
+    }
   }
 
   void _onEntryAdded(Event event) {
@@ -58,7 +63,14 @@ class _CheckinRoute extends State<CheckinRoute> {
     });
   }
 
-  Future _checkCheeseInIntent(CheckIn checkin) async {
+  /// This [Future] displays a dialog box letting [user] deciding to checkin
+  /// a [cheese]. If so, the [checkin] will be saved to the server database.
+  Future _checkCheckinIntent(Cheese cheese, User user) async {
+    CheckIn checkin = CheckIn.fromCheeseDateTime(
+      cheese,
+      DateTime.now(),
+      pointsForNewCheese(cheese, user),
+    );
     switch (await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -115,14 +127,33 @@ class _CheckinRoute extends State<CheckinRoute> {
     });
   }
 
+  void tappedCheeseTile(Cheese cheese, [User user]) {
+    // open the Cheese bottom sheet
+    Navigator.pushNamed(context, "/cheese_route/${cheese.id}/$userIdCopy");
+
+    // showModalBottomSheet(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return CheeseRoute(cheeseId: cheese.name);
+    //     });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon:Icon(Icons.arrow_back_ios),onPressed:(){
-          print("pressed back button");
-          Navigator.pushReplacementNamed(context, '/feed_route/$userIdCopy');
-        }),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              if (userIdCopy != null && userIdCopy != "") {
+                print("pressed back button");
+                Navigator.pushReplacementNamed(
+                    context, '/feed_route/$userIdCopy');
+              } else {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/", ModalRoute.withName('/'));
+              }
+            }),
         title: TextField(
           autofocus: false,
           controller: _searchStringController,
@@ -140,7 +171,7 @@ class _CheckinRoute extends State<CheckinRoute> {
               itemCount: _cheesesShortlist.length,
               itemBuilder: (context, index) {
                 return cheeseTile(
-                    user, _cheesesShortlist[index], _checkCheeseInIntent);
+                    _cheesesShortlist[index], user, tappedCheeseTile, false);
               },
             ),
           ),

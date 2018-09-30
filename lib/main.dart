@@ -1,4 +1,5 @@
 import 'package:cheese_me_up/routes/checkin_route.dart';
+import 'package:cheese_me_up/routes/cheese_route.dart';
 import 'package:cheese_me_up/routes/feed_route.dart';
 import 'package:cheese_me_up/routes/history_route.dart';
 import 'package:cheese_me_up/routes/login_route.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      showPerformanceOverlay: false,
       locale: Locale("en"),
       debugShowCheckedModeBanner: false,
       title: 'Cheese Me Up',
@@ -49,6 +51,9 @@ class MyApp extends StatelessWidget {
         '/checkin_route': (BuildContext context) => new CheckinRoute(),
         '/settings_route': (BuildContext context) => new SettingsRoute(),
         '/history_route': (BuildContext context) => new HistoryRoute(),
+        '/cheese_route': (BuildContext context) => new CheeseRoute(
+              cheeseId: null,
+            ),
       },
       onGenerateRoute: (routeSettings) {
         var path = routeSettings.name.split('/');
@@ -87,6 +92,17 @@ class MyApp extends StatelessWidget {
             return new MaterialPageRoute(
               builder: (context) => new HistoryRoute(
                     userId: foo,
+                  ),
+              settings: routeSettings,
+            );
+
+          case "cheese_route":
+            final foo = path.length > 1 ? path[2] : null;
+            final user = path.length > 2 ? path[3] : null;
+            return new MaterialPageRoute(
+              builder: (context) => new CheeseRoute(
+                    cheeseId: foo,
+                    userId:user,
                   ),
               settings: routeSettings,
             );

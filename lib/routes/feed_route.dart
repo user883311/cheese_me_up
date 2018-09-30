@@ -124,6 +124,10 @@ class _FeedRoute extends State<FeedRoute> {
               ),
             ),
             IconButton(
+              icon: Image.asset("assets/media/icons/map.png"),
+              onPressed: () {},
+            ),
+            IconButton(
               icon: Image.asset("assets/media/icons/settings.png"),
               onPressed: () {
                 Navigator.pushNamed(context, '/settings_route/$userIdCopy');

@@ -84,7 +84,7 @@ class User {
 
   List<CheckIn> getCheckinsFromPeriod(DateTime from, DateTime to) {
     timeFilter(checkin) =>
-        checkin.time.isAfter(from) || checkin.time.isBefore(to);
+        checkin.time.isAfter(from) && checkin.time.isBefore(to);
     List<CheckIn> result = checkins.values.where(timeFilter).toList();
     result.sort((a, b) => a.time.compareTo(b.time));
     return result;

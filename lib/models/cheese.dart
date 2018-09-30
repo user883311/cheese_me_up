@@ -7,6 +7,19 @@ class Cheese {
   String region;
   String country;
   String image;
+  // TODO: add: 
+  // region coordinates
+  // description
+  // color
+  // rind
+  // flavor
+  // smell / aroma
+  // texture / hardness ??
+  // type of milk: goat, cow, buffaloe
+  // bool vegetarian: true, false, null (unknown)
+  // AOC, labels
+  // sustainability at producer's level
+  
   bool show;
   String fullSearch;
 

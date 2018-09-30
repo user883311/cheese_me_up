@@ -1,13 +1,11 @@
-import 'package:cheese_me_up/elements/points_scorer.dart';
-import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 
 import 'package:flutter/material.dart';
 
 /// Creates a tile representing a given [Cheese] object. Upon tapping
-/// on the tile, a callback function [onTap] is called, for a given [user].
-Widget cheeseTile(User user, Cheese cheese, [onTap, bool circleAvatar = true]) {
+/// on the tile, a callback function [onTapped] is called, for a given [user].
+Widget cheeseTile(Cheese cheese, [User user, onTapped, bool circleAvatar = true]) {
   return Card(
     child: ListTile(
       trailing: new Container(
@@ -29,14 +27,8 @@ Widget cheeseTile(User user, Cheese cheese, [onTap, bool circleAvatar = true]) {
       subtitle: new Text(cheese.region + ", " + cheese.country),
       onTap: () async {
         print("Tapped dat ${cheese.name}!");
-        if (onTap != null) {
-          onTap(
-            CheckIn.fromCheeseDateTime(
-              cheese,
-              DateTime.now(),
-              pointsForNewCheese(cheese, user),
-            ),
-          );
+        if (onTapped != null) {
+          onTapped(cheese, user);
         }
       },
     ),

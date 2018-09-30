@@ -49,8 +49,9 @@ class _SettingsRoute extends State<SettingsRoute> {
                 child: Text("Log out"),
                 onPressed: () {
                   userIdCopy = null;
-                  // Navigator.popUntil(context, ModalRoute.withName('/'));
-                  Navigator.pushReplacementNamed(context, "/");
+                  Navigator.pushNamedAndRemoveUntil(context, "/", ModalRoute.withName('/'));
+                  
+                  // Navigator.pushReplacementNamed(context, "/");
                   // _auth.signOut();
                 },
               ),
@@ -60,7 +61,7 @@ class _SettingsRoute extends State<SettingsRoute> {
               color: Colors.white70,
             )),
             Text(
-              "You do not own your data. You can delete it forever from our servers.",
+              "We do not own your data. You can delete it forever from our servers, anytime you want to.",
               style: TextStyle(
                 color: Colors.white70,
               ),
@@ -80,7 +81,7 @@ class _SettingsRoute extends State<SettingsRoute> {
             ),
             Spacer(),
             Text(
-              "Heartfelt thanks from the Cheese Head team!",
+              "Heartfelt thanks from the Cheese Heads team!",
               style: TextStyle(
                 color: Colors.white70,
               ),

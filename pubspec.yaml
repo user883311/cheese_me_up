@@ -87,6 +87,7 @@ flutter:
    - assets/media/icons/settings.png
    - assets/media/icons/facebook.png
    - assets/media/icons/google.png
+   - assets/media/icons/map.png
    # wallpapers
    - assets/media/img/wallpapers/wp_cheese_001.jpg
    - assets/media/img/wallpapers/wp_cows_001.png

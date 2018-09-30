@@ -38,7 +38,7 @@ class RememberCardState extends State<RememberCard> {
               textScaleFactor: 1.2,
             ),
             Text("${sentence.rememberCheckin(randomCheckin)}."),
-            cheeseTile(user, randomCheckin.cheese, () {}, false),
+            cheeseTile(randomCheckin.cheese, user, () {}, false),
           ],
         ),
       ),

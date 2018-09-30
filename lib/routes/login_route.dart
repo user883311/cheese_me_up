@@ -78,8 +78,10 @@ class LoginRoute extends StatefulWidget {
 }
 
 class LoginRouteState extends State<LoginRoute> {
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController1 = new TextEditingController();
+  TextEditingController emailController =
+      new TextEditingController(text: "user883311@gmail.com");
+  TextEditingController passwordController1 =
+      new TextEditingController(text: "password");
   TextEditingController passwordController2 = new TextEditingController();
 
   Future _testSignInWithGoogle() async {
@@ -170,6 +172,14 @@ class LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        label:  Text("show me\nthe cheese"),
+        icon: Icon(Icons.search),
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, '/checkin_route/');
+
+        },
+      ),
       resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: new BoxDecoration(
