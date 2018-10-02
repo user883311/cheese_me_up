@@ -19,14 +19,14 @@ class ThisPeriodCard extends StatefulWidget {
         assert(user != null);
 
   @override
-  ThisPeriodCardState createState() =>
-      new ThisPeriodCardState(user: user, periodName: periodName, cheeses:cheeses);
+  ThisPeriodCardState createState() => new ThisPeriodCardState(
+      user: user, periodName: periodName, cheeses: cheeses);
 }
 
 class ThisPeriodCardState extends State<ThisPeriodCard> {
-   String periodName;
-   User user;
-   Map<String, Cheese> cheeses;
+  String periodName;
+  User user;
+  Map<String, Cheese> cheeses;
 
   ThisPeriodCardState({
     this.periodName,
@@ -51,19 +51,19 @@ class ThisPeriodCardState extends State<ThisPeriodCard> {
 
       case "month":
         to = DateTime.now();
-        from = DateTime(to.year, to.month, 1);
+        from = to.subtract(Duration(days: 30));
         break;
 
       case "year":
         to = DateTime.now();
-        from = DateTime(to.year, 1, 1);
+        from = to.subtract(Duration(days: 365));
         break;
 
       default:
     }
 
     cheeseList = user.getCheckinsFromPeriod(from, to).map((CheckIn checkin) {
-      return cheeses[checkin.cheeseId];//checkin.cheese
+      return cheeses[checkin.cheeseId]; //checkin.cheese
     });
 
     sentence = new Sentence(user: user, cheeses: cheeses);
@@ -79,13 +79,13 @@ class ThisPeriodCardState extends State<ThisPeriodCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "This $periodName\n",
+              "This past $periodName\n",
               textScaleFactor: 1.2,
             ),
             (from == null && to == null)
                 ? null
                 : Text(
-                    "${cheeseList.length} cheeses! ${sentence.listOfCheeseNames(cheeseList)}."),
+                    "${(cheeseList.length > 8) ? "Oh my God! You've already had " : "You've had "}${cheeseList.length} cheeses! ${sentence.listOfCheeseNames(cheeseList)}."),
           ],
         ),
       ),

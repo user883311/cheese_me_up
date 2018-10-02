@@ -84,7 +84,7 @@ class LoginRouteState extends State<LoginRoute> {
       new TextEditingController(text: "user883311@gmail.com");
   TextEditingController passwordController1 =
       new TextEditingController(text: "password");
-  TextEditingController passwordController2 = new TextEditingController();
+  TextEditingController passwordController2 = new TextEditingController(text: "password");
 
   Future _testSignInWithGoogle() async {
     final GoogleSignIn _googleSignIn = new GoogleSignIn();

@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:cheese_me_up/elements/points_scorer.dart';
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/cheese.dart';
+import 'package:cheese_me_up/models/rating.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating/flutter_rating.dart';
 
 String userIdCopy;
 User user;
@@ -30,6 +32,7 @@ class CheeseRouteState extends State<CheeseRoute> {
   Query _cheeseRef;
   DatabaseReference _userRef;
   StreamSubscription streamSubscription;
+  double rating = 0.0;
 
   CheeseRouteState({@required this.cheeseId, this.userId});
 
@@ -48,6 +51,7 @@ class CheeseRouteState extends State<CheeseRoute> {
       _userRef = database.reference().child("users/$userIdCopy");
       streamSubscription = _userRef.onValue.listen((Event event) {
         user = new User.fromSnapshot(event.snapshot);
+        rating = user.ratings[cheese.id].rating;
       });
     }
   }
@@ -86,7 +90,12 @@ class CheeseRouteState extends State<CheeseRoute> {
                         pointsForNewCheese(cheese, user),
                       );
                       TransactionResult resultTransaction =
-                          await _checkin(checkin);
+                          await writeNewElementToDatabase(
+                              checkin.toJson(),
+                              FirebaseDatabase.instance
+                                  .reference()
+                                  .child('users/$userIdCopy/checkins'));
+
                       Navigator.pop(context, resultTransaction.committed);
                     } else {
                       // send user to login page
@@ -115,26 +124,17 @@ class CheeseRouteState extends State<CheeseRoute> {
     }
   }
 
-  Future<TransactionResult> _checkin(CheckIn checkin) async {
-    DatabaseReference _oldUserCheckinsRef = FirebaseDatabase.instance
-        .reference()
-        .child('users/$userIdCopy/checkins');
-
-    TransactionResult result =
-        await writeNewElementToDatabase(checkin.toJson(), _oldUserCheckinsRef);
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return (cheese == null)
         ? Text("loading...")
         : new Scaffold(
             floatingActionButton: FloatingActionButton(
-                child: Icon(Icons.plus_one),
-                onPressed: () {
-                  _checkCheckinIntent(cheese, user);
-                }),
+              child: Icon(Icons.plus_one),
+              onPressed: () {
+                _checkCheckinIntent(cheese, user);
+              },
+            ),
             resizeToAvoidBottomPadding: false,
             body: ListView(children: [
               Stack(
@@ -157,15 +157,51 @@ class CheeseRouteState extends State<CheeseRoute> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(icon: Icon(Icons.star), onPressed: () {}),
-                  IconButton(icon: Icon(Icons.star), onPressed: () {}),
-                  IconButton(icon: Icon(Icons.star), onPressed: () {}),
-                  IconButton(icon: Icon(Icons.star), onPressed: () {}),
-                  IconButton(icon: Icon(Icons.star), onPressed: () {}),
-                ],
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     IconButton(
+              //         icon: Icon(Icons.star),
+              //         onPressed: () {
+              //           if (user != null) {
+              //             writeNewElementToDatabase(
+              //                 Rating.fromCheeseDateTime(
+              //                         cheeseId, DateTime.now(), 1.0)
+              //                     .toJson(),
+              //                 FirebaseDatabase.instance
+              //                     .reference()
+              //                     .child('users/$userIdCopy/ratings/$cheeseId'),
+              //                 randomKey: false);
+              //           }
+              //         }),
+              //     IconButton(icon: Icon(Icons.star), onPressed: () {}),
+              //     IconButton(icon: Icon(Icons.star), onPressed: () {}),
+              //     IconButton(icon: Icon(Icons.star), onPressed: () {}),
+              //     IconButton(icon: Icon(Icons.star), onPressed: () {}),
+              //   ],
+              // ),
+              new StarRating(
+                rating: rating,
+                color: Colors.orange,
+                borderColor: Colors.grey,
+                size: 50.0,
+                starCount: 5,
+                onRatingChanged: (rating) => setState(
+                      () {
+                        this.rating = rating;
+
+                        if (user != null) {
+                          writeNewElementToDatabase(
+                              Rating.fromCheeseDateTime(
+                                      cheeseId, DateTime.now(), rating)
+                                  .toJson(),
+                              FirebaseDatabase.instance
+                                  .reference()
+                                  .child('users/$userIdCopy/ratings/r$cheeseId'),
+                              randomKey: false);
+                        }
+                      },
+                    ),
               ),
               Text("\nCHEESE ID\n"),
               Text("Name: ${cheese.name}"),

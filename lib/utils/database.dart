@@ -10,17 +10,13 @@ Future<TransactionResult> writeNewElementToDatabase(
     Map newJsonElement, DatabaseReference dbRef,
     {bool randomKey: true}) async {
   if (randomKey) {
-    dbRef = dbRef.push("temporary transaction data");
+    dbRef = dbRef.push();
   }
+  
   final TransactionResult transactionResult =
       await dbRef.runTransaction((MutableData mutableData) async {
-    if (mutableData.value != null) {
-      print("mutableData.value!=null");
-    } else {
-      mutableData.value = newJsonElement;
-      print("mutableData.value: \n${mutableData.value}");
-      return (mutableData);
-    }
+        mutableData.value =  newJsonElement;
+        return (mutableData);
   });
 
   if (transactionResult.committed) {
