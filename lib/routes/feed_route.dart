@@ -1,17 +1,18 @@
 import 'dart:async';
-
-import 'package:cheese_me_up/elements/cards/all_time_card.dart';
-import 'package:cheese_me_up/elements/cards/remember_card.dart';
-import 'package:cheese_me_up/elements/cards/this_period_card.dart';
+import 'package:flutter/material.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
+import 'package:cheese_me_up/elements/cards/all_time_card.dart';
+import 'package:cheese_me_up/elements/cards/remember_card.dart';
+import 'package:cheese_me_up/elements/cards/this_period_card.dart';
 
 User user;
 String userIdCopy;
 
 // TODO: add ability to pull body and release to refresh State
+
+// TODO: use FutureBuilder to build widget once db response received
 
 class FeedRoute extends StatefulWidget {
   FeedRoute({this.userId});
@@ -72,8 +73,28 @@ class _FeedRoute extends State<FeedRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Text(""),
-        title: Text("Home"),
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IgnorePointer(
+              child: IconButton(
+                icon: Image.asset(
+                  "assets/media/icons/settings.png",
+                  color: Colors.transparent,
+                ),
+                onPressed: () {},
+              ),
+            ),
+            Text("Brie"),
+            IconButton(
+              icon: Image.asset("assets/media/icons/settings.png"),
+              onPressed: () {
+                Navigator.pushNamed(context, '/settings_route/$userIdCopy');
+              },
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ),
       ),
       body: ListView(
         children: user == null
@@ -118,43 +139,36 @@ class _FeedRoute extends State<FeedRoute> {
                 Navigator.pushNamed(context, '/history_route/$userIdCopy');
               },
             ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              decoration: new BoxDecoration(
-                boxShadow: [
-                  BoxShadow(color: Colors.brown[900], offset: Offset(2.0, 2.0))
-                ],
-                color: Colors.brown[800],
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.0),
-                ),
-              ),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Image.asset("assets/media/icons/cheese_color.png"),
-                    onPressed: _goCheckinRoute,
-                  ),
-                  Text(
-                    "+1",
-                    style: TextStyle(color: Colors.orange[200]),
-                  )
-                ],
-              ),
-            ),
             IconButton(
-              icon: Image.asset("assets/media/icons/map.png"),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Image.asset("assets/media/icons/settings.png"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/settings_route/$userIdCopy');
-              },
-            ),
+                icon: Image.asset("assets/media/icons/map.png"),
+                onPressed: () {
+                  return showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        title: Text(
+                            "The Map functionnality is in preparation. Stay tuned!"),
+                      );
+                    },
+                  );
+                }),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.orange[200],
+                width: 2.0,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          backgroundColor: Colors.brown[800],
+          onPressed: _goCheckinRoute,
+          child: Padding(
+            child: Image.asset("assets/media/icons/cheese_color.png"),
+            padding: EdgeInsets.all(10.0),
+          )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

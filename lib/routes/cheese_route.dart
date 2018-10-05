@@ -157,51 +157,32 @@ class CheeseRouteState extends State<CheeseRoute> {
                   ),
                 ],
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     IconButton(
-              //         icon: Icon(Icons.star),
-              //         onPressed: () {
-              //           if (user != null) {
-              //             writeNewElementToDatabase(
-              //                 Rating.fromCheeseDateTime(
-              //                         cheeseId, DateTime.now(), 1.0)
-              //                     .toJson(),
-              //                 FirebaseDatabase.instance
-              //                     .reference()
-              //                     .child('users/$userIdCopy/ratings/$cheeseId'),
-              //                 randomKey: false);
-              //           }
-              //         }),
-              //     IconButton(icon: Icon(Icons.star), onPressed: () {}),
-              //     IconButton(icon: Icon(Icons.star), onPressed: () {}),
-              //     IconButton(icon: Icon(Icons.star), onPressed: () {}),
-              //     IconButton(icon: Icon(Icons.star), onPressed: () {}),
-              //   ],
-              // ),
-              new StarRating(
-                rating: rating,
-                color: Colors.orange,
-                borderColor: Colors.grey,
-                size: 50.0,
-                starCount: 5,
-                onRatingChanged: (rating) => setState(
-                      () {
-                        this.rating = rating;
+              
+              IgnorePointer(
+                // add users average rating for that cheese in NoLogIn mode
+                ignoring: (user == null),
+                child: new StarRating(
+                  rating: rating,
+                  color: Colors.orange,
+                  borderColor: Colors.grey,
+                  size: 50.0,
+                  starCount: 5,
+                  onRatingChanged: (rating) => setState(
+                        () {
+                          this.rating = rating;
 
-                        if (user != null) {
-                          writeNewElementToDatabase(
-                              Rating.fromCheeseDateTime(
-                                      cheeseId, DateTime.now(), rating)
-                                  .toJson(),
-                              FirebaseDatabase.instance
-                                  .reference()
-                                  .child('users/$userIdCopy/ratings/r$cheeseId'),
-                              randomKey: false);
-                        }
-                      },
-                    ),
+                          if (user != null) {
+                            writeNewElementToDatabase(
+                                Rating.fromCheeseDateTime(
+                                        cheeseId, DateTime.now(), rating)
+                                    .toJson(),
+                                FirebaseDatabase.instance.reference().child(
+                                    'users/$userIdCopy/ratings/r$cheeseId'),
+                                randomKey: false);
+                          }
+                        },
+                      ),
+                ),
               ),
               Text("\nCHEESE ID\n"),
               Text("Name: ${cheese.name}"),

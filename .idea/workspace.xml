@@ -10,6 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11ba03b6-b2cb-4d1b-bffd-b7032b732c76" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routes/cheese_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes/cheese_route.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/routes/feed_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes/feed_route.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -25,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="59" selection-start-line="59" selection-end-line="59" />
+            <state relative-caret-position="119">
+              <caret line="22" column="34" lean-forward="true" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
               <folding>
                 <element signature="e#0#56#0" expanded="true" />
               </folding>
@@ -37,11 +41,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login_route.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="login_route.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/routes/login_route.dart">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="106">
+              <caret line="207" column="46" selection-start-line="207" selection-start-column="46" selection-end-line="207" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="feed_route.dart" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/routes/feed_route.dart">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="234">
-              <caret line="177" column="23" lean-forward="true" selection-start-line="177" selection-start-column="23" selection-end-line="177" selection-end-column="23" />
+              <caret line="146" column="8" selection-start-line="146" selection-start-column="8" selection-end-line="146" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -54,7 +67,7 @@
       <find>show me</find>
     </findStrings>
   </component>
-  <component name="FlutterView" splitter-proportion="0.3627907" />
+  <component name="FlutterView" splitter-proportion="0.35234216" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -63,9 +76,9 @@
       <list>
         <option value="$PROJECT_DIR$/lib/routes/checkin_route.dart" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
-        <option value="$PROJECT_DIR$/lib/routes/feed_route.dart" />
         <option value="$PROJECT_DIR$/lib/routes/settings_route.dart" />
         <option value="$PROJECT_DIR$/lib/routes/login_route.dart" />
+        <option value="$PROJECT_DIR$/lib/routes/feed_route.dart" />
       </list>
     </option>
   </component>
@@ -80,7 +93,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -111,6 +123,7 @@
         <option name="show-excluded-files" value="false" />
       </pane>
       <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -217,30 +230,32 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="2" y="23" width="1259" height="831" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49688336" weight="0.32880434" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4963024" weight="0.32833788" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.516023" side_tool="true" visible="true" weight="0.1839237" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5176664" side_tool="true" visible="true" weight="0.21798365" />
       <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49688336" weight="0.32880434" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.2540761" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49958915" weight="0.32833788" />
-      <window_info active="true" anchor="right" id="Flutter Outline" order="3" visible="true" weight="0.3040263" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49958915" weight="0.32970026" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49876747" weight="0.32833788" />
+      <window_info anchor="right" id="Flutter Outline" order="3" weight="0.3040263" />
       <window_info anchor="bottom" id="Logcat" order="7" weight="0.32880434" />
       <window_info id="Captures" order="2" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18816763" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.18816763" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49688336" weight="0.32880434" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.483977" weight="0.1839237" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4823336" visible="true" weight="0.21798365" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="right" id="Flutter Inspector" order="3" weight="0.23336072" />
+      <window_info active="true" anchor="right" id="Flutter Inspector" order="3" visible="true" weight="0.34100246" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Assistant" order="4" weight="0.32949877" />
@@ -248,7 +263,6 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49688336" weight="0.32880434" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -260,6 +274,57 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/routes/login_route.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2760">
+          <caret line="184" column="30" lean-forward="true" selection-start-line="184" selection-start-column="30" selection-end-line="184" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/routes/login_route.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2685">
+          <caret line="179" column="23" selection-start-line="179" selection-start-column="23" selection-end-line="179" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/routes/login_route.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2655">
+          <caret line="177" column="23" lean-forward="true" selection-start-line="177" selection-start-column="23" selection-end-line="177" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="675">
@@ -455,13 +520,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/routes/feed_route.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="75" column="24" selection-start-line="75" selection-start-column="24" selection-end-line="75" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/routes/settings_route.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -469,20 +527,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+    <entry file="file://$PROJECT_DIR$/lib/routes/login_route.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
-          <folding>
-            <element signature="e#0#56#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="106">
+          <caret line="207" column="46" selection-start-line="207" selection-start-column="46" selection-end-line="207" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/routes/login_route.dart">
+    <entry file="file://$PROJECT_DIR$/lib/routes/feed_route.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
-          <caret line="177" column="23" lean-forward="true" selection-start-line="177" selection-start-column="23" selection-end-line="177" selection-end-column="23" />
+          <caret line="146" column="8" selection-start-line="146" selection-start-column="8" selection-end-line="146" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="22" column="34" lean-forward="true" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

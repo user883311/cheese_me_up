@@ -20,8 +20,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Cheese Me Up',
       theme: new ThemeData(
-        buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
+        // unselectedWidgetColor: Colors.red,
         buttonTheme: ButtonThemeData(
+            buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
             height: 50.0,
             minWidth: 200.0,
             shape: RoundedRectangleBorder(
@@ -102,7 +103,7 @@ class MyApp extends StatelessWidget {
             return new MaterialPageRoute(
               builder: (context) => new CheeseRoute(
                     cheeseId: foo,
-                    userId:user,
+                    userId: user,
                   ),
               settings: routeSettings,
             );
