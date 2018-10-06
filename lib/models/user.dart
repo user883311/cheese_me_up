@@ -27,8 +27,9 @@ class User {
       : displayName = snapshot.value["displayName"],
         email = snapshot.value["email"],
         password = snapshot.value["password"],
-        checkins = (snapshot.value["checkins"] as Map ?? {}).map(
-            (k, v) => new MapEntry(k.toString(), CheckIn.fromJson(v as Map))),
+        checkins = (snapshot.value["checkins"] as Map ?? {}).map((k, v) =>
+            new MapEntry(
+                k.toString(), CheckIn.fromJson(v as Map, k.toString()))),
         ratings = (snapshot.value["ratings"] as Map).map((k, v) =>
             new MapEntry(k.toString().substring(1), Rating.fromJson(v as Map))),
         // Note: substring(1) is meant to transform "r0" into "0" (Firebase restrictions)

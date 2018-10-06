@@ -31,3 +31,28 @@ Future<TransactionResult> writeNewElementToDatabase(
   }
   return transactionResult;
 }
+
+
+Future<TransactionResult> deleteElementFromDatabase(
+    DatabaseReference dbRef
+    ) async {
+  dbRef.remove();
+
+  // final TransactionResult transactionResult =
+  //     await dbRef.runTransaction((MutableData mutableData) async {
+  //       mutableData.value =  newJsonElement;
+  //       return (mutableData);
+  // });
+
+  // if (transactionResult.committed) {
+  //   print("transactionResult.committed");
+  //   print(
+  //       "transactionResult.dataSnapshot.value: \n${transactionResult.dataSnapshot.value}");
+  // } else {
+  //   print('Transaction not committed.');
+  //   if (transactionResult.error != null) {
+  //     print(transactionResult.error.message);
+  //   }
+  // }
+  // return transactionResult;
+}

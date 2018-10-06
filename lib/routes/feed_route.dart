@@ -129,7 +129,17 @@ class _FeedRoute extends State<FeedRoute> {
               ],
       ),
       bottomNavigationBar: Container(
-        color: Colors.brown,
+        decoration: BoxDecoration(
+          color: Colors.brown,
+          // border: Border(
+          //   top: BorderSide(
+          //     color: Colors.black,
+          //     width: 3.0,
+              
+          //   ),
+          // ),
+        ),
+        // color: Colors.brown,
         child: ButtonBar(
           alignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
@@ -158,7 +168,7 @@ class _FeedRoute extends State<FeedRoute> {
       floatingActionButton: FloatingActionButton(
           shape: RoundedRectangleBorder(
               side: BorderSide(
-                color: Colors.orange[200],
+                color: Colors.brown,
                 width: 2.0,
               ),
               borderRadius: BorderRadius.all(Radius.circular(20.0))),

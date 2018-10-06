@@ -40,6 +40,7 @@ class _HistoryRouteState extends State<HistoryRoute> {
 
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
+    _cheesesRef.onChildRemoved.listen(_onEntryRemoved);
 
     _userRef = database.reference().child("users/$userIdCopy");
     streamSubscription = _userRef.onValue.listen((Event event) {
@@ -48,6 +49,8 @@ class _HistoryRouteState extends State<HistoryRoute> {
         checkinsCopy = user.checkins.values.toList();
         ratesCopy = user.ratings.values.toList();
         checkinsCopy.sort((a, b) => b.time.compareTo(a.time));
+        // user.checkins.sort((a, b) => b.time.compareTo(a.time));
+        
         ratesCopy.sort((a, b) => b.time.compareTo(a.time));
       });
     });
@@ -58,6 +61,10 @@ class _HistoryRouteState extends State<HistoryRoute> {
       var cheese = Cheese.fromSnapshot(event.snapshot);
       cheeses[cheese.id.toString()] = cheese;
     });
+  }
+
+  void _onEntryRemoved(Event event) {
+    setState(() {});
   }
 
   @override
