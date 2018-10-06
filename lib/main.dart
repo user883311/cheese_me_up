@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Cheese Me Up',
       theme: new ThemeData(
         // unselectedWidgetColor: Colors.red,
+        canvasColor: Colors.orange[100],
         buttonTheme: ButtonThemeData(
             buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
             height: 50.0,

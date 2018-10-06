@@ -58,10 +58,11 @@ class CheeseRouteState extends State<CheeseRoute> {
 
   @override
   void dispose() {
+    user = null;
     if (streamSubscription != null) {
       streamSubscription.cancel();
-      super.dispose();
     }
+    super.dispose();
   }
 
   void _onEntryAdded(Event event) {
@@ -147,52 +148,70 @@ class CheeseRouteState extends State<CheeseRoute> {
                       fit: BoxFit.fitWidth,
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    splashColor: Colors.white54,
-                    color: Colors.white54,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius:
+                          BorderRadius.only(bottomRight: Radius.circular(15.0)),
+                      // backgroundBlendMode: BlendMode.srcATop,
+                      // color: Colors.white30,
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      splashColor: Colors.white54,
+                      color: Colors.white54,
+                    ),
                   ),
                 ],
               ),
-              
               IgnorePointer(
-                // add users average rating for that cheese in NoLogIn mode
+                // TODO: add users average rating for that cheese in NoLogIn mode
                 ignoring: (user == null),
-                child: new StarRating(
-                  rating: rating,
-                  color: Colors.orange,
-                  borderColor: Colors.grey,
-                  size: 50.0,
-                  starCount: 5,
-                  onRatingChanged: (rating) => setState(
-                        () {
-                          this.rating = rating;
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: new StarRating(
+                    rating: rating,
+                    color: Colors.orange,
+                    borderColor: Colors.grey,
+                    size: 50.0,
+                    starCount: 5,
+                    onRatingChanged: (rating) => setState(
+                          () {
+                            this.rating = rating;
 
-                          if (user != null) {
-                            writeNewElementToDatabase(
-                                Rating.fromCheeseDateTime(
-                                        cheeseId, DateTime.now(), rating)
-                                    .toJson(),
-                                FirebaseDatabase.instance.reference().child(
-                                    'users/$userIdCopy/ratings/r$cheeseId'),
-                                randomKey: false);
-                          }
-                        },
-                      ),
+                            if (user != null) {
+                              writeNewElementToDatabase(
+                                  Rating.fromCheeseDateTime(
+                                          cheeseId, DateTime.now(), rating)
+                                      .toJson(),
+                                  FirebaseDatabase.instance.reference().child(
+                                      'users/$userIdCopy/ratings/r$cheeseId'),
+                                  randomKey: false);
+                            }
+                          },
+                        ),
+                  ),
                 ),
               ),
-              Text("\nCHEESE ID\n"),
-              Text("Name: ${cheese.name}"),
-              Text("Country: ${cheese.country}"),
-              Text(
-                  "Region: ${(cheese.region == "null") ? "Unknown" : cheese.region}"),
-              Text("\nPAIRINGS\n"),
-              Text("Wine: merlot, bourgogne dry."),
-              Text("Meats: red meat, lamb."),
-              Text("\nLOCATION\n"),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("\nCHEESE ID\n"),
+                      Text("Name: ${cheese.name}"),
+                      Text("Country: ${cheese.country}"),
+                      Text(
+                          "Region: ${(cheese.region == "null") ? "Unknown" : cheese.region}"),
+                      Text("\nPAIRINGS\n"),
+                      Text("Wine: merlot, bourgogne dry."),
+                      Text("Meats: red meat, lamb."),
+                      Text("\nLOCATION\n"),
+                    ]),
+              ),
             ]),
           );
   }

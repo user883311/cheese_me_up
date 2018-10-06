@@ -9,16 +9,22 @@ class Cheese {
   String image;
   // TODO: add: 
   // region coordinates
-  // description
-  // color
-  // rind
+  // producers list
+  // producers coordinates
+  // (free text) description
+  // color: blue, white
+  // rind/croute: bloomy, washed, natural https://www.thespruceeats.com/are-cheese-rinds-edible-591575 
   // flavor
   // smell / aroma
+  // nutritionals: moisture, fat, lactose, protein
+  // flavor-added yes/no
   // texture / hardness ??
   // type of milk: goat, cow, buffaloe
+  // ripening time (one to 12 months)
   // bool vegetarian: true, false, null (unknown)
-  // AOC, labels
+  // AOC, labels: the French AOC (Appellation d’Origine Contrôlée) and the Italian DOC (Denominazione d’Origine Controllata), as well as the European Community–created PDO (Protected Designation of Origin)
   // sustainability at producer's level
+  
   
   bool show;
   String fullSearch;

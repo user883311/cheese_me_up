@@ -7,9 +7,11 @@ import 'package:flutter/widgets.dart';
 class HistoryCard extends StatelessWidget {
   final CheckIn checkin;
   final Cheese cheese;
+  final String userId;
 
   HistoryCard({
     this.checkin,
+    this.userId,
     @required this.cheese,
   });
 
@@ -26,7 +28,11 @@ class HistoryCard extends StatelessWidget {
               "${relevantTimeSince(checkin.time)["durationInt"]} ${relevantTimeSince(checkin.time)["unit"]} ago",
               textScaleFactor: 1.2,
             ),
-            Text("\n${cheese.name}"), //checkin.cheese.name
+            RawMaterialButton(
+              child: Text("\n${cheese.name}"),
+              onPressed: () => Navigator.pushNamed(
+                  context, "/cheese_route/${cheese.id}/$userId"),
+            ),
             Row(children: [
               IconButton(
                 iconSize: 3.0,

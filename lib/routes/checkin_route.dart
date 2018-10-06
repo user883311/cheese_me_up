@@ -46,18 +46,20 @@ class CheckinRouteState extends State<CheckinRoute> {
 
   @override
   void dispose() {
-    // user=null;
+    // TODO: replace user=null by disconnecting from Firebase 
+    // & checking on connection status
+    user=null;
     if (streamSubscription != null) {
       streamSubscription.cancel();
-      super.dispose();
     }
+    super.dispose();
   }
 
   void _onEntryAdded(Event event) {
     setState(() {
       var cheese = Cheese.fromSnapshot(event.snapshot);
       cheeses[cheese.id.toString()] = cheese;
-      _cheesesShortlist.add(cheese);      
+      _cheesesShortlist.add(cheese);
     });
   }
 

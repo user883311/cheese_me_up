@@ -7,9 +7,11 @@ import 'package:flutter/widgets.dart';
 class StarredCard extends StatelessWidget {
   final Rating rating;
   final Cheese cheese;
+  final String userId;
 
   StarredCard({
     this.rating,
+    this.userId,
     @required this.cheese,
   });
 
@@ -26,7 +28,10 @@ class StarredCard extends StatelessWidget {
               "${relevantTimeSince(rating.time)["durationInt"]} ${relevantTimeSince(rating.time)["unit"]} ago",
               textScaleFactor: 1.2,
             ),
-            Text("\n${cheese.name}"), //rating.cheese.name
+            RawMaterialButton(
+              child: Text("\n${cheese.name}"),
+              onPressed: () => Navigator.pushNamed(context, "/cheese_route/${cheese.id}/$userId"),
+            ),
             Row(children: [
               Text("${rating.rating}"),
               Icon(Icons.star, color: Colors.brown,),

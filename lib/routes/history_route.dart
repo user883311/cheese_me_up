@@ -110,6 +110,7 @@ class _HistoryRouteState extends State<HistoryRoute> {
                         child: HistoryCard(
                           checkin: checkinsCopy[index],
                           cheese: cheeses[checkinsCopy[index].cheeseId],
+                          userId: userIdCopy,
                         ),
                       );
                     },
@@ -130,6 +131,7 @@ class _HistoryRouteState extends State<HistoryRoute> {
                         child: StarredCard(
                           rating: ratesCopy[index],
                           cheese: cheeses[ratesCopy[index].cheeseId],
+                          userId: userIdCopy,
                         ),
                       );
                     },
