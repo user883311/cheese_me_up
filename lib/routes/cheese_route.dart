@@ -51,7 +51,9 @@ class CheeseRouteState extends State<CheeseRoute> {
       _userRef = database.reference().child("users/$userIdCopy");
       streamSubscription = _userRef.onValue.listen((Event event) {
         user = new User.fromSnapshot(event.snapshot);
-        rating = user.ratings[cheese.id].rating;
+        if (user.ratings[cheese.id] != null) {
+          rating = user.ratings[cheese.id].rating;
+        }
       });
     }
   }
@@ -113,7 +115,7 @@ class CheeseRouteState extends State<CheeseRoute> {
         })) {
       case true:
         Navigator.pop(context);
-        Navigator.pushReplacementNamed(context, "/feed_route/$userIdCopy");
+        Navigator.pushNamed(context, "/feed_route/$userIdCopy");
         break;
 
       case false:
@@ -173,7 +175,7 @@ class CheeseRouteState extends State<CheeseRoute> {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: new StarRating(
-                    rating: rating,
+                    rating: rating ?? 0.0,
                     color: Colors.orange,
                     borderColor: Colors.grey,
                     size: 50.0,
