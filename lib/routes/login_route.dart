@@ -309,72 +309,12 @@ class LoginRouteState extends State<LoginRoute> {
                         child: IgnorePointer(
                           ignoring: _disableButtons,
                           child: EmailVerificationButton(),
-
-                          // FlatButton(
-                          //   child: Text(
-                          //     "Forgot your password? Click here.",
-                          //     style: TextStyle(color: Colors.blue[900]),
-                          //   ),
-                          //   onPressed: () async {
-                          //     await showDialog(
-                          //         context: context,
-                          //         builder: (BuildContext context) {
-                          //           return SimpleDialog(
-                          //             children: <Widget>[
-                          //               Padding(
-                          //                 padding: EdgeInsets.all(15.0),
-                          //                 child: TextField(
-                          //                   controller: emailToReset,
-                          //                   decoration: InputDecoration(
-                          //                     hintText: "Email address",
-                          //                   ),
-                          //                   keyboardType:
-                          //                       TextInputType.emailAddress,
-                          //                 ),
-                          //               ),
-                          //               Padding(
-                          //                 padding: EdgeInsets.all(15.0),
-                          //                 child: RaisedButton(
-                          //                   child: Text(
-                          //                       "Send me an verfication email."),
-                          //                   onPressed: () {
-                          //                     try {
-                          //                       _auth
-                          //                           .sendPasswordResetEmail(
-                          //                               email: emailToReset.text
-                          //                                   .trim())
-                          //                           .then((_) {
-                          //                         Navigator.pop(context);
-                          //                       }).catchError((err) {
-                          //                         print("caught an error...");
-                          //                         print(err);
-                          //                         if (err.runtimeType ==
-                          //                             PlatformException) {
-                          //                           // throw Exception(err.details.toString());
-                          //                           Scaffold.of(context)
-                          //                               .showSnackBar(SnackBar(
-                          //                                   content: Text(
-                          //                                       "sanck baby")));
-                          //                         }
-                          //                       });
-                          //                     } on Exception catch (e) {
-                          //                       print("exception:\n$e");
-                          //                       // Scaffold.of(context)
-                          //                       //     .showSnackBar(SnackBar(
-                          //                       //         content: Text(
-                          //                       //             "sanck baby")));
-                          //                     } finally {}
-                          //                   },
-                          //                 ),
-                          //               ),
-                          //             ],
-                          //           );
-                          //         });
-                          //   },
-                          // ),
                         ),
                       )
-                    : null,
+                    : Text(
+                        "placeholder",
+                        textScaleFactor: 0.0,
+                      ),
                 Divider(),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10.0),
