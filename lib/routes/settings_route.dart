@@ -46,14 +46,14 @@ class _SettingsRoute extends State<SettingsRoute> {
                 child: Text("Log out"),
                 onPressed: () {
                   userIdCopy = null;
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, "/", ModalRoute.withName('/'));
+                  Navigator.pushNamedAndRemoveUntil(context, "/", ModalRoute.withName('/'));
                 },
               ),
             ),
             Expanded(
-              child: Divider(),
-            ),
+                child: Divider(
+              color: Colors.white70,
+            )),
             Text(
               "We do not own your data. You can delete it forever from our servers, anytime you want to.",
               style: TextStyle(
