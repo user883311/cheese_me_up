@@ -69,12 +69,11 @@ String userIdCopy;
 bool signInOrCreateAccountMode = true;
 
 class LoginRoute extends StatefulWidget {
-
   LoginRoute();
 
   @override
   LoginRouteState createState() {
-    userIdCopy=null;
+    userIdCopy = null;
     return new LoginRouteState();
   }
 }
@@ -84,7 +83,10 @@ class LoginRouteState extends State<LoginRoute> {
       new TextEditingController(text: "user883311@gmail.com");
   TextEditingController passwordController1 =
       new TextEditingController(text: "password");
-  TextEditingController passwordController2 = new TextEditingController(text: "password");
+  TextEditingController passwordController2 =
+      new TextEditingController(text: "password");
+  // TextEditingController emailToReset =
+  //     new TextEditingController(text: "user883311@gmail.com");
 
   Future _testSignInWithGoogle() async {
     final GoogleSignIn _googleSignIn = new GoogleSignIn();
@@ -169,19 +171,21 @@ class LoginRouteState extends State<LoginRoute> {
     }
   }
 
-  Future _logInWithFacebook() async {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color.fromRGBO(181, 221, 255, 0.8),
-        
-        label:  Text("show me the\ncheese now!",style: TextStyle(color:Colors.black87),),
-        icon: Icon(Icons.search,color: Colors.black87,),
+        label: Text(
+          "show me the\ncheese now!",
+          style: TextStyle(color: Colors.black87),
+        ),
+        icon: Icon(
+          Icons.search,
+          color: Colors.black87,
+        ),
         onPressed: () {
           Navigator.pushReplacementNamed(context, '/checkin_route/');
-
         },
       ),
       resizeToAvoidBottomPadding: false,
@@ -299,7 +303,79 @@ class LoginRouteState extends State<LoginRoute> {
                     ],
                   ),
                 ),
-                Divider(color: Colors.black45),
+                signInOrCreateAccountMode
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(vertical: 0.0),
+                        child: IgnorePointer(
+                          ignoring: _disableButtons,
+                          child: EmailVerificationButton(),
+
+                          // FlatButton(
+                          //   child: Text(
+                          //     "Forgot your password? Click here.",
+                          //     style: TextStyle(color: Colors.blue[900]),
+                          //   ),
+                          //   onPressed: () async {
+                          //     await showDialog(
+                          //         context: context,
+                          //         builder: (BuildContext context) {
+                          //           return SimpleDialog(
+                          //             children: <Widget>[
+                          //               Padding(
+                          //                 padding: EdgeInsets.all(15.0),
+                          //                 child: TextField(
+                          //                   controller: emailToReset,
+                          //                   decoration: InputDecoration(
+                          //                     hintText: "Email address",
+                          //                   ),
+                          //                   keyboardType:
+                          //                       TextInputType.emailAddress,
+                          //                 ),
+                          //               ),
+                          //               Padding(
+                          //                 padding: EdgeInsets.all(15.0),
+                          //                 child: RaisedButton(
+                          //                   child: Text(
+                          //                       "Send me an verfication email."),
+                          //                   onPressed: () {
+                          //                     try {
+                          //                       _auth
+                          //                           .sendPasswordResetEmail(
+                          //                               email: emailToReset.text
+                          //                                   .trim())
+                          //                           .then((_) {
+                          //                         Navigator.pop(context);
+                          //                       }).catchError((err) {
+                          //                         print("caught an error...");
+                          //                         print(err);
+                          //                         if (err.runtimeType ==
+                          //                             PlatformException) {
+                          //                           // throw Exception(err.details.toString());
+                          //                           Scaffold.of(context)
+                          //                               .showSnackBar(SnackBar(
+                          //                                   content: Text(
+                          //                                       "sanck baby")));
+                          //                         }
+                          //                       });
+                          //                     } on Exception catch (e) {
+                          //                       print("exception:\n$e");
+                          //                       // Scaffold.of(context)
+                          //                       //     .showSnackBar(SnackBar(
+                          //                       //         content: Text(
+                          //                       //             "sanck baby")));
+                          //                     } finally {}
+                          //                   },
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           );
+                          //         });
+                          //   },
+                          // ),
+                        ),
+                      )
+                    : null,
+                Divider(),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10.0),
                   child: IgnorePointer(
@@ -351,6 +427,102 @@ class LoginRouteState extends State<LoginRoute> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class EmailVerificationButton extends StatelessWidget {
+  const EmailVerificationButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController emailToReset =
+        new TextEditingController(text: "user883311@gmail.com");
+
+    return FlatButton(
+      child: Text(
+        "Forgot your password? Click here.",
+        style: TextStyle(color: Colors.blue[900]),
+      ),
+      onPressed: () async {
+        try {
+          await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return new EmailVerificationDialog(emailToReset: emailToReset);
+              });
+        } on Exception catch (e) {
+          print('Exception details:\n $e');
+        } catch (err) {
+          print("2nd error");
+        }
+      },
+    );
+  }
+}
+
+class EmailVerificationDialog extends StatelessWidget {
+  const EmailVerificationDialog({
+    Key key,
+    @required this.emailToReset,
+  }) : super(key: key);
+
+  final TextEditingController emailToReset;
+  String validateEmail(String value) {
+    String pattern = r'(^\w+@\w+\.\w+$)';
+    // user333@fewf.com
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      return "Email is required.";
+    } else if (!regExp.hasMatch(value)) {
+      return "Is this a valid email?";
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(15.0),
+          child: Form(
+            child: TextFormField(
+              controller: emailToReset,
+              decoration: InputDecoration(hintText: "Email address"),
+              keyboardType: TextInputType.emailAddress,
+              validator: validateEmail,
+              autovalidate: true,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(15.0),
+          child: RaisedButton(
+            child: Text("Send me an verification email."),
+            onPressed: () async {
+              try {
+                await _auth
+                    .sendPasswordResetEmail(email: emailToReset.text.trim())
+                    .then((_) {});
+              } on Exception catch (e) {
+                print('1/ Exception details:\n $e');
+              } catch (e, s) {
+                print('2/ Exception details:\n $e');
+                print('Stack trace:\n $s');
+              } finally {
+                await showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(children: <Widget>[
+                          Text(
+                              "A password reset email has been sent to this email address, if it is linked to an active account. Thanks!")
+                        ]));
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 }

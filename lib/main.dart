@@ -12,24 +12,32 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  final navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      // navigatorKey: navigatorKey,
+      // navigatorObservers: [NavigatorObserver()],
       showPerformanceOverlay: false,
       locale: Locale("en"),
       debugShowCheckedModeBanner: false,
       title: 'Cheese Me Up',
       theme: new ThemeData(
-        // unselectedWidgetColor: Colors.red,
+        dialogBackgroundColor: Colors.orange[100],
+        buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
         canvasColor: Colors.orange[100],
         buttonTheme: ButtonThemeData(
-            buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
-            height: 50.0,
-            minWidth: 200.0,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)))),
+          height: 50.0,
+          minWidth: 200.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
+          ),
+        ),
         cardColor: Colors.orange[50],
-        dividerColor: Colors.black,
+        dividerColor: Colors.black45,
         primarySwatch: Colors.brown,
         scaffoldBackgroundColor: Colors.orange[100],
         inputDecorationTheme: InputDecorationTheme(
