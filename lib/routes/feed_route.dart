@@ -1,76 +1,55 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:cheese_me_up/app_state_container.dart';
+import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';
+import 'package:cheese_me_up/routes/login_route.dart';
+import 'package:flutter/material.dart';
 import 'package:cheese_me_up/models/user.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:cheese_me_up/elements/cards/all_time_card.dart';
 import 'package:cheese_me_up/elements/cards/remember_card.dart';
 import 'package:cheese_me_up/elements/cards/this_period_card.dart';
-
-User user;
-String userIdCopy;
 
 // TODO: add ability to pull body and release to refresh State
 
 // TODO: use FutureBuilder to build widget once db response received
 
 class FeedRoute extends StatefulWidget {
-  FeedRoute({this.userId});
-  final String userId;
+  FeedRoute();
 
   @override
   _FeedRoute createState() {
-    userIdCopy = userId;
     return new _FeedRoute();
   }
 }
 
 class _FeedRoute extends State<FeedRoute> {
-  final FirebaseDatabase database = FirebaseDatabase.instance;
-  Query _cheesesRef;
-  Map<String, Cheese> cheeses = new Map();
-  DatabaseReference _userRef;
-  StreamSubscription streamSubscription;
+  AppState appState;
 
   @override
-  void initState() {
-    super.initState();
-    _cheesesRef = database.reference().child("cheeses").orderByChild("name");
-    _cheesesRef.onChildAdded.listen(_onEntryAdded);
-
-    _userRef = database.reference().child("users/$userIdCopy");
-
-    streamSubscription = _userRef.onValue.listen((Event event) {
-      setState(() {
-        user = new User.fromSnapshot(event.snapshot);
-      });
-    });
-    // .onError((error) {
-    //   print(error);
-    //   Navigator.popUntil(context, ModalRoute.withName('/'));
-    // });
+  void didPopNext() {
+    // Covering route was popped off the navigator.
+    print("Did Pop Next");
   }
 
-  void _onEntryAdded(Event event) {
-    setState(() {
-      var cheese = Cheese.fromSnapshot(event.snapshot);
-      cheeses[cheese.id.toString()] = cheese;
-    });
+  Widget get _pageToDisplay {
+    if (appState.isLoading) {
+      return _loadingView;
+    } else if (!appState.isLoading && appState.user == null) {
+      return new LoginRoute();
+    } else {
+      return _homeView;
+    }
   }
 
-  @override
-  void dispose() {
-    user = null;
-    streamSubscription.cancel();
-    super.dispose();
+  Widget get _loadingView {
+    return new Center(
+      child: new CircularProgressIndicator(),
+    );
   }
 
-  void _goCheckinRoute() {
-    Navigator.pushReplacementNamed(context, '/checkin_route/$userIdCopy');
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget get _homeView {
+    User user = appState.user;
+    Map<String, Cheese> cheeses = appState.cheeses;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -88,65 +67,46 @@ class _FeedRoute extends State<FeedRoute> {
             Text("Brie"),
             IconButton(
               icon: Image.asset("assets/media/icons/settings.png"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/settings_route/$userIdCopy');
-              },
+              onPressed: () => Navigator.pushNamed(context, '/settings_route'),
             ),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
         ),
       ),
       body: ListView(
-        children: user == null
-            ? [Text("Loading...")]
-            : <Widget>[
-                (user == null)
-                    ? null
-                    : new AllTimeCard(
-                        user: user,
-                        cheeses: cheeses,
-                      ),
-                (user.checkins.isEmpty)
-                    ? new Icon(Icons.arrow_downward)
-                    : new RememberCard(
-                        user: user,
-                        cheeses: cheeses,
-                      ),
-                (user.checkins.isEmpty)
-                    ? null
-                    : new ThisPeriodCard(
-                        user: user,
-                        periodName: "week",
-                        cheeses: cheeses,
-                      ),
-                (user.checkins.isEmpty)
-                    ? null
-                    : new ThisPeriodCard(
-                        user: user,
-                        periodName: "month",
-                        cheeses: cheeses,
-                      ),
-              ],
+        children: <Widget>[
+          AllTimeCard(
+            user: user,
+            cheeses: cheeses,
+          ),
+          RememberCard(
+            user: user,
+            cheeses: cheeses,
+          ),
+          ThisPeriodCard(
+            user: user,
+            periodName: "week",
+            cheeses: cheeses,
+          ),
+          ThisPeriodCard(
+            user: user,
+            periodName: "month",
+            cheeses: cheeses,
+          ),
+        ],
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.brown,
-          // border: Border(
-          //   top: BorderSide(
-          //     color: Colors.black,
-          //     width: 3.0,
-              
-          //   ),
-          // ),
         ),
-        // color: Colors.brown,
         child: ButtonBar(
           alignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             IconButton(
               icon: Image.asset("assets/media/icons/history.png"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/history_route/$userIdCopy');
+              onPressed: () async {
+                await Navigator.pushNamed(context, '/history_route');
+                print("just came back to FeedRoute..!");
               },
             ),
             IconButton(
@@ -180,5 +140,17 @@ class _FeedRoute extends State<FeedRoute> {
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  void _goCheckinRoute() {
+    Navigator.pushReplacementNamed(context, '/checkin_route');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var container = AppStateContainer.of(context);
+    appState = container.state;
+
+    return _pageToDisplay;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -21,7 +22,7 @@ final Map<String, dynamic> labels = {
     try {
       user = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      userIdCopy = user.uid;
+      // userIdCopy = user.uid;
       return user;
     } catch (e) {
       print("Firebase sign-in error (${e.runtimeType}):\n$e");
@@ -39,7 +40,7 @@ final Map<String, dynamic> labels = {
       user = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       print("created user: $user");
-      userIdCopy = user.uid;
+      // userIdCopy = user.uid;
       await addNewUserToDatabase(User.fromJson({
         "id": user.uid,
         "displayName": user.email.replaceAll(new RegExp(r"@\w*\.\w*"), ""),
@@ -65,17 +66,14 @@ Future<Null> addNewUserToDatabase(User user) async {
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-String userIdCopy;
+
 bool signInOrCreateAccountMode = true;
 
 class LoginRoute extends StatefulWidget {
   LoginRoute();
 
   @override
-  LoginRouteState createState() {
-    userIdCopy = null;
-    return new LoginRouteState();
-  }
+  LoginRouteState createState() => new LoginRouteState();
 }
 
 class LoginRouteState extends State<LoginRoute> {
@@ -85,8 +83,6 @@ class LoginRouteState extends State<LoginRoute> {
       new TextEditingController(text: "password");
   TextEditingController passwordController2 =
       new TextEditingController(text: "password");
-  // TextEditingController emailToReset =
-  //     new TextEditingController(text: "user883311@gmail.com");
 
   Future _testSignInWithGoogle() async {
     final GoogleSignIn _googleSignIn = new GoogleSignIn();
@@ -173,6 +169,9 @@ class LoginRouteState extends State<LoginRoute> {
 
   @override
   Widget build(BuildContext context) {
+    // Get access to the AppState
+    final container = AppStateContainer.of(context);
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color.fromRGBO(181, 221, 255, 0.8),
@@ -185,7 +184,7 @@ class LoginRouteState extends State<LoginRoute> {
           color: Colors.black87,
         ),
         onPressed: () {
-          Navigator.pushReplacementNamed(context, '/checkin_route/');
+          Navigator.pushReplacementNamed(context, '/checkin_route');
         },
       ),
       resizeToAvoidBottomPadding: false,
@@ -321,14 +320,7 @@ class LoginRouteState extends State<LoginRoute> {
                   child: IgnorePointer(
                     ignoring: _disableButtons,
                     child: RaisedButton(
-                      // TODO: add disabled property
-                      onPressed: () async {
-                        setState(() {
-                          _disableButtons = true;
-                        });
-
-                        handleSignInResponse(await _testSignInWithGoogle());
-                      },
+                      onPressed: () => container.logIntoFirebase(),
                       child: Text("Google sign-in"),
                     ),
                   ),

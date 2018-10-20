@@ -14,6 +14,7 @@ The user can:
 - see a feed with curated infrmation about the cheeses I have checked in
 
 ## Credits: 
+Eric Windmill from Flutter By Example for his excellent introduction to authentification. https://flutterbyexample.com
 Cheese icon made by Smashicons from www.flaticon.com, Creative Commons BY 3.0. 
 Trophy icon made by Vectors Market from www.flaticon.com, Creative Commons BY 3.0. 
 Settings icon made by Freepik from www.flaticon.com, Creative Commons BY 3.0. 

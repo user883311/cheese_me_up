@@ -24,6 +24,7 @@ class Cheese {
   // bool vegetarian: true, false, null (unknown)
   // AOC, labels: the French AOC (Appellation d’Origine Contrôlée) and the Italian DOC (Denominazione d’Origine Controllata), as well as the European Community–created PDO (Protected Designation of Origin)
   // sustainability at producer's level
+  // price
   
   
   bool show;

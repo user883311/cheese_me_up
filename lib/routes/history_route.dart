@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/cards/history_card.dart';
 import 'package:cheese_me_up/elements/cards/starred_card.dart';
+import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/rating.dart';
@@ -9,59 +11,54 @@ import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-User user;
-String userIdCopy;
-List<CheckIn> checkinsCopy = [];
-List<Rating> ratesCopy = [];
+// User user;
+// String userIdCopy;
+// List<CheckIn> checkinsCopy = [];
+// List<Rating> ratesCopy = [];
 
 class HistoryRoute extends StatefulWidget {
-  final String userId;
-  final String drawerTitle = "History";
-
-  HistoryRoute({Key key, this.userId});
+  HistoryRoute({Key key});
 
   @override
-  _HistoryRouteState createState() {
-    userIdCopy = userId;
-    return new _HistoryRouteState();
-  }
+  _HistoryRouteState createState() => new _HistoryRouteState();
 }
 
 class _HistoryRouteState extends State<HistoryRoute> {
-  final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference _userRef;
-  StreamSubscription streamSubscription;
-  Query _cheesesRef;
-  Map<String, Cheese> cheeses = new Map();
+  AppState appState;
+  // final FirebaseDatabase database = FirebaseDatabase.instance;
+  // DatabaseReference _userRef;
+  // StreamSubscription streamSubscription;
+  // Query _cheesesRef;
+  // Map<String, Cheese> cheeses = new Map();
 
   @override
   void initState() {
     super.initState();
 
-    _cheesesRef = database.reference().child("cheeses").orderByChild("name");
-    _cheesesRef.onChildAdded.listen(_onEntryAdded);
-    _cheesesRef.onChildRemoved.listen(_onEntryRemoved);
+    // _cheesesRef = database.reference().child("cheeses").orderByChild("name");
+    // _cheesesRef.onChildAdded.listen(_onEntryAdded);
+    // _cheesesRef.onChildRemoved.listen(_onEntryRemoved);
 
-    _userRef = database.reference().child("users/$userIdCopy");
-    streamSubscription = _userRef.onValue.listen((Event event) {
-      setState(() {
-        user = new User.fromSnapshot(event.snapshot);
-        checkinsCopy = user.checkins.values.toList();
-        ratesCopy = user.ratings.values.toList();
-        checkinsCopy.sort((a, b) => b.time.compareTo(a.time));
-        // user.checkins.sort((a, b) => b.time.compareTo(a.time));
-        
-        ratesCopy.sort((a, b) => b.time.compareTo(a.time));
-      });
-    });
+    // _userRef = database.reference().child("users/$userIdCopy");
+    // streamSubscription = _userRef.onValue.listen((Event event) {
+    //   setState(() {
+    //     user = new User.fromSnapshot(event.snapshot);
+    //     checkinsCopy = user.checkins.values.toList();
+    //     ratesCopy = user.ratings.values.toList();
+    //     checkinsCopy.sort((a, b) => b.time.compareTo(a.time));
+    //     // user.checkins.sort((a, b) => b.time.compareTo(a.time));
+
+    //     ratesCopy.sort((a, b) => b.time.compareTo(a.time));
+    //   });
+    // });
   }
 
-  void _onEntryAdded(Event event) {
-    setState(() {
-      var cheese = Cheese.fromSnapshot(event.snapshot);
-      cheeses[cheese.id.toString()] = cheese;
-    });
-  }
+  // void _onEntryAdded(Event event) {
+  //   setState(() {
+  //     var cheese = Cheese.fromSnapshot(event.snapshot);
+  //     cheeses[cheese.id.toString()] = cheese;
+  //   });
+  // }
 
   void _onEntryRemoved(Event event) {
     setState(() {});
@@ -69,13 +66,22 @@ class _HistoryRouteState extends State<HistoryRoute> {
 
   @override
   void dispose() {
-    user = null;
-    streamSubscription.cancel();
+    // user = null;
+    // streamSubscription.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    var container = AppStateContainer.of(context);
+    appState = container.state;
+    Map<String, Cheese> cheeses = appState.cheeses;
+    User user = appState.user;
+    List<CheckIn> checkins = user.checkins.values.toList();
+    List<Rating> ratings = user.ratings.values.toList();
+    checkins.sort((a, b) => b.time.compareTo(a.time));
+    ratings.sort((a, b) => b.time.compareTo(a.time));
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -95,13 +101,14 @@ class _HistoryRouteState extends State<HistoryRoute> {
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
                 print("pressed back button");
-                Navigator.pushReplacementNamed(
-                    context, '/feed_route/$userIdCopy');
+                // Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/", ModalRoute.withName('/'));
               }),
         ),
         body: TabBarView(
           children: <Widget>[
-            (user == null || user.checkins.isEmpty)
+            (user.checkins.isEmpty)
                 ? Card(
                     child: Padding(
                       padding: EdgeInsets.all(5.0),
@@ -110,19 +117,19 @@ class _HistoryRouteState extends State<HistoryRoute> {
                     ),
                   )
                 : ListView.builder(
-                    itemCount: checkinsCopy.length,
+                    itemCount: checkins.length,
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.all(5.0),
                         child: HistoryCard(
-                          checkin: checkinsCopy[index],
-                          cheese: cheeses[checkinsCopy[index].cheeseId],
-                          userId: userIdCopy,
+                          checkin: checkins[index],
+                          cheese: cheeses[checkins[index].cheeseId],
+                          // userId: userIdCopy,
                         ),
                       );
                     },
                   ),
-            (user == null || user.checkins.isEmpty)
+            (user.ratings.isEmpty)
                 ? Card(
                     child: Padding(
                       padding: EdgeInsets.all(5.0),
@@ -131,14 +138,14 @@ class _HistoryRouteState extends State<HistoryRoute> {
                     ),
                   )
                 : ListView.builder(
-                    itemCount: ratesCopy.length,
+                    itemCount: ratings.length,
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.all(5.0),
                         child: StarredCard(
-                          rating: ratesCopy[index],
-                          cheese: cheeses[ratesCopy[index].cheeseId],
-                          userId: userIdCopy,
+                          rating: ratings[index],
+                          cheese: cheeses[ratings[index].cheeseId],
+                          // userId: userIdCopy,
                         ),
                       );
                     },

@@ -28,7 +28,7 @@ Widget cheeseTile(Cheese cheese, [User user, onTapped, bool circleAvatar = true]
       onTap: () async {
         print("Tapped dat ${cheese.name}!");
         if (onTapped != null) {
-          onTapped(cheese, user);
+          onTapped();
         }
       },
     ),

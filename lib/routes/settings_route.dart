@@ -1,31 +1,29 @@
+import 'package:cheese_me_up/app_state_container.dart';
+import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-String userIdCopy;
-User user;
 
 class SettingsRoute extends StatefulWidget {
   SettingsRoute({this.userId});
   final String userId;
 
   @override
-  _SettingsRoute createState() {
-    userIdCopy = userId;
-    return _SettingsRoute();
-  }
+  SettingsRouteState createState() => SettingsRouteState();
 }
 
-class _SettingsRoute extends State<SettingsRoute> {
+class SettingsRouteState extends State<SettingsRoute> {
+  AppState appState;
   // TODO: add dropdown form to change user's profile fields:
   // display name, isEmailVerified
   @override
-  void initState() {
-    super.initState();
-  }
+  void initState() => super.initState();
 
   @override
   Widget build(BuildContext context) {
+    var container = AppStateContainer.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -43,13 +41,16 @@ class _SettingsRoute extends State<SettingsRoute> {
             Spacer(),
             Flexible(
               child: RaisedButton(
-                child: Text("Log out"),
-                onPressed: () {
-                  userIdCopy = null;
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, "/", ModalRoute.withName('/'));
-                },
-              ),
+                  child: Text("Log out"),
+                  onPressed: () async {
+                    // await container.googleSignIn.signOut();
+                    await container.googleSignIn.disconnect();
+                    container.googleUser=null;
+                    container.state.user = null;
+                    print("signed out...");
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/", ModalRoute.withName('/'));
+                  }),
             ),
             Expanded(
               child: Divider(),
