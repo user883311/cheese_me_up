@@ -18,41 +18,41 @@ final Map<String, dynamic> labels = {
   "sign_in_appbar_title": "Sign in",
   "create_account_appbar_title": "Create account",
   "sign_in_function": ({String email, String password}) async {
-    FirebaseUser user;
-    try {
-      user = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      // userIdCopy = user.uid;
-      return user;
-    } catch (e) {
-      print("Firebase sign-in error (${e.runtimeType}):\n$e");
-      if (e.runtimeType == PlatformException) {
-        return e.details;
-      } else {
-        return e;
-      }
-    }
+    // FirebaseUser user;
+    // try {
+    //   user = await _auth.signInWithEmailAndPassword(
+    //       email: email, password: password);
+    //   // userIdCopy = user.uid;
+    //   return user;
+    // } catch (e) {
+    //   print("Firebase sign-in error (${e.runtimeType}):\n$e");
+    //   if (e.runtimeType == PlatformException) {
+    //     return e.details;
+    //   } else {
+    //     return e;
+    //   }
+    // }
   },
   "create_account_function": ({String email, String password}) async {
-    FirebaseUser user;
-    // throw exception is password1 and password2 do not match
-    try {
-      user = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      print("created user: $user");
-      // userIdCopy = user.uid;
-      await addNewUserToDatabase(User.fromJson({
-        "id": user.uid,
-        "displayName": user.email.replaceAll(new RegExp(r"@\w*\.\w*"), ""),
-        "email": user.email,
-      })).catchError((error) {
-        throw Exception(error);
-      });
-      return user;
-    } catch (e) {
-      print("Firebase account creation error:\n$e");
-      return e;
-    }
+    // FirebaseUser user;
+    // // throw exception is password1 and password2 do not match
+    // try {
+    //   user = await _auth.createUserWithEmailAndPassword(
+    //       email: email, password: password);
+    //   print("created user: $user");
+    //   // userIdCopy = user.uid;
+    //   await addNewUserToDatabase(User.fromJson({
+    //     "id": user.uid,
+    //     "displayName": user.email.replaceAll(new RegExp(r"@\w*\.\w*"), ""),
+    //     "email": user.email,
+    //   })).catchError((error) {
+    //     throw Exception(error);
+    //   });
+    //   return user;
+    // } catch (e) {
+    //   print("Firebase account creation error:\n$e");
+    //   return e;
+    // }
   },
 };
 
@@ -65,9 +65,9 @@ Future<Null> addNewUserToDatabase(User user) async {
       randomKey: false);
 }
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+// final FirebaseAuth _auth = FirebaseAuth.instance;
 
-bool signInOrCreateAccountMode = true;
+// bool signInOrCreateAccountMode = true;
 
 class LoginRoute extends StatefulWidget {
   LoginRoute();
@@ -77,6 +77,10 @@ class LoginRoute extends StatefulWidget {
 }
 
 class LoginRouteState extends State<LoginRoute> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  bool signInOrCreateAccountMode = true;
+
   TextEditingController emailController =
       new TextEditingController(text: "user883311@gmail.com");
   TextEditingController passwordController1 =
@@ -244,8 +248,6 @@ class LoginRouteState extends State<LoginRoute> {
                                 hintText: "Type your password again",
                               ),
                             ),
-
-                      // TODO :add a forgot password option to retrieve password
                       Padding(
                         padding: EdgeInsets.only(top: 15.0),
                         child: IgnorePointer(
@@ -260,40 +262,41 @@ class LoginRouteState extends State<LoginRoute> {
                               setState(() {
                                 _disableButtons = true;
                               });
-
-                              var functionToUse = signInOrCreateAccountMode
-                                  ? labels["sign_in_function"]
-                                  : labels["create_account_function"];
-
-                              if (!signInOrCreateAccountMode &&
-                                  passwordController1.text !=
+                              try {
+                                if (!signInOrCreateAccountMode) {
+                                  if (passwordController1.text !=
                                       passwordController2.text) {
+                                    throw "Bummer! Your 2 passwords do not match.";
+                                  }
+                                  await _auth.createUserWithEmailAndPassword(
+                                    email: emailController.text,
+                                    password: passwordController1.text,
+                                  );
+                                }
+                                container.emailLogIntoFirebase(
+                                    emailController.text,
+                                    passwordController1.text);
+                              } catch (e) {
+                                print("error came:$e");
                                 showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return new SimpleDialog(
-                                        title: Text(
-                                            'Bummer! Your 2 passwords do not match.'),
-                                        children: <Widget>[
-                                          new SimpleDialogOption(
-                                            onPressed: () {
-                                              Navigator.pop(context, true);
-                                            },
-                                            child: const Text(
-                                              'OK',
-                                              textAlign: TextAlign.center,
-                                            ),
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return new SimpleDialog(
+                                      title: Text('Bummer! ${e.toString()}'),
+                                      children: <Widget>[
+                                        new SimpleDialogOption(
+                                          onPressed: () {
+                                            Navigator.pop(context, true);
+                                          },
+                                          child: const Text(
+                                            'OK',
+                                            textAlign: TextAlign.center,
                                           ),
-                                        ],
-                                      );
-                                    });
-                              } else {
-                                await functionToUse(
-                                        email: emailController.text,
-                                        password: passwordController1.text)
-                                    .then((response) {
-                                  handleSignInResponse(response);
-                                });
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               }
                             },
                           ),
@@ -311,7 +314,7 @@ class LoginRouteState extends State<LoginRoute> {
                         ),
                       )
                     : Text(
-                        "placeholder",
+                        "just a placeholder",
                         textScaleFactor: 0.0,
                       ),
                 Divider(),
@@ -320,7 +323,7 @@ class LoginRouteState extends State<LoginRoute> {
                   child: IgnorePointer(
                     ignoring: _disableButtons,
                     child: RaisedButton(
-                      onPressed: () => container.logIntoFirebase(),
+                      onPressed: () => container.googleLogIntoFirebase(),
                       child: Text("Google sign-in"),
                     ),
                   ),
@@ -368,9 +371,7 @@ class EmailVerificationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailToReset =
-        new TextEditingController(text: "user883311@gmail.com");
-
+    TextEditingController emailToReset = new TextEditingController();
     return FlatButton(
       child: Text(
         "Forgot your password? Click here.",
@@ -434,6 +435,7 @@ class EmailVerificationDialog extends StatelessWidget {
             child: Text("Send me an verification email."),
             onPressed: () async {
               try {
+                FirebaseAuth _auth = FirebaseAuth.instance;
                 await _auth
                     .sendPasswordResetEmail(email: emailToReset.text.trim())
                     .then((_) {});

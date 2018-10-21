@@ -1,6 +1,7 @@
 // This module contains the read and write functions to the database. abstract
 
 import 'dart:async';
+import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 /// This function writes a new node to a Firebase [DatabaseReference] point, based
@@ -12,11 +13,11 @@ Future<TransactionResult> writeNewElementToDatabase(
   if (randomKey) {
     dbRef = dbRef.push();
   }
-  
+
   final TransactionResult transactionResult =
       await dbRef.runTransaction((MutableData mutableData) async {
-        mutableData.value =  newJsonElement;
-        return (mutableData);
+    mutableData.value = newJsonElement;
+    return (mutableData);
   });
 
   if (transactionResult.committed) {
@@ -32,10 +33,21 @@ Future<TransactionResult> writeNewElementToDatabase(
   return transactionResult;
 }
 
+Future<TransactionResult> addUserToFirebase(
+  User newUser,
+  String userId,
+) async {
+  FirebaseDatabase database = FirebaseDatabase.instance;
+  DatabaseReference _userRef;
+  _userRef = database.reference().child("users/$userId");
+  final TransactionResult transactionResult = await writeNewElementToDatabase(
+      newUser.toJson(), _userRef,
+      randomKey: false);
+  return transactionResult;
+}
 
 Future<TransactionResult> deleteElementFromDatabase(
-    DatabaseReference dbRef
-    ) async {
+    DatabaseReference dbRef) async {
   dbRef.remove();
 
   // final TransactionResult transactionResult =

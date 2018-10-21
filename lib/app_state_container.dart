@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
+import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// The AppStateContainer is an [InheritedWidget] wrapped in a [StatefulWidget].
@@ -66,11 +68,16 @@ class _AppStateContainerState extends State<AppStateContainer> {
     }
   }
 
+  @override
+  void dispose() {
+    streamSubscription.cancel();
+    super.dispose();
+  }
+
   Future<Null> initCheeses() async {
     final FirebaseDatabase database = FirebaseDatabase.instance;
     Query _cheesesRef;
-    StreamSubscription streamSubscription;
-
+    // StreamSubscription streamSubscription;
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     void _onEntryAdded(Event event) {
       setState(() {
@@ -80,17 +87,11 @@ class _AppStateContainerState extends State<AppStateContainer> {
     }
 
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
-
-    @override
-    void dispose() {
-      streamSubscription.cancel();
-      super.dispose();
-    }
   }
 
   Future<Null> initUser() async {
     // First, check if a user exists.
-    googleUser = await _ensureLoggedInOnStartUp();
+    googleUser = await _ensureGoogleLoggedInOnStartUp();
     // If the user is null, we aren't loading anyhting
     // because there isn't anything to load.
     // This will force the homepage to navigate to the auth page.
@@ -103,11 +104,11 @@ class _AppStateContainerState extends State<AppStateContainer> {
       print("googleUser: $googleUser");
       // If there is a user, tell Flutter to keep that
       // loading screen up Firebase logs in this user.
-      await logIntoFirebase();
+      await googleLogIntoFirebase();
     }
   }
 
-  Future<GoogleSignInAccount> _ensureLoggedInOnStartUp() async {
+  Future<GoogleSignInAccount> _ensureGoogleLoggedInOnStartUp() async {
     // That class has a currentUser if there's already a user signed in on
     // this device.
     GoogleSignInAccount user = googleSignIn.currentUser;
@@ -121,7 +122,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
     return user;
   }
 
-  Future<Null> logIntoFirebase() async {
+  Future<Null> googleLogIntoFirebase() async {
     // This method will be used in two cases,
     // To make it work from both, we'll need to see if theres a user.
     // When fired from the button on the auth screen, there should
@@ -147,7 +148,45 @@ class _AppStateContainerState extends State<AppStateContainer> {
         idToken: googleAuth.idToken,
       );
       // Not necessary
-      print('Logged in, firebaseUser: $firebaseUser');
+      print('Logged in with Google Sign In, firebaseUser: $firebaseUser');
+
+      setState(() {
+        // Updating the isLoading will force the Homepage to change because of
+        // The inheritedWidget setup.
+        state.isLoading = false;
+      });
+
+      // Add the user to the global app state
+      _userRef = database.reference().child("users/${firebaseUser.uid}");
+      streamSubscription = _userRef.onValue.listen((Event event) async {
+        bool _isUserNotInDatabase = (event.snapshot.value == null);
+        if (_isUserNotInDatabase) {
+          User newUser = User.fromJson({
+            "id": firebaseUser.uid,
+            "displayName": firebaseUser.displayName,
+            "email": firebaseUser.email,
+            "isEmailVerified": firebaseUser.isEmailVerified,
+          });
+          // Add new user to the database
+          await addUserToFirebase(newUser, firebaseUser.uid);
+        }
+        setState(() {
+          state.user = new User.fromSnapshot(event.snapshot);
+        });
+      });
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+  Future<Null> emailLogIntoFirebase(String email, String password) async {
+    FirebaseUser firebaseUser;
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    try {
+      firebaseUser = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      print('Logged in via email, firebaseUser: $firebaseUser');
 
       setState(() {
         // Updating the isLoading will force the Homepage to change because of
@@ -156,16 +195,29 @@ class _AppStateContainerState extends State<AppStateContainer> {
       });
 
       // Add the user to the global state
-      // state.user = firebaseUser;
       _userRef = database.reference().child("users/${firebaseUser.uid}");
-      streamSubscription = _userRef.onValue.listen((Event event) {
+      streamSubscription = _userRef.onValue.listen((Event event) async {
+        bool _isUserNotInDatabase = (event.snapshot.value == null);
+        if (_isUserNotInDatabase) {
+          User newUser = User.fromJson({
+            "id": firebaseUser.uid,
+            "displayName": firebaseUser.displayName,
+            "email": firebaseUser.email,
+          });
+          // Add new user to the database
+          await addUserToFirebase(newUser, firebaseUser.uid);
+        }
         setState(() {
           state.user = new User.fromSnapshot(event.snapshot);
         });
       });
-    } catch (error) {
-      print(error);
-      return null;
+    } catch (e) {
+      print("Firebase sign-in error (${e.runtimeType}):\n$e");
+      if (e.runtimeType == PlatformException) {
+        return e.details;
+      } else {
+        return e;
+      }
     }
   }
 

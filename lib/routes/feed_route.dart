@@ -74,26 +74,7 @@ class _FeedRoute extends State<FeedRoute> {
         ),
       ),
       body: ListView(
-        children: <Widget>[
-          AllTimeCard(
-            user: user,
-            cheeses: cheeses,
-          ),
-          RememberCard(
-            user: user,
-            cheeses: cheeses,
-          ),
-          ThisPeriodCard(
-            user: user,
-            periodName: "week",
-            cheeses: cheeses,
-          ),
-          ThisPeriodCard(
-            user: user,
-            periodName: "month",
-            cheeses: cheeses,
-          ),
-        ],
+        children: _cardsBuilder(user, cheeses),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -140,6 +121,22 @@ class _FeedRoute extends State<FeedRoute> {
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  List<Widget> _cardsBuilder(User user, Map<String, Cheese> cheeses) {
+    List<Widget> _widgetToDisplay = [
+      AllTimeCard(
+        user: user,
+        cheeses: cheeses,
+      ),
+    ];
+    if (user.checkins.isNotEmpty) {
+      _widgetToDisplay.add(RememberCard(
+        user: user,
+        cheeses: cheeses,
+      ));
+    }
+    return _widgetToDisplay;
   }
 
   void _goCheckinRoute() {
