@@ -75,7 +75,7 @@ class CheeseRouteState extends State<CheeseRoute> {
 
                       Navigator.pop(context, resultTransaction.committed);
                     } else {
-                      // send user to login page
+                      // send user back to login page
                       Navigator.pop(context);
                       Navigator.pushReplacementNamed(context, "/");
                     }

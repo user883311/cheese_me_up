@@ -19,7 +19,6 @@ class HistoryCard extends StatelessWidget {
   });
 
   _deleteCheckin(String userId, String checkinId) {
-    print("Pressed the DELETE button");
     final FirebaseDatabase database = FirebaseDatabase.instance;
     DatabaseReference _userRef =
         database.reference().child("users/$userId/checkins/$checkinId");

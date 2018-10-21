@@ -48,6 +48,7 @@ class AppRootWidgetState extends State<AppRootWidget> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      
       showPerformanceOverlay: false,
       locale: Locale("en"),
       debugShowCheckedModeBanner: false,

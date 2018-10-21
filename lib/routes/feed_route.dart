@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/elements/cards/all_time_card.dart';
 import 'package:cheese_me_up/elements/cards/remember_card.dart';
-import 'package:cheese_me_up/elements/cards/this_period_card.dart';
 
 // TODO: add ability to pull body and release to refresh State
 
@@ -86,7 +85,8 @@ class _FeedRoute extends State<FeedRoute> {
             IconButton(
               icon: Image.asset("assets/media/icons/history.png"),
               onPressed: () async {
-                await Navigator.pushNamed(context, '/history_route');
+                // await Navigator.pushNamed(context, '/history_route');
+                await Navigator.pushReplacementNamed(context, '/history_route');
                 print("just came back to FeedRoute..!");
               },
             ),

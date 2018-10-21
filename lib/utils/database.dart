@@ -33,6 +33,8 @@ Future<TransactionResult> writeNewElementToDatabase(
   return transactionResult;
 }
 
+/// This function writes a [newUser] node in the Firebase database, 
+/// located at the [userId] address. 
 Future<TransactionResult> addUserToFirebase(
   User newUser,
   String userId,
@@ -44,27 +46,4 @@ Future<TransactionResult> addUserToFirebase(
       newUser.toJson(), _userRef,
       randomKey: false);
   return transactionResult;
-}
-
-Future<TransactionResult> deleteElementFromDatabase(
-    DatabaseReference dbRef) async {
-  dbRef.remove();
-
-  // final TransactionResult transactionResult =
-  //     await dbRef.runTransaction((MutableData mutableData) async {
-  //       mutableData.value =  newJsonElement;
-  //       return (mutableData);
-  // });
-
-  // if (transactionResult.committed) {
-  //   print("transactionResult.committed");
-  //   print(
-  //       "transactionResult.dataSnapshot.value: \n${transactionResult.dataSnapshot.value}");
-  // } else {
-  //   print('Transaction not committed.');
-  //   if (transactionResult.error != null) {
-  //     print(transactionResult.error.message);
-  //   }
-  // }
-  // return transactionResult;
 }

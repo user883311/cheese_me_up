@@ -19,7 +19,6 @@ class StarredCard extends StatelessWidget {
   });
 
     _deleteRating(String userId, String cheeseId) {
-    print("Pressed the DELETE button");
     final FirebaseDatabase database = FirebaseDatabase.instance;
     DatabaseReference _userRef =
         database.reference().child("users/$userId/ratings/r$cheeseId");
