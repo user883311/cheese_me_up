@@ -76,24 +76,27 @@ class CheeseRouteState extends State<CheeseRoute> {
                       Navigator.pop(context, resultTransaction.committed);
                     } else {
                       // send user back to login page
-                      Navigator.pop(context);
+                      Navigator.pop(context, false);
                       Navigator.pushReplacementNamed(context, "/");
                     }
                   },
                   child: const Text('Yes')),
               new SimpleDialogOption(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: const Text('No')),
             ],
           );
         })) {
       case true:
-        Navigator.pop(context);
-        Navigator.pushNamed(context, "/feed_route");
+        Navigator.pop(context);// pop the cheese_route
+        // Navigator.pushNamed(context, "/feed_route");
         break;
 
       case false:
         Navigator.pop(context);
+        // TODO: display error message (transaction not successful)
         break;
 
       default:
