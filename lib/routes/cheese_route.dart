@@ -25,10 +25,8 @@ class CheeseRouteState extends State<CheeseRoute> {
   String cheeseId;
   Cheese cheese;
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  // Query _cheeseRef;
-  // DatabaseReference _userRef;
   StreamSubscription streamSubscription;
-  double rating = 0.0;
+  double rating;
 
   CheeseRouteState({@required this.cheeseId});
 
@@ -43,19 +41,13 @@ class CheeseRouteState extends State<CheeseRoute> {
     super.dispose();
   }
 
-  // void _onEntryAdded(Event event) {
-  //   setState(() {
-  //     cheese = Cheese.fromSnapshot(event.snapshot);
-  //   });
-  // }
-
   /// This [Future] displays a dialog box letting [user] deciding to checkin
   /// a [cheese]. If so, the [checkin] will be saved to the server database.
-  Future _checkCheckinIntent(Cheese cheese, User user) async {
+  Future<String> _checkCheckinIntent(
+      Cheese cheese, User user, BuildContext scaffoldContext) async {
     switch (await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return new SimpleDialog(
+      context: context,
+      builder: (context) => new SimpleDialog(
             title: Text('Do you want to check ${cheese.name} in?'),
             children: <Widget>[
               new SimpleDialogOption(
@@ -87,19 +79,20 @@ class CheeseRouteState extends State<CheeseRoute> {
                   },
                   child: const Text('No')),
             ],
-          );
-        })) {
+          ),
+    )) {
       case true:
-        Navigator.pop(context);// pop the cheese_route
-        // Navigator.pushNamed(context, "/feed_route");
+        // Navigator.pop(context);
+        return "Your checkin was saved. ";
         break;
 
       case false:
-        Navigator.pop(context);
-        // TODO: display error message (transaction not successful)
+        // Navigator.pop(context);
+        return "Oops, something went wrong. Your checkin was not saved.";
         break;
 
       default:
+        // nothing to pop
         break;
     }
   }
@@ -109,12 +102,21 @@ class CheeseRouteState extends State<CheeseRoute> {
     var container = AppStateContainer.of(context);
     appState = container.state;
     cheese = appState.cheeses[cheeseId];
+    if (appState.user != null) {
+      rating = appState.user.ratings[cheese.id]?.rating;
+    }
+
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.plus_one),
-        onPressed: () {
-          _checkCheckinIntent(cheese, appState.user);
-        },
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+              child: Icon(Icons.plus_one),
+              onPressed: () async {
+                String response =
+                    await _checkCheckinIntent(cheese, appState.user, context);
+                Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text(response)));
+              },
+            ),
       ),
       resizeToAvoidBottomPadding: false,
       body: ListView(children: [
@@ -132,8 +134,6 @@ class CheeseRouteState extends State<CheeseRoute> {
                 color: Colors.black12,
                 borderRadius:
                     BorderRadius.only(bottomRight: Radius.circular(15.0)),
-                // backgroundBlendMode: BlendMode.srcATop,
-                // color: Colors.white30,
               ),
               child: IconButton(
                 icon: Icon(Icons.arrow_back_ios),
@@ -151,26 +151,37 @@ class CheeseRouteState extends State<CheeseRoute> {
           ignoring: (appState.user == null),
           child: FittedBox(
             fit: BoxFit.scaleDown,
-            child: new StarRating(
-              rating: rating ?? 0.0,
-              color: Colors.orange,
-              borderColor: Colors.grey,
-              size: 50.0,
-              starCount: 5,
-              onRatingChanged: (rating) => setState(
-                    () {
-                      this.rating = rating;
-
-                      if (appState.user != null) {
-                        writeNewElementToDatabase(
-                            Rating.fromCheeseDateTime(
-                                    cheeseId, DateTime.now(), rating)
-                                .toJson(),
-                            FirebaseDatabase.instance.reference().child(
-                                'users/${appState.user.id}/ratings/r$cheeseId'),
-                            randomKey: false);
-                      }
-                    },
+            child: Builder(
+              builder: (context) => new StarRating(
+                    rating: rating ?? 0.0,
+                    color: Colors.orange,
+                    borderColor: Colors.grey,
+                    size: 50.0,
+                    starCount: 5,
+                    onRatingChanged: (rating) async => setState(
+                          () {
+                            this.rating = rating;
+                            if (appState.user != null) {
+                              setState(() async {
+                                TransactionResult result =
+                                    await writeNewElementToDatabase(
+                                        Rating.fromCheeseDateTime(
+                                          cheeseId,
+                                          DateTime.now(),
+                                          rating,
+                                        ).toJson(),
+                                        FirebaseDatabase.instance.reference().child(
+                                            'users/${appState.user.id}/ratings/r$cheeseId'),
+                                        randomKey: false);
+                                if (result.committed) {
+                                  // TODO: build snackbar
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                      content: Text('Added to your ratings.')));
+                                }
+                              });
+                            }
+                          },
+                        ),
                   ),
             ),
           ),

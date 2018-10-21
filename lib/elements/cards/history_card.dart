@@ -75,7 +75,7 @@ class HistoryCard extends StatelessWidget {
                   },
                   child: Icon(
                     Icons.delete_outline,
-                    color: Colors.black26,
+                    color: Colors.deepOrange[200],
                   ),
                 ),
               ],

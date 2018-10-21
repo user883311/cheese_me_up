@@ -41,9 +41,9 @@ class SettingsRouteState extends State<SettingsRoute> {
             Spacer(),
             Flexible(
               child: RaisedButton(
+                color: Color.fromRGBO(181, 221, 255, 0.8),
                   child: Text("Log out"),
                   onPressed: () async {
-                    // await container.googleSignIn.signOut();
                     await container.googleSignIn.disconnect();
                     container.googleUser=null;
                     container.state.user = null;
@@ -63,6 +63,7 @@ class SettingsRouteState extends State<SettingsRoute> {
               textAlign: TextAlign.center,
             ),
             RaisedButton(
+              color: Color.fromRGBO(181, 221, 255, 0.8),
               child: Text("Delete my account forever"),
               onPressed: () {},
             ),

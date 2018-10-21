@@ -18,6 +18,7 @@ class AppRootWidgetState extends State<AppRootWidget> {
         buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
         canvasColor: Colors.orange[100],
         buttonTheme: ButtonThemeData(
+          buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
           height: 50.0,
           minWidth: 200.0,
           shape: RoundedRectangleBorder(

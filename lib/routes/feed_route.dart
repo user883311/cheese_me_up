@@ -109,7 +109,7 @@ class _FeedRoute extends State<FeedRoute> {
       floatingActionButton: FloatingActionButton(
           shape: RoundedRectangleBorder(
               side: BorderSide(
-                color: Colors.brown,
+                color: Color.fromRGBO(181, 221, 255, 0.8),
                 width: 2.0,
               ),
               borderRadius: BorderRadius.all(Radius.circular(20.0))),

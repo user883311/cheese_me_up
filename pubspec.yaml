@@ -20,6 +20,7 @@ dependencies:
   firebase_auth: ^0.5.18
   firebase_core: ^0.2.4
   firebase_database: ^1.0.2
+  firebase_storage: ^1.0.4
   google_sign_in: ^3.0.5
   flutter_launcher_icons: ^0.6.1
   intl: ^0.15.7

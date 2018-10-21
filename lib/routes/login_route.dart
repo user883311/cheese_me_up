@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-bool _disableButtons = false;
+
 
 final Map<String, dynamic> labels = {
   "sign_in_link": "Already have an account? Sign in here!",
@@ -77,6 +77,7 @@ class LoginRoute extends StatefulWidget {
 }
 
 class LoginRouteState extends State<LoginRoute> {
+  bool _disableButtons = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool signInOrCreateAccountMode = true;
@@ -173,6 +174,7 @@ class LoginRouteState extends State<LoginRoute> {
 
   @override
   Widget build(BuildContext context) {
+     _disableButtons = false;
     // Get access to the AppState
     final container = AppStateContainer.of(context);
 
@@ -253,6 +255,7 @@ class LoginRouteState extends State<LoginRoute> {
                         child: IgnorePointer(
                           ignoring: _disableButtons,
                           child: RaisedButton(
+                            color: Color.fromRGBO(181, 221, 255, 0.8),
                             child: Text(
                               signInOrCreateAccountMode
                                   ? labels["sign_in_button_title"]
@@ -323,6 +326,7 @@ class LoginRouteState extends State<LoginRoute> {
                   child: IgnorePointer(
                     ignoring: _disableButtons,
                     child: RaisedButton(
+                      // color: Color.fromRGBO(181, 221, 255, 0.8),
                       onPressed: () => container.googleLogIntoFirebase(),
                       child: Text("Google sign-in"),
                     ),

@@ -10,11 +10,9 @@ import 'package:flutter/widgets.dart';
 class StarredCard extends StatelessWidget {
   final Rating rating;
   final Cheese cheese;
-  // final String userId;
-
+  
   StarredCard({
     this.rating,
-    // this.userId,
     @required this.cheese,
   });
 
@@ -75,7 +73,7 @@ class StarredCard extends StatelessWidget {
                   },
                   child: Icon(
                     Icons.delete_outline,
-                    color: Colors.black26,
+                    color: Colors.deepOrange[200],
                   ),
                 ),
               ],
@@ -85,8 +83,8 @@ class StarredCard extends StatelessWidget {
               onPressed: () => Navigator.pushNamed(context, "/cheese_route/${cheese.id}"),
             ),
             Row(children: [
-              Text("${rating.rating}"),
-              Icon(Icons.star, color: Colors.brown,),
+              Text("${rating.rating.toInt()}"),
+              Icon(Icons.star, color: Colors.brown,size: 10.0,),
             ]),
           ],
         ),
