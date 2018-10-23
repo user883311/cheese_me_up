@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';

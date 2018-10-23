@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/cards/history_card.dart';
 import 'package:cheese_me_up/elements/cards/starred_card.dart';

@@ -10,13 +10,13 @@ import 'package:flutter/widgets.dart';
 class StarredCard extends StatelessWidget {
   final Rating rating;
   final Cheese cheese;
-  
+
   StarredCard({
     this.rating,
     @required this.cheese,
   });
 
-    _deleteRating(String userId, String cheeseId) {
+  _deleteRating(String userId, String cheeseId) {
     final FirebaseDatabase database = FirebaseDatabase.instance;
     DatabaseReference _userRef =
         database.reference().child("users/$userId/ratings/r$cheeseId");
@@ -42,49 +42,60 @@ class StarredCard extends StatelessWidget {
                   "${relevantTimeSince(rating.time)["durationInt"]} ${relevantTimeSince(rating.time)["unit"]} ago",
                   textScaleFactor: 1.2,
                 ),
-                GestureDetector(
-                  onTap: () async {
-                    switch (await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return new SimpleDialog(
-                            title: Text('Do you want to delete this rating?'),
-                            children: <Widget>[
-                              new SimpleDialogOption(
-                                  onPressed: () => Navigator.pop(context, true),
-                                  child: const Text('Yes')),
-                              new SimpleDialogOption(
-                                  onPressed: () =>
-                                      Navigator.pop(context, false),
-                                  child: const Text('No')),
-                            ],
-                          );
-                        })) {
-                      case true:
-                        _deleteRating(appState.user.id, rating.cheeseId);
-                        break;
+                Builder(
+                  builder: (context) => GestureDetector(
+                        onTap: () async {
+                          switch (await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return new SimpleDialog(
+                                  title: Text(
+                                      'Do you want to delete this rating?'),
+                                  children: <Widget>[
+                                    new SimpleDialogOption(
+                                        onPressed: () =>
+                                            Navigator.pop(context, true),
+                                        child: const Text('Yes')),
+                                    new SimpleDialogOption(
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
+                                        child: const Text('No')),
+                                  ],
+                                );
+                              })) {
+                            case true:
+                              _deleteRating(appState.user.id, rating.cheeseId);
+                              Scaffold.of(context).showSnackBar(
+                                  SnackBar(content: Text('Deleted checkin.')));
+                              break;
 
-                      case false:
-                        break;
+                            case false:
+                              break;
 
-                      default:
-                        break;
-                    }
-                  },
-                  child: Icon(
-                    Icons.delete_outline,
-                    color: Colors.deepOrange[200],
-                  ),
+                            default:
+                              break;
+                          }
+                        },
+                        child: Icon(
+                          Icons.delete_outline,
+                          color: Colors.deepOrange[200],
+                        ),
+                      ),
                 ),
               ],
             ),
             RawMaterialButton(
               child: Text("\n${cheese.name}"),
-              onPressed: () => Navigator.pushNamed(context, "/cheese_route/${cheese.id}"),
+              onPressed: () =>
+                  Navigator.pushNamed(context, "/cheese_route/${cheese.id}"),
             ),
             Row(children: [
               Text("${rating.rating.toInt()}"),
-              Icon(Icons.star, color: Colors.brown,size: 10.0,),
+              Icon(
+                Icons.star,
+                color: Colors.brown,
+                size: 10.0,
+              ),
             ]),
           ],
         ),

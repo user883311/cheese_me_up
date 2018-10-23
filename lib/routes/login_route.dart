@@ -6,9 +6,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-
 
 final Map<String, dynamic> labels = {
   "sign_in_link": "Already have an account? Sign in here!",
@@ -17,43 +14,8 @@ final Map<String, dynamic> labels = {
   "create_account_button_title": "Create account",
   "sign_in_appbar_title": "Sign in",
   "create_account_appbar_title": "Create account",
-  "sign_in_function": ({String email, String password}) async {
-    // FirebaseUser user;
-    // try {
-    //   user = await _auth.signInWithEmailAndPassword(
-    //       email: email, password: password);
-    //   // userIdCopy = user.uid;
-    //   return user;
-    // } catch (e) {
-    //   print("Firebase sign-in error (${e.runtimeType}):\n$e");
-    //   if (e.runtimeType == PlatformException) {
-    //     return e.details;
-    //   } else {
-    //     return e;
-    //   }
-    // }
-  },
-  "create_account_function": ({String email, String password}) async {
-    // FirebaseUser user;
-    // // throw exception is password1 and password2 do not match
-    // try {
-    //   user = await _auth.createUserWithEmailAndPassword(
-    //       email: email, password: password);
-    //   print("created user: $user");
-    //   // userIdCopy = user.uid;
-    //   await addNewUserToDatabase(User.fromJson({
-    //     "id": user.uid,
-    //     "displayName": user.email.replaceAll(new RegExp(r"@\w*\.\w*"), ""),
-    //     "email": user.email,
-    //   })).catchError((error) {
-    //     throw Exception(error);
-    //   });
-    //   return user;
-    // } catch (e) {
-    //   print("Firebase account creation error:\n$e");
-    //   return e;
-    // }
-  },
+  "sign_in_function": () {},
+  "create_account_function": () {},
 };
 
 Future<Null> addNewUserToDatabase(User user) async {
@@ -82,60 +44,9 @@ class LoginRouteState extends State<LoginRoute> {
 
   bool signInOrCreateAccountMode = true;
 
-  TextEditingController emailController =
-      new TextEditingController(text: "user883311@gmail.com");
-  TextEditingController passwordController1 =
-      new TextEditingController(text: "password");
-  TextEditingController passwordController2 =
-      new TextEditingController(text: "password");
-
-  Future _testSignInWithGoogle() async {
-    final GoogleSignIn _googleSignIn = new GoogleSignIn();
-    _googleSignIn.signOut();
-    try {
-      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        throw "Sign in was cancelled.";
-      }
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      if (googleAuth == null) {
-        throw "Authentification failed.";
-      }
-
-      final FirebaseUser user = await _auth.signInWithGoogle(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      assert(user.email != null);
-      assert(user.displayName != null);
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
-
-      final FirebaseUser currentUser = await _auth.currentUser();
-      assert(user.uid == currentUser.uid);
-
-      print('signInWithGoogle succeeded: $user');
-
-      // TODO addNewUserToDatabase ONLY IF user not in db yet
-      await addNewUserToDatabase(User.fromJson({
-        "id": user.uid,
-        "displayName": user.displayName,
-        "email": user.email,
-      })).catchError((error) {
-        throw Exception(error);
-      });
-      return user;
-
-      // return user;
-    } on PlatformException catch (exception) {
-      print("_testSignInWithGoogle exception:\n$exception");
-      return exception;
-    } catch (error) {
-      print("_testSignInWithGoogle error:\n$error");
-      return error;
-    }
-  }
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController1 = new TextEditingController();
+  TextEditingController passwordController2 = new TextEditingController();
 
   void handleSignInResponse(dynamic response) {
     // print("response:\n$response");
@@ -143,9 +54,7 @@ class LoginRouteState extends State<LoginRoute> {
       if (response.runtimeType == FirebaseUser && response.uid != null) {
         Navigator.pushReplacementNamed(context, '/feed_route/${response.uid}');
       } else {
-        // ERROR HANDLING
         print("Login failed.. Response:\n$response");
-
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -153,13 +62,8 @@ class LoginRouteState extends State<LoginRoute> {
                 title: Text('Bummer! It failed. $response'),
                 children: <Widget>[
                   new SimpleDialogOption(
-                    onPressed: () {
-                      Navigator.pop(context, true);
-                    },
-                    child: const Text(
-                      'OK',
-                      textAlign: TextAlign.center,
-                    ),
+                    onPressed: () => Navigator.pop(context, true),
+                    child: const Text('OK', textAlign: TextAlign.center),
                   ),
                 ],
               );
@@ -174,7 +78,7 @@ class LoginRouteState extends State<LoginRoute> {
 
   @override
   Widget build(BuildContext context) {
-     _disableButtons = false;
+    _disableButtons = false;
     // Get access to the AppState
     final container = AppStateContainer.of(context);
 

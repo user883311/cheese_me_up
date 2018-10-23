@@ -1,7 +1,5 @@
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/models/app_state.dart';
-import 'package:cheese_me_up/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -48,8 +46,9 @@ class SettingsRouteState extends State<SettingsRoute> {
                     container.googleUser=null;
                     container.state.user = null;
                     print("signed out...");
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "/", ModalRoute.withName('/'));
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //     context, "/", ModalRoute.withName('/'));
                   }),
             ),
             Expanded(

@@ -1,11 +1,12 @@
 import 'dart:async';
-
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,6 +58,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
       state = new AppState.loading();
       initUser();
       initCheeses();
+      initFirebaseStorage();
     }
   }
 
@@ -72,6 +74,13 @@ class _AppStateContainerState extends State<AppStateContainer> {
   void dispose() {
     streamSubscription.cancel();
     super.dispose();
+  }
+
+  Future<void> initFirebaseStorage() async {
+    FirebaseApp app = FirebaseApp(name: "cheesopedia");
+    var storage = FirebaseStorage(
+        app: app, storageBucket: 'gs://cheese-me-up.appspot.com');
+    state.storage = storage;
   }
 
   Future<Null> initCheeses() async {

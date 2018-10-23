@@ -13,7 +13,6 @@ class AppRootWidget extends StatefulWidget {
 
 class AppRootWidgetState extends State<AppRootWidget> {
   ThemeData get _themeData => new ThemeData(
-    
         dialogBackgroundColor: Colors.orange[100],
         buttonColor: Color.fromRGBO(181, 221, 255, 0.8),
         canvasColor: Colors.orange[100],
@@ -49,7 +48,6 @@ class AppRootWidgetState extends State<AppRootWidget> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      
       showPerformanceOverlay: false,
       locale: Locale("en"),
       debugShowCheckedModeBanner: false,

@@ -82,12 +82,10 @@ class CheeseRouteState extends State<CheeseRoute> {
           ),
     )) {
       case true:
-        // Navigator.pop(context);
         return "Your checkin was saved. ";
         break;
 
       case false:
-        // Navigator.pop(context);
         return "Oops, something went wrong. Your checkin was not saved.";
         break;
 
@@ -119,86 +117,131 @@ class CheeseRouteState extends State<CheeseRoute> {
             ),
       ),
       resizeToAvoidBottomPadding: false,
-      body: ListView(children: [
-        Stack(
-          children: <Widget>[
-            Container(
-              constraints: BoxConstraints.expand(height: 200.0, width: 9999.0),
-              child: Image.asset(
-                "assets/media/img/cheese/" + cheese.image,
-                fit: BoxFit.fitWidth,
+      body: CustomScrollView(slivers: <Widget>[
+        SliverAppBar(
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.brown[200],
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(15.0)),
-              ),
-              child: IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                splashColor: Colors.white54,
-                color: Colors.white54,
-              ),
-            ),
-          ],
-        ),
-        IgnorePointer(
-          // TODO: add users average rating for that cheese in NoLogIn mode
-          ignoring: (appState.user == null),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Builder(
-              builder: (context) => new StarRating(
-                    rating: rating ?? 0.0,
-                    color: Colors.orange,
-                    borderColor: Colors.grey,
-                    size: 50.0,
-                    starCount: 5,
-                    onRatingChanged: (rating) async => setState(
-                          () {
-                            this.rating = rating;
-                            if (appState.user != null) {
-                              setState(() async {
-                                TransactionResult result =
-                                    await writeNewElementToDatabase(
-                                        Rating.fromCheeseDateTime(
-                                          cheeseId,
-                                          DateTime.now(),
-                                          rating,
-                                        ).toJson(),
-                                        FirebaseDatabase.instance.reference().child(
-                                            'users/${appState.user.id}/ratings/r$cheeseId'),
-                                        randomKey: false);
-                                if (result.committed) {
-                                  // TODO: build snackbar
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                      content: Text('Added to your ratings.')));
-                                }
-                              });
-                            }
-                          },
-                        ),
-                  ),
+              onPressed: () => Navigator.pop(context)),
+          expandedHeight: 200.0,
+          pinned: true,
+          title: Container(
+            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+            child: Text(cheese.name),
+            decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          ),
+          flexibleSpace: FlexibleSpaceBar(
+            background: Image.asset(
+              "assets/media/img/cheese/" + cheese.image,
+              fit: BoxFit.cover,
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("\nCHEESE ID\n"),
-            Text("Name: ${cheese.name}"),
-            Text("Country: ${cheese.country}"),
-            Text(
-                "Region: ${(cheese.region == "null") ? "Unknown" : cheese.region}"),
-            Text("\nPAIRINGS\n"),
-            Text("Wine: merlot, bourgogne dry."),
-            Text("Meats: red meat, lamb."),
-            Text("\nLOCATION\n"),
+
+        // TODO: add users average rating for that cheese in NoLogIn mode
+        SliverList(
+          delegate: SliverChildListDelegate([
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Builder(
+                builder: (context) => new StarRating(
+                      rating: rating ?? 0.0,
+                      color: Colors.orange,
+                      borderColor: Colors.grey,
+                      size: 50.0,
+                      starCount: 5,
+                      onRatingChanged: (rating) async => setState(
+                            () {
+                              if (appState.user != null) {
+                                this.rating = rating;
+                                if (appState.user != null) {
+                                  setState(() async {
+                                    TransactionResult result =
+                                        await writeNewElementToDatabase(
+                                            Rating.fromCheeseDateTime(
+                                              cheeseId,
+                                              DateTime.now(),
+                                              rating,
+                                            ).toJson(),
+                                            FirebaseDatabase.instance
+                                                .reference()
+                                                .child(
+                                                    'users/${appState.user.id}/ratings/r$cheeseId'),
+                                            randomKey: false);
+                                    if (result.committed) {
+                                      Scaffold.of(context).showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  'Added to your ratings.')));
+                                    }
+                                  });
+                                }
+                              } else {
+                                Navigator.pop(context, false);
+                                Navigator.pushReplacementNamed(context, "/");
+                              }
+                            },
+                          ),
+                    ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("\nCHEESE ID\n"),
+                    Text("Name: ${cheese.name}"),
+                    Text("Country: ${cheese.country}"),
+                    Text(
+                        "Region: ${(cheese.region == "null") ? "Unknown" : cheese.region}"),
+                    Text("\nPAIRINGS\n"),
+                    Text("Wine: merlot, bourgogne dry."),
+                    Text("Meats: red meat, lamb."),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("Wine: merlot, bourgogne dry."),
+                    Text("Wine: merlot, bourgogne dry."),
+                    Text("Wine: merlot, bourgogne dry."),
+                    Text("Wine: merlot, bourgogne dry."),
+                    Text("Wine: merlot, bourgogne dry."),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                    Text("\nLOCATION\n"),
+                  ]),
+            ),
           ]),
         ),
       ]),

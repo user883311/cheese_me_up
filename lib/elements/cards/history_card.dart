@@ -44,39 +44,48 @@ class HistoryCard extends StatelessWidget {
                   "${relevantTimeSince(checkin.time)["durationInt"]} ${relevantTimeSince(checkin.time)["unit"]} ago",
                   textScaleFactor: 1.2,
                 ),
-                GestureDetector(
-                  onTap: () async {
-                    switch (await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return new SimpleDialog(
-                            title: Text('Do you want to delete this checkin?'),
-                            children: <Widget>[
-                              new SimpleDialogOption(
-                                  onPressed: () => Navigator.pop(context, true),
-                                  child: const Text('Yes')),
-                              new SimpleDialogOption(
-                                  onPressed: () =>
-                                      Navigator.pop(context, false),
-                                  child: const Text('No')),
-                            ],
-                          );
-                        })) {
-                      case true:
-                        _deleteCheckin(appState.user.id, checkin.checkinId);
-                        break;
+                Builder(
+                  builder: (context) => GestureDetector(
+                        onTap: () async {
+                          switch (await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return new SimpleDialog(
+                                  title: Text(
+                                      'Do you want to delete this checkin?'),
+                                  children: <Widget>[
+                                    new SimpleDialogOption(
+                                        onPressed: () =>
+                                            Navigator.pop(context, true),
+                                        child: const Text('Yes')),
+                                    new SimpleDialogOption(
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
+                                        child: const Text('No')),
+                                  ],
+                                );
+                              })) {
+                            case true:
+                              _deleteCheckin(
+                                  appState.user.id, checkin.checkinId);
+                                  Scaffold.of(context).showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  'Deleted checkin.')));
+                              break;
 
-                      case false:
-                        break;
+                            case false:
+                              break;
 
-                      default:
-                        break;
-                    }
-                  },
-                  child: Icon(
-                    Icons.delete_outline,
-                    color: Colors.deepOrange[200],
-                  ),
+                            default:
+                              break;
+                          }
+                        },
+                        child: Icon(
+                          Icons.delete_outline,
+                          color: Colors.deepOrange[200],
+                        ),
+                      ),
                 ),
               ],
             ),
