@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/points_scorer.dart';
 import 'package:cheese_me_up/models/app_state.dart';
@@ -9,7 +9,6 @@ import 'package:cheese_me_up/models/rating.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
 class CheeseRoute extends StatefulWidget {
@@ -74,9 +73,7 @@ class CheeseRouteState extends State<CheeseRoute> {
                   },
                   child: const Text('Yes')),
               new SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () => Navigator.pop(context),
                   child: const Text('No')),
             ],
           ),
@@ -135,8 +132,11 @@ class CheeseRouteState extends State<CheeseRoute> {
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
           ),
           flexibleSpace: FlexibleSpaceBar(
-            background: Image.asset(
-              "assets/media/img/cheese/" + cheese.image,
+            background: 
+            Image.network(
+              "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2Fabbaye-de-belloc.jpg?alt=media&token=dfee9be5-5bdb-4ce5-8bf9-ec019174606d",
+              // Image.asset(
+              //   "assets/media/img/cheese/" + cheese.image,
               fit: BoxFit.cover,
             ),
           ),

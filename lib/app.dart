@@ -5,6 +5,8 @@ import 'package:cheese_me_up/routes/history_route.dart';
 import 'package:cheese_me_up/routes/login_route.dart';
 import 'package:cheese_me_up/routes/settings_route.dart';
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AppRootWidget extends StatefulWidget {
   @override

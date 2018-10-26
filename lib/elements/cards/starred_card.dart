@@ -66,7 +66,7 @@ class StarredCard extends StatelessWidget {
                             case true:
                               _deleteRating(appState.user.id, rating.cheeseId);
                               Scaffold.of(context).showSnackBar(
-                                  SnackBar(content: Text('Deleted checkin.')));
+                                  SnackBar(content: Text('Deleted rating.')));
                               break;
 
                             case false:
