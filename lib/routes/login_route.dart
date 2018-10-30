@@ -44,8 +44,8 @@ class LoginRouteState extends State<LoginRoute> {
 
   bool signInOrCreateAccountMode = true;
 
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController1 = new TextEditingController();
+  TextEditingController emailController = new TextEditingController(text: "user883311@gmail.com");
+  TextEditingController passwordController1 = new TextEditingController(text: "password");
   TextEditingController passwordController2 = new TextEditingController();
 
   void handleSignInResponse(dynamic response) {
@@ -79,12 +79,11 @@ class LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
     _disableButtons = false;
-    // Get access to the AppState
     final container = AppStateContainer.of(context);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color.fromRGBO(181, 221, 255, 0.8),
+        backgroundColor: Color.fromRGBO(255, 202, 208, 0.9),
         label: Text(
           "show me the\ncheese now!",
           style: TextStyle(color: Colors.black87),
@@ -94,7 +93,7 @@ class LoginRouteState extends State<LoginRoute> {
           color: Colors.black87,
         ),
         onPressed: () {
-          Navigator.pushReplacementNamed(context, '/checkin_route');
+          Navigator.pushNamed(context, '/checkin_route');
         },
       ),
       resizeToAvoidBottomPadding: false,
@@ -159,7 +158,7 @@ class LoginRouteState extends State<LoginRoute> {
                         child: IgnorePointer(
                           ignoring: _disableButtons,
                           child: RaisedButton(
-                            color: Color.fromRGBO(181, 221, 255, 0.8),
+                            // color: Color.fromRGBO(181, 221, 255, 0.8),
                             child: Text(
                               signInOrCreateAccountMode
                                   ? labels["sign_in_button_title"]

@@ -23,9 +23,9 @@ class SettingsRouteState extends State<SettingsRoute> {
     var container = AppStateContainer.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Settings"),
-      ),
+      // appBar: AppBar(
+      //   title: Text("Settings"),
+      // ),
       body: Container(
         decoration: new BoxDecoration(
           image: DecorationImage(
@@ -39,47 +39,38 @@ class SettingsRouteState extends State<SettingsRoute> {
             Spacer(),
             Flexible(
               child: RaisedButton(
-                color: Color.fromRGBO(181, 221, 255, 0.8),
-                  child: Text("Log out"),
+                  // color: Color.fromRGBO(181, 221, 255, 0.8),
+                  child: Text("Sign out"),
                   onPressed: () async {
                     await container.googleSignIn.disconnect();
-                    container.googleUser=null;
+                    container.googleUser = null;
                     container.state.user = null;
                     print("signed out...");
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
-                    // Navigator.pushNamedAndRemoveUntil(
-                    //     context, "/", ModalRoute.withName('/'));
+                    Navigator.pushReplacementNamed(context, "/");
+                    setState(() {});
                   }),
             ),
-            Expanded(
-              child: Divider(),
-            ),
+            Expanded(child: Divider()),
             Text(
               "We do not own your data. You can delete it forever from our servers, anytime you want to.",
-              style: TextStyle(
-                color: Colors.white70,
-              ),
+              style: TextStyle(color: Colors.white70),
               textAlign: TextAlign.center,
             ),
             RaisedButton(
-              color: Color.fromRGBO(181, 221, 255, 0.8),
+              // color: Color.fromRGBO(181, 221, 255, 0.8),
               child: Text("Delete my account forever"),
               onPressed: () {},
             ),
             Spacer(),
             Text(
               "Credits: Cassandra, my first beta tester, for her merciless bug reports.",
-              style: TextStyle(
-                color: Colors.white70,
-              ),
+              style: TextStyle(color: Colors.white70),
               textAlign: TextAlign.center,
             ),
             Spacer(),
             Text(
               "Heartfelt thanks from the Cheese Heads team!",
-              style: TextStyle(
-                color: Colors.white70,
-              ),
+              style: TextStyle(color: Colors.white70),
               textAlign: TextAlign.center,
             )
           ],

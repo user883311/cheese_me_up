@@ -1,6 +1,7 @@
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/cards/history_card.dart';
 import 'package:cheese_me_up/elements/cards/starred_card.dart';
+import 'package:cheese_me_up/elements/cheese_tile.dart';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/cheese.dart';
@@ -17,9 +18,13 @@ class HistoryRoute extends StatefulWidget {
 
 class _HistoryRouteState extends State<HistoryRoute> {
   AppState appState;
+  bool deleteMode;
 
   @override
-  void initState() => super.initState();
+  void initState() {
+    super.initState();
+    deleteMode = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +41,29 @@ class _HistoryRouteState extends State<HistoryRoute> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          bottom: TabBar(
+          title: TabBar(
             tabs: [
               Tab(icon: Icon(Icons.history)),
               Tab(icon: Icon(Icons.star)),
             ],
           ),
-          title: Text("History"),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                // Navigator.pop(context);
-                Navigator.pushNamedAndRemoveUntil(
-                    context, "/", ModalRoute.withName('/'));
-              }),
+
+          // automaticallyImplyLeading: false,
+          // bottom:
+          // TabBar(
+          //   tabs: [
+          //     Tab(icon: Icon(Icons.history)),
+          //     Tab(icon: Icon(Icons.star)),
+          //   ],
+          // ),
+          // title: Text("History"),
+          // leading: IconButton(
+          //     icon: Icon(Icons.arrow_back_ios),
+          //     onPressed: () {
+          //       // Navigator.pop(context);
+          //       Navigator.pushNamedAndRemoveUntil(
+          //           context, "/", ModalRoute.withName('/'));
+          //     }),
         ),
         body: TabBarView(
           children: <Widget>[
@@ -85,8 +99,16 @@ class _HistoryRouteState extends State<HistoryRoute> {
                       return Container(
                         padding: EdgeInsets.all(5.0),
                         child: StarredCard(
-                          rating: ratings[index],
                           cheese: cheeses[ratings[index].cheeseId],
+                          user: user,
+                          circleAvatar: deleteMode
+                              ? Text("d")
+                              : StarWidget(
+                                  user: user,
+                                  cheese: cheeses[ratings[index].cheeseId],
+                                ),
+                          onTapped: () => Navigator.pushNamed(context,
+                              "/cheese_route/${cheeses[ratings[index].cheeseId].id}"),
                         ),
                       );
                     },

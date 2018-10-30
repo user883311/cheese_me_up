@@ -86,7 +86,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
   Future<Null> initCheeses() async {
     final FirebaseDatabase database = FirebaseDatabase.instance;
     Query _cheesesRef;
-    // StreamSubscription streamSubscription;
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
     void _onEntryAdded(Event event) {
       setState(() {

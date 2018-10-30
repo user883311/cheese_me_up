@@ -12,7 +12,8 @@ class RememberCard extends StatefulWidget {
       : assert(user != null);
 
   @override
-  RememberCardState createState() => new RememberCardState(user: user, cheeses:cheeses);
+  RememberCardState createState() =>
+      new RememberCardState(user: user, cheeses: cheeses);
 }
 
 class RememberCardState extends State<RememberCard> {
@@ -46,7 +47,11 @@ class RememberCardState extends State<RememberCard> {
               textScaleFactor: 1.2,
             ),
             Text("${sentence.rememberCheckin(randomCheckin)}."),
-            cheeseTile(cheeses[randomCheckin.cheeseId], user, () {}, false),
+            CheeseTile(
+                cheese: cheeses[randomCheckin.cheeseId],
+                user: user,
+                onTapped: () {},
+                circleAvatar: false),
           ],
         ),
       ),

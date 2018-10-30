@@ -1,7 +1,11 @@
 import 'package:cheese_me_up/app_state_container.dart';
+import 'package:cheese_me_up/elements/cards/this_period_card.dart';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';
+import 'package:cheese_me_up/routes/checkin_route.dart';
+import 'package:cheese_me_up/routes/history_route.dart';
 import 'package:cheese_me_up/routes/login_route.dart';
+import 'package:cheese_me_up/routes/settings_route.dart';
 import 'package:flutter/material.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/elements/cards/all_time_card.dart';
@@ -9,7 +13,7 @@ import 'package:cheese_me_up/elements/cards/remember_card.dart';
 
 // TODO: add ability to pull body and release to refresh State
 
-// TODO: use FutureBuilder to build widget once db response received
+// TODO: use FutureBuilder to build widget once db response received, or for image loading (stream?)
 
 class FeedRoute extends StatefulWidget {
   FeedRoute();
@@ -22,12 +26,7 @@ class FeedRoute extends StatefulWidget {
 
 class _FeedRoute extends State<FeedRoute> {
   AppState appState;
-
-  @override
-  void didPopNext() {
-    // Covering route was popped off the navigator.
-    print("Did Pop Next");
-  }
+  int _currentIndex = 0;
 
   Widget get _pageToDisplay {
     if (appState.isLoading) {
@@ -48,77 +47,116 @@ class _FeedRoute extends State<FeedRoute> {
   Widget get _homeView {
     User user = appState.user;
     Map<String, Cheese> cheeses = appState.cheeses;
+
+    List _navigationViews = [
+      {
+        "body": ListView(
+          children: _cardsBuilder(user, cheeses),
+        ),
+        "appBar": null,
+      },
+      {
+        "body": new HistoryRoute(),
+        "appBar": null,
+      },
+      {
+        "body": new CheckinRoute(),
+        "appBar": null,
+      },
+      {
+        "body": Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Center(
+                  child: Text(
+                      "The Map functionnality is in preparation. Stay tuned!")),
+              Image.network("https://i.imgur.com/4L8KoEs.png"),
+            ]),
+        "appBar": null,
+      },
+      {
+        "body": new SettingsRoute(),
+        "appBar": null,
+      },
+    ];
+
+    List<BottomNavigationBarItem> _bottomNavBarItems = [
+      BottomNavigationBarItem(
+        title: Text("Home"),
+        icon: Icon(Icons.home),
+      ),
+      BottomNavigationBarItem(
+        title: Text("History"),
+        icon: Icon(Icons.history),
+      ),
+      BottomNavigationBarItem(
+        title: Text("Cheeses"),
+        icon: Icon(Icons.search),
+      ),
+      BottomNavigationBarItem(
+        title: Text("Around me"),
+        icon: Icon(Icons.person_pin_circle),
+      ),
+      BottomNavigationBarItem(
+        title: Text("Settings"),
+        icon: Icon(Icons.settings),
+      ),
+    ];
+
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            IgnorePointer(
-              child: IconButton(
-                icon: Image.asset(
-                  "assets/media/icons/settings.png",
-                  color: Colors.transparent,
-                ),
-                onPressed: () {},
-              ),
-            ),
-            Text("Brie"),
-            IconButton(
-              icon: Image.asset("assets/media/icons/settings.png"),
-              onPressed: () => Navigator.pushNamed(context, '/settings_route'),
-            ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        ),
+      appBar: _navigationViews[_currentIndex]["appBar"],
+      body: _navigationViews[_currentIndex]["body"],
+      bottomNavigationBar: new BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(() => _currentIndex = index);
+        },
+        fixedColor: Colors.blueGrey[700],
+        items: _bottomNavBarItems,
+        type: BottomNavigationBarType.fixed,
       ),
-      body: ListView(
-        children: _cardsBuilder(user, cheeses),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.brown,
-        ),
-        child: ButtonBar(
-          alignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            IconButton(
-              icon: Image.asset("assets/media/icons/history.png"),
-              onPressed: () async {
-                // await Navigator.pushNamed(context, '/history_route');
-                await Navigator.pushReplacementNamed(context, '/history_route');
-                print("just came back to FeedRoute..!");
-              },
-            ),
-            IconButton(
-                icon: Image.asset("assets/media/icons/map.png"),
-                onPressed: () {
-                  return showDialog(
-                    context: context,
-                    builder: (_) {
-                      return AlertDialog(
-                        title: Text(
-                            "The Map functionnality is in preparation. Stay tuned!"),
-                      );
-                    },
-                  );
-                }),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-          shape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: Color.fromRGBO(181, 221, 255, 0.8),
-                width: 2.0,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-          backgroundColor: Colors.brown[800],
-          onPressed: _goCheckinRoute,
-          child: Padding(
-            child: Image.asset("assets/media/icons/cheese_color.png"),
-            padding: EdgeInsets.all(10.0),
-          )),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+      // ButtonBar(
+      //   alignment: MainAxisAlignment.spaceAround,
+      //   children: <Widget>[
+      //     IconButton(
+      //       icon: Image.asset(
+      //         "assets/media/icons/history.png",
+      //       ),
+      //       onPressed: () async {
+      //         await Navigator.pushReplacementNamed(context, '/history_route');
+      //       },
+      //     ),
+      //     IconButton(
+      //         icon: Image.asset("assets/media/icons/map.png"),
+      //         onPressed: () {
+      //           return showDialog(
+      //             context: context,
+      //             builder: (_) {
+      //               return AlertDialog(
+      //                 title: Text(
+      //                     "The Map functionnality is in preparation. Stay tuned!"),
+      //               );
+      //             },
+      //           );
+      //         }),
+      //   ],
+      // ),
+      // ),
+      // floatingActionButton: FloatingActionButton(
+      //     shape: RoundedRectangleBorder(
+      //         side: BorderSide(
+      //           color: Color.fromRGBO(181, 221, 255, 0.8),
+      //           width: 2.0,
+      //         ),
+      //         borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      //     backgroundColor: Colors.brown[800],
+      //     onPressed: _goCheckinRoute,
+      //     child: Padding(
+      //       child: Image.asset("assets/media/icons/cheese_color.png"),
+      //       padding: EdgeInsets.all(10.0),
+      //     )),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -134,7 +172,18 @@ class _FeedRoute extends State<FeedRoute> {
         user: user,
         cheeses: cheeses,
       ));
+      _widgetToDisplay.add(ThisPeriodCard(
+        periodName: "week",
+        user: user,
+        cheeses: cheeses,
+      ));
+      _widgetToDisplay.add(ThisPeriodCard(
+        periodName: "month",
+        user: user,
+        cheeses: cheeses,
+      ));
     }
+
     return _widgetToDisplay;
   }
 

@@ -39,3 +39,6 @@ doc/api/
 *.js.deps
 *.js.map
 lib/stateful_template.dart
+mockups/NewProject.bmpr
+listOfUris.txt
+sandbox/app_icon_creation/cheese_color.png

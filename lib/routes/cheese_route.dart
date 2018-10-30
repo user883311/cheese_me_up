@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cheese_me_up/elements/modified_smooth_star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/points_scorer.dart';
@@ -10,6 +11,7 @@ import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class CheeseRoute extends StatefulWidget {
   final String cheeseId;
@@ -108,8 +110,10 @@ class CheeseRouteState extends State<CheeseRoute> {
               onPressed: () async {
                 String response =
                     await _checkCheckinIntent(cheese, appState.user, context);
-                Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text(response)));
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(response),
+                  backgroundColor: Colors.red[100],
+                ));
               },
             ),
       ),
@@ -132,8 +136,7 @@ class CheeseRouteState extends State<CheeseRoute> {
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
           ),
           flexibleSpace: FlexibleSpaceBar(
-            background: 
-            Image.network(
+            background: Image.network(
               "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2Fabbaye-de-belloc.jpg?alt=media&token=dfee9be5-5bdb-4ce5-8bf9-ec019174606d",
               // Image.asset(
               //   "assets/media/img/cheese/" + cheese.image,
@@ -148,53 +151,138 @@ class CheeseRouteState extends State<CheeseRoute> {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Builder(
-                builder: (context) => new StarRating(
-                      rating: rating ?? 0.0,
-                      color: Colors.orange,
-                      borderColor: Colors.grey,
-                      size: 50.0,
-                      starCount: 5,
-                      onRatingChanged: (rating) async => setState(
-                            () {
+                  builder: (context) => Column(
+                        children: <Widget>[
+                          ModifiedSmoothStarRating(
+                            allowHalfRating: false,
+                            onRatingChanged: (rating) async {
                               if (appState.user != null) {
-                                this.rating = rating;
-                                if (appState.user != null) {
-                                  setState(() async {
-                                    TransactionResult result =
-                                        await writeNewElementToDatabase(
-                                            Rating.fromCheeseDateTime(
-                                              cheeseId,
-                                              DateTime.now(),
-                                              rating,
-                                            ).toJson(),
-                                            FirebaseDatabase.instance
-                                                .reference()
-                                                .child(
-                                                    'users/${appState.user.id}/ratings/r$cheeseId'),
-                                            randomKey: false);
-                                    if (result.committed) {
-                                      Scaffold.of(context).showSnackBar(
-                                          SnackBar(
-                                              content: Text(
-                                                  'Added to your ratings.')));
-                                    }
+                                TransactionResult result =
+                                    await writeNewElementToDatabase(
+                                        Rating.fromCheeseDateTime(
+                                          cheeseId,
+                                          DateTime.now(),
+                                          rating,
+                                        ).toJson(),
+                                        FirebaseDatabase.instance.reference().child(
+                                            'users/${appState.user.id}/ratings/r$cheeseId'),
+                                        randomKey: false);
+                                if (result.committed) {
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text('Added to your ratings.'),
+                                    backgroundColor: Colors.red[100],
+                                  ));
+                                  setState(() {
+                                    this.rating = rating;
                                   });
+                                } else {
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        'Oops. It was not added to your ratings.'),
+                                    backgroundColor: Colors.red[100],
+                                  ));
                                 }
                               } else {
                                 Navigator.pop(context, false);
                                 Navigator.pushReplacementNamed(context, "/");
                               }
                             },
+                            starCount: 5,
+                            rating: rating ?? 0.0,
+                            size: 40.0,
+                            color: Colors.orange,
+                            borderColor: Colors.orange,
                           ),
-                    ),
-              ),
+                          // StarRating(
+                          //   rating: rating ?? 0.0,
+                          //   color: Colors.orange,
+                          //   borderColor: Colors.grey,
+                          //   size: 50.0,
+                          //   starCount: 5,
+                          //   onRatingChanged: (rating) async => setState(
+                          //         () {
+                          //           if (appState.user != null) {
+                          //             this.rating = rating;
+                          //             if (appState.user != null) {
+                          //               setState(() async {
+                          //                 TransactionResult result =
+                          //                     await writeNewElementToDatabase(
+                          //                         Rating.fromCheeseDateTime(
+                          //                           cheeseId,
+                          //                           DateTime.now(),
+                          //                           rating,
+                          //                         ).toJson(),
+                          //                         FirebaseDatabase.instance
+                          //                             .reference()
+                          //                             .child(
+                          //                                 'users/${appState.user.id}/ratings/r$cheeseId'),
+                          //                         randomKey: false);
+                          //                 if (result.committed) {
+                          //                   Scaffold.of(context).showSnackBar(
+                          //                     SnackBar(
+                          //                       content: Text(
+                          //                           'Added to your ratings.'),
+                          //                     ),
+                          //                   );
+                          //                 }
+                          //               });
+                          //             }
+                          //           } else {
+                          //             Navigator.pop(context, false);
+                          //             Navigator.pushReplacementNamed(
+                          //                 context, "/");
+                          //           }
+                          //         },
+                          //       ),
+                          // ),
+                        ],
+                      )),
             ),
+            // SmoothStarRating(
+            //   allowHalfRating: true,
+            //   onRatingChanged: (rating) async => setState(
+            //         () {
+            //           if (appState.user != null) {
+            //             this.rating = rating;
+            //             if (appState.user != null) {
+            //               setState(() async {
+            //                 TransactionResult result =
+            //                     await writeNewElementToDatabase(
+            //                         Rating.fromCheeseDateTime(
+            //                           cheeseId,
+            //                           DateTime.now(),
+            //                           rating,
+            //                         ).toJson(),
+            //                         FirebaseDatabase.instance.reference().child(
+            //                             'users/${appState.user.id}/ratings/r$cheeseId'),
+            //                         randomKey: false);
+            //                 if (result.committed) {
+            //                   Scaffold.of(context).showSnackBar(
+            //                     SnackBar(
+            //                       content: Text('Added to your ratings.'),
+            //                     ),
+            //                   );
+            //                 }
+            //               });
+            //             }
+            //           } else {
+            //             Navigator.pop(context, false);
+            //             Navigator.pushReplacementNamed(context, "/");
+            //           }
+            //         },
+            //       ),
+            //   starCount: 5,
+            //   rating: rating ?? 0.0,
+            //   size: 40.0,
+            //   color: Colors.green,
+            //   borderColor: Colors.green,
+            // ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("\nCHEESE ID\n"),
+                    Text("\nCHEESE ID CARD\n"),
                     Text("Name: ${cheese.name}"),
                     Text("Country: ${cheese.country}"),
                     Text(
@@ -202,44 +290,21 @@ class CheeseRouteState extends State<CheeseRoute> {
                     Text("\nPAIRINGS\n"),
                     Text("Wine: merlot, bourgogne dry."),
                     Text("Meats: red meat, lamb."),
+                    Text(
+                        "\nIpsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\nSed repellat beatae quia qui est. Consectetur eligendi sit voluptate maxime voluptate deleniti sequi. Ea sed consequuntur quaerat nemo consectetur temporibus consectetur omnis.\n"),
+                    Text(
+                        "\Ipsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\n"),
                     Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("Wine: merlot, bourgogne dry."),
-                    Text("Wine: merlot, bourgogne dry."),
-                    Text("Wine: merlot, bourgogne dry."),
-                    Text("Wine: merlot, bourgogne dry."),
-                    Text("Wine: merlot, bourgogne dry."),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
-                    Text("\nLOCATION\n"),
+                    Image.network("https://i.imgur.com/4L8KoEs.png"),
+                    
+                    Text(
+                        "\nIpsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\n"),
+                    Text("\nABOUT THE PRODUCER\n"),
+                    Text(
+                        "\Ipsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\n"),
+                    Text("\nHOW TO ORDER\n"),
+                    Text(
+                        "\Ipsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\n"),
                   ]),
             ),
           ]),

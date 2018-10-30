@@ -16,7 +16,6 @@ class CheckinRouteState extends State<CheckinRoute> {
   AppState appState;
   Map<String, Cheese> cheeses = new Map();
   List<Cheese> _cheesesShortlist = List();
-  // Cheese cheese;
   TextEditingController searchStringController;
   User user;
   bool searchOn = false;
@@ -26,16 +25,7 @@ class CheckinRouteState extends State<CheckinRoute> {
     super.initState();
   }
 
-  @override
-  void didUpdateDependencies() {
-    var container = AppStateContainer.of(context);
-    appState = container.state;
-    _cheesesShortlist.addAll(appState.cheeses.values);
-  }
-
   void refreshSearch(String searchString) {
-    print("searchString: $searchString");
-    // searchStringController.text=searchString;
     searchOn = (searchString != "");
     _cheesesShortlist = [];
     for (Cheese cheese in appState.cheeses.values) {
@@ -47,7 +37,6 @@ class CheckinRouteState extends State<CheckinRoute> {
         });
       }
     }
-    print("_cheesesShortlist:\n$_cheesesShortlist");
   }
 
   @override
@@ -59,42 +48,39 @@ class CheckinRouteState extends State<CheckinRoute> {
       _cheesesShortlist.addAll(appState.cheeses.values);
     }
 
+    Widget checkinBody = Column(
+      children: <Widget>[
+        Flexible(
+          child: ListView.builder(
+              itemCount: _cheesesShortlist.length,
+              itemBuilder: (context, index) => CheeseTile(
+                  cheese: _cheesesShortlist[index],
+                  user: user,
+                  onTapped: () => Navigator.pushNamed(
+                      context, "/cheese_route/${_cheesesShortlist[index].id}"),
+                  circleAvatar: true)),
+        ),
+      ],
+    );
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, "/", ModalRoute.withName('/'));
-            }),
+        automaticallyImplyLeading: false,
+        leading: (user == null)
+            ? IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () => Navigator.pop(context))
+            : null,
         title: TextField(
           autofocus: false,
           controller: searchStringController,
           onChanged: refreshSearch,
           decoration: InputDecoration(
-            hintStyle: TextStyle(color: Colors.white70),
-            hintText: "Search cheese...",
+            // hintStyle: TextStyle(color: Colors.white70),
+            hintText: "Search a cheese...",
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Flexible(
-            child: ListView.builder(
-              itemCount: _cheesesShortlist.length,
-              itemBuilder: (context, index) {
-                Cheese cheese = _cheesesShortlist[index];
-                return cheeseTile(
-                    cheese,
-                    user,
-                    () => Navigator.pushNamed(
-                        context, "/cheese_route/${cheese.id}"),
-                    false);
-              },
-            ),
-          ),
-        ],
-      ),
+      body: checkinBody,
     );
   }
 }

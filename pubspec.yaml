@@ -25,7 +25,7 @@ dependencies:
   flutter_launcher_icons: ^0.6.1
   intl: ^0.15.7
   smooth_star_rating: ^1.0.0
-  flutter_rating: ^0.0.1
+  flutter_rating: ^0.0.2
 
 dev_dependencies:
   flutter_test:

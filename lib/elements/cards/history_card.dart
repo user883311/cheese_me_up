@@ -68,10 +68,8 @@ class HistoryCard extends StatelessWidget {
                             case true:
                               _deleteCheckin(
                                   appState.user.id, checkin.checkinId);
-                                  Scaffold.of(context).showSnackBar(
-                                          SnackBar(
-                                              content: Text(
-                                                  'Deleted checkin.')));
+                              Scaffold.of(context).showSnackBar(
+                                  SnackBar(content: Text('Deleted checkin.'),backgroundColor: Colors.red[100],));
                               break;
 
                             case false:
