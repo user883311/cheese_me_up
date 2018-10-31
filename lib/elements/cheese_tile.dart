@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
-
-import 'package:flutter/material.dart';
 
 /// Creates a tile representing a given [Cheese] object. Upon tapping
 /// on the tile, a callback function [onTapped] is called, for a given [user].
@@ -20,13 +20,15 @@ class CheeseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return ThemedCard(
       child: ListTile(
         trailing: new Container(
           width: 100.0,
           height: 50.0,
-          child: new Image.asset(
-            "assets/media/img/cheese/" + cheese.image,
+          child: new Image.network(
+            "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2Fabbaye-de-belloc.jpg?alt=media&token=dfee9be5-5bdb-4ce5-8bf9-ec019174606d",
+            // Image.asset(
+            //   "assets/media/img/cheese/" + cheese.image,
             fit: BoxFit.cover,
           ),
         ),

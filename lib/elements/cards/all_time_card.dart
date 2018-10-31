@@ -1,3 +1,4 @@
+import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/elements/sentence.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
@@ -32,7 +33,7 @@ class AllTimeCardState extends State<AllTimeCard> {
   Widget build(BuildContext context) {
     sentence = new Sentence(user: user, cheeses: cheeses);
 
-    return Card(
+    return ThemedCard(
       margin: EdgeInsets.all(10.0),
       child: Container(
         padding: EdgeInsets.all(10.0),

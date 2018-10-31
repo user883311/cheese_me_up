@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cheese_me_up/elements/modified_smooth_star_rating.dart';
+import 'package:cheese_me_up/elements/themed_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/points_scorer.dart';
@@ -10,8 +11,6 @@ import 'package:cheese_me_up/models/rating.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:cheese_me_up/utils/database.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_rating/flutter_rating.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class CheeseRoute extends StatefulWidget {
   final String cheeseId;
@@ -110,9 +109,10 @@ class CheeseRouteState extends State<CheeseRoute> {
               onPressed: () async {
                 String response =
                     await _checkCheckinIntent(cheese, appState.user, context);
-                Scaffold.of(context).showSnackBar(SnackBar(
+                Scaffold.of(context).showSnackBar(ThemedSnackBar(
                   content: Text(response),
                   backgroundColor: Colors.red[100],
+                  
                 ));
               },
             ),
@@ -168,7 +168,7 @@ class CheeseRouteState extends State<CheeseRoute> {
                                             'users/${appState.user.id}/ratings/r$cheeseId'),
                                         randomKey: false);
                                 if (result.committed) {
-                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                  Scaffold.of(context).showSnackBar(ThemedSnackBar(
                                     content: Text('Added to your ratings.'),
                                     backgroundColor: Colors.red[100],
                                   ));
@@ -176,7 +176,7 @@ class CheeseRouteState extends State<CheeseRoute> {
                                     this.rating = rating;
                                   });
                                 } else {
-                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                  Scaffold.of(context).showSnackBar(ThemedSnackBar(
                                     content: Text(
                                         'Oops. It was not added to your ratings.'),
                                     backgroundColor: Colors.red[100],

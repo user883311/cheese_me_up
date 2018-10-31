@@ -63,6 +63,7 @@ class CheckinRouteState extends State<CheckinRoute> {
       ],
     );
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: (user == null)

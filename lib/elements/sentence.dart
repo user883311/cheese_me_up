@@ -46,8 +46,6 @@ class Sentence {
     } else {
       String response =
           "You have tried ${user.uniqueCheeseIds.length} different cheeses: ";
-      // TODO: sort Cheeses by date added
-      // List cheesesList = user.uniqueCheeseIds.map((String id){return });
       for (var i = 0; i < user.uniqueCheeseIds.length; i++) {
         Cheese cheese = cheeses[user.uniqueCheeseIds.toList()[i]]; // user.uniqueCheeseIds.toList()[i]
         if (i == user.uniqueCheeseIds.length - 1) {

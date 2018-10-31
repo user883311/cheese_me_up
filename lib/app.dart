@@ -13,49 +13,24 @@ class AppRootWidget extends StatefulWidget {
 
 class AppRootWidgetState extends State<AppRootWidget> {
   ThemeData get _themeData => new ThemeData(
-        cardColor: Colors.orange[50],
-        dialogBackgroundColor: Colors.orange[50],
-        primarySwatch: Colors.brown,
-        canvasColor: Colors.red[200], // works for bottomAppBar
-        scaffoldBackgroundColor: Colors.white,
-
-        // colorScheme: ColorScheme(
-        //     background: Colors.green,
-        //     onError: Colors.red,
-        //     primaryVariant: Colors.purple,
-        //     primary: Colors.teal,
-        //     secondary: Colors.amber,
-        //     secondaryVariant: Colors.purple,
-        //     onPrimary: Colors.black,
-        //     onSurface: Colors.blue,
-        //     onSecondary: Colors.brown,
-        //     brightness: Brightness.light,
-        //     surface: Colors.yellow,
-        //     onBackground: Colors.grey,
-        //     error: Colors.deepOrange),
-
         // backgroundColor: Colors.green,
-        primaryColor: Colors.red[200],
-        // primaryColorLight: Colors.cyan,
-        // unselectedWidgetColor: Colors.deepPurple,
         // bottomAppBarColor: Colors.yellow,
-
-        dividerColor: Colors.black45,
-        // primaryColorDark: Colors.black54,
-        // primaryColorLight: Colors.white54,
         // buttonColor: Colors.red[200],
         buttonTheme: ButtonThemeData(
-          buttonColor:  Color.fromRGBO(255, 202, 208, 0.7),
+          buttonColor: Color.fromRGBO(255, 202, 208, 0.7),
           height: 50.0,
           minWidth: 200.0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
         ),
+        canvasColor: Colors.red[200], // works for bottomAppBar
+        cardColor: Colors.orange[50],
+        dialogBackgroundColor: Colors.orange[50],
+        dividerColor: Colors.black45,
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Colors.red[300], width: 2.0),
+            borderSide: BorderSide(color: Colors.red[300], width: 2.0),
           ),
           hintStyle: TextStyle(color: Colors.black54),
           border: UnderlineInputBorder(
@@ -65,6 +40,12 @@ class AppRootWidgetState extends State<AppRootWidget> {
           filled: true,
           fillColor: Colors.white30,
         ),
+        primaryColor: Colors.red[200],
+        // primaryColorDark: Colors.black54,
+        // primaryColorLight: Colors.white54,
+        primarySwatch: Colors.brown,
+        scaffoldBackgroundColor: Colors.white,
+        // unselectedWidgetColor: Colors.deepPurple,
       );
 
   @override

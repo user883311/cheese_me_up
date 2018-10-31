@@ -1,4 +1,5 @@
 import 'package:cheese_me_up/app_state_container.dart';
+import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/elements/cards/this_period_card.dart';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';
@@ -65,13 +66,20 @@ class _FeedRoute extends State<FeedRoute> {
       },
       {
         "body": Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Center(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Center(
+              child: ThemedCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                      "The Map functionnality is in preparation. Stay tuned!")),
-              Image.network("https://i.imgur.com/4L8KoEs.png"),
-            ]),
+                      "The Map functionnality is in preparation. Stay tuned! ;-)"),
+                ),
+              ),
+            ),
+            Image.network("https://i.imgur.com/4L8KoEs.png"),
+          ],
+        ),
         "appBar": null,
       },
       {
@@ -83,7 +91,9 @@ class _FeedRoute extends State<FeedRoute> {
     List<BottomNavigationBarItem> _bottomNavBarItems = [
       BottomNavigationBarItem(
         title: Text("Home"),
-        icon: Icon(Icons.home),
+        icon: Icon(
+          Icons.home,
+        ),
       ),
       BottomNavigationBarItem(
         title: Text("History"),
@@ -115,48 +125,6 @@ class _FeedRoute extends State<FeedRoute> {
         items: _bottomNavBarItems,
         type: BottomNavigationBarType.fixed,
       ),
-
-      // ButtonBar(
-      //   alignment: MainAxisAlignment.spaceAround,
-      //   children: <Widget>[
-      //     IconButton(
-      //       icon: Image.asset(
-      //         "assets/media/icons/history.png",
-      //       ),
-      //       onPressed: () async {
-      //         await Navigator.pushReplacementNamed(context, '/history_route');
-      //       },
-      //     ),
-      //     IconButton(
-      //         icon: Image.asset("assets/media/icons/map.png"),
-      //         onPressed: () {
-      //           return showDialog(
-      //             context: context,
-      //             builder: (_) {
-      //               return AlertDialog(
-      //                 title: Text(
-      //                     "The Map functionnality is in preparation. Stay tuned!"),
-      //               );
-      //             },
-      //           );
-      //         }),
-      //   ],
-      // ),
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //     shape: RoundedRectangleBorder(
-      //         side: BorderSide(
-      //           color: Color.fromRGBO(181, 221, 255, 0.8),
-      //           width: 2.0,
-      //         ),
-      //         borderRadius: BorderRadius.all(Radius.circular(20.0))),
-      //     backgroundColor: Colors.brown[800],
-      //     onPressed: _goCheckinRoute,
-      //     child: Padding(
-      //       child: Image.asset("assets/media/icons/cheese_color.png"),
-      //       padding: EdgeInsets.all(10.0),
-      //     )),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -185,10 +153,6 @@ class _FeedRoute extends State<FeedRoute> {
     }
 
     return _widgetToDisplay;
-  }
-
-  void _goCheckinRoute() {
-    Navigator.pushReplacementNamed(context, '/checkin_route');
   }
 
   @override

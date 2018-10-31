@@ -1,7 +1,5 @@
-import 'package:cheese_me_up/app_state_container.dart';
-import 'package:cheese_me_up/elements/cheese_tile.dart';
+import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/elements/time.dart';
-import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/rating.dart';
 import 'package:cheese_me_up/models/user.dart';
@@ -58,15 +56,13 @@ class StarredCardState extends State<StarredCard> {
   Widget build(BuildContext context) {
     Rating rating = user.ratings[cheese.id];
 
-    return 
-    GestureDetector(
+    return GestureDetector(
       onTap: () async {
         if (onTapped != null) {
           onTapped();
         }
       },
-      child: 
-      Card(
+      child: ThemedCard(
         child: ListTile(
           trailing: Container(
             width: 110.0,
@@ -74,8 +70,7 @@ class StarredCardState extends State<StarredCard> {
             child: FittedBox(
               child: Stack(children: [
                 Positioned(
-                  child: 
-                  Image.network(
+                  child: Image.network(
                     "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2Fabbaye-de-belloc.jpg?alt=media&token=dfee9be5-5bdb-4ce5-8bf9-ec019174606d",
                     fit: BoxFit.cover,
                   ),
