@@ -64,12 +64,9 @@ class CheeseRouteState extends State<CheeseRoute> {
                               FirebaseDatabase.instance
                                   .reference()
                                   .child('users/${user.id}/checkins'));
-
                       Navigator.pop(context, resultTransaction.committed);
                     } else {
-                      // send user back to login page
-                      Navigator.pop(context, false);
-                      Navigator.pushReplacementNamed(context, "/");
+                      Navigator.popUntil(context, ModalRoute.withName('/'));
                     }
                   },
                   child: const Text('Yes')),
@@ -112,7 +109,6 @@ class CheeseRouteState extends State<CheeseRoute> {
                 Scaffold.of(context).showSnackBar(ThemedSnackBar(
                   content: Text(response),
                   backgroundColor: Colors.red[100],
-                  
                 ));
               },
             ),
@@ -137,7 +133,7 @@ class CheeseRouteState extends State<CheeseRoute> {
           ),
           flexibleSpace: FlexibleSpaceBar(
             background: Image.network(
-              "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2Fabbaye-de-belloc.jpg?alt=media&token=dfee9be5-5bdb-4ce5-8bf9-ec019174606d",
+              "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2FBelval-biere.jpg?alt=media&token=9c678f4e-bff1-4956-a533-72b283226abc",
               // Image.asset(
               //   "assets/media/img/cheese/" + cheese.image,
               fit: BoxFit.cover,
@@ -168,7 +164,8 @@ class CheeseRouteState extends State<CheeseRoute> {
                                             'users/${appState.user.id}/ratings/r$cheeseId'),
                                         randomKey: false);
                                 if (result.committed) {
-                                  Scaffold.of(context).showSnackBar(ThemedSnackBar(
+                                  Scaffold.of(context)
+                                      .showSnackBar(ThemedSnackBar(
                                     content: Text('Added to your ratings.'),
                                     backgroundColor: Colors.red[100],
                                   ));
@@ -176,7 +173,8 @@ class CheeseRouteState extends State<CheeseRoute> {
                                     this.rating = rating;
                                   });
                                 } else {
-                                  Scaffold.of(context).showSnackBar(ThemedSnackBar(
+                                  Scaffold.of(context)
+                                      .showSnackBar(ThemedSnackBar(
                                     content: Text(
                                         'Oops. It was not added to your ratings.'),
                                     backgroundColor: Colors.red[100],
@@ -296,7 +294,6 @@ class CheeseRouteState extends State<CheeseRoute> {
                         "\Ipsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\n"),
                     Text("\nLOCATION\n"),
                     Image.network("https://i.imgur.com/4L8KoEs.png"),
-                    
                     Text(
                         "\nIpsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\n"),
                     Text("\nABOUT THE PRODUCER\n"),

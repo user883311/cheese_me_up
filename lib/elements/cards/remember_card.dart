@@ -52,7 +52,7 @@ class RememberCardState extends State<RememberCard> {
                 cheese: cheeses[randomCheckin.cheeseId],
                 user: user,
                 onTapped: () {},
-                circleAvatar: false),
+                circleAvatar: true),
           ],
         ),
       ),

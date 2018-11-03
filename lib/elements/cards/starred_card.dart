@@ -71,7 +71,7 @@ class StarredCardState extends State<StarredCard> {
               child: Stack(children: [
                 Positioned(
                   child: Image.network(
-                    "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2Fabbaye-de-belloc.jpg?alt=media&token=dfee9be5-5bdb-4ce5-8bf9-ec019174606d",
+                    "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2FBelval-biere.jpg?alt=media&token=9c678f4e-bff1-4956-a533-72b283226abc",
                     fit: BoxFit.cover,
                   ),
                 ),
