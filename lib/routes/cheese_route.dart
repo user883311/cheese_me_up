@@ -132,16 +132,17 @@ class CheeseRouteState extends State<CheeseRoute> {
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
           ),
           flexibleSpace: FlexibleSpaceBar(
-            background: Image.network(
-              "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2FBelval-biere.jpg?alt=media&token=9c678f4e-bff1-4956-a533-72b283226abc",
-              // Image.asset(
-              //   "assets/media/img/cheese/" + cheese.image,
+            background: FadeInImage.assetNetwork(
+              fadeInDuration: Duration(seconds: 2),
+              fadeInCurve: Curves.bounceIn,
+              placeholder: "assets/media/icons/cheese_color.png",
+              image: "https://via.placeholder.com/350x150",
               fit: BoxFit.cover,
             ),
           ),
         ),
 
-        // TODO: add users average rating for that cheese in NoLogIn mode
+        // TODO: add users average rating for that cheese in NoLogIn mode (server function?)
         SliverList(
           delegate: SliverChildListDelegate([
             FittedBox(

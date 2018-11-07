@@ -1,16 +1,19 @@
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/cards/themed_card.dart';
+import 'package:cheese_me_up/elements/cheese_tile.dart';
 import 'package:cheese_me_up/elements/themed_snackbar.dart';
 import 'package:cheese_me_up/elements/time.dart';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/cheese.dart';
+import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import './themed_card.dart';
 
-class HistoryCard extends StatelessWidget {
+class HistoryCard extends StatefulWidget {
   final CheckIn checkin;
   final Cheese cheese;
 
@@ -19,92 +22,115 @@ class HistoryCard extends StatelessWidget {
     @required this.cheese,
   });
 
+  @override
+  HistoryCardState createState() {
+    return new HistoryCardState();
+  }
+}
+
+class HistoryCardState extends State<HistoryCard> {
   _deleteCheckin(String userId, String checkinId) {
     final FirebaseDatabase database = FirebaseDatabase.instance;
     DatabaseReference _userRef =
         database.reference().child("users/$userId/checkins/$checkinId");
-    _userRef.remove();
+    setState(() {
+      _userRef.remove();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var container = AppStateContainer.of(context);
     AppState appState = container.state;
+    User user = appState.user;
 
-    return ThemedCard(
-      child: Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "${relevantTimeSince(checkin.time)["durationInt"]} ${relevantTimeSince(checkin.time)["unit"]} ago",
-                  textScaleFactor: 1.2,
-                ),
-                Builder(
-                  builder: (context) => GestureDetector(
-                        onTap: () async {
-                          switch (await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return new SimpleDialog(
-                                  title: Text(
-                                      'Do you want to delete this checkin?'),
-                                  children: <Widget>[
-                                    new SimpleDialogOption(
-                                        onPressed: () =>
-                                            Navigator.pop(context, true),
-                                        child: const Text('Yes')),
-                                    new SimpleDialogOption(
-                                        onPressed: () =>
-                                            Navigator.pop(context, false),
-                                        child: const Text('No')),
-                                  ],
-                                );
-                              })) {
-                            case true:
-                              _deleteCheckin(
-                                  appState.user.id, checkin.checkinId);
-                              Scaffold.of(context).showSnackBar(ThemedSnackBar(
-                                content: Text('Deleted checkin.'),
-                                backgroundColor: Colors.red[100],
-                              ));
-                              break;
-
-                            case false:
-                              break;
-
-                            default:
-                              break;
-                          }
-                        },
-                        child: Icon(
-                          Icons.delete_outline,
-                          color: Colors.deepOrange[200],
-                        ),
-                      ),
-                ),
-              ],
-            ),
-            RawMaterialButton(
-              child: Text("\n${cheese.name}"),
-              onPressed: () =>
-                  Navigator.pushNamed(context, "/cheese_route/${cheese.id}"),
-            ),
-            Row(children: [
-              IconButton(
-                iconSize: 3.0,
-                icon: new Image.asset('assets/media/icons/trophy.png'),
-                onPressed: () {},
+    return Slidable(
+      child: ThemedCard(
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            child: ClipOval(
+              child: FadeInImage.assetNetwork(
+                fadeInDuration: Duration(seconds: 2),
+                fadeInCurve: Curves.bounceIn,
+                placeholder: "assets/media/icons/cheese_color.png",
+                image: "https://via.placeholder.com/350x150",
+                fit: BoxFit.cover,
               ),
-              Text("+ ${checkin.points} points"),
-            ]),
-          ],
+            ),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                  child: Text(
+                widget.cheese.name,
+                overflow: TextOverflow.ellipsis,
+              )),
+              widget.checkin == null
+                  ? Text("")
+                  : new PointWidget(
+                      checkin: widget.checkin,
+                      cheese: widget.cheese,
+                    ),
+            ],
+          ),
+          subtitle: new Text(widget.cheese.region +
+              ", " +
+              widget.cheese.country +
+              "\n${relevantTimeSince(widget.checkin.time)["durationInt"]} ${relevantTimeSince(widget.checkin.time)["unit"]} ago"),
+          onTap: () {},
         ),
       ),
+      delegate: new SlidableDrawerDelegate(),
+      actionExtentRatio: 0.25,
+      secondaryActions: <Widget>[
+        new IconSlideAction(
+          caption: 'Delete',
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: () => _deleteCheckin(user.id, widget.checkin.checkinId),
+        ),
+      ],
     );
+  }
+}
+
+class PointWidget extends StatelessWidget {
+  final CheckIn checkin;
+  final Cheese cheese;
+
+  const PointWidget({
+    Key key,
+    this.checkin,
+    this.cheese,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int points = checkin.points;
+    return ConstrainedBox(
+      constraints: BoxConstraints.tight(Size.fromRadius(18.0)),
+      child: Row(children: [
+        Text(
+          points.toString(),
+          style: TextStyle(
+            color: Colors.brown[_color(points)],
+          ),
+        ),
+        Icon(
+          Icons.monetization_on,
+          size: 18.0,
+          color: Colors.brown[_color(points)],
+        ),
+      ]),
+    );
+  }
+
+  int _color(points) {
+    if (points == null) {
+      return 0;
+    }
+    return points.toInt() * 100;
   }
 }

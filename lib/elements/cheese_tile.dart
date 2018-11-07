@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 /// Creates a tile representing a given [Cheese] object. Upon tapping
 /// on the tile, a callback function [onTapped] is called, for a given [user].
@@ -22,26 +23,19 @@ class CheeseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemedCard(
       child: ListTile(
-        // trailing: new Container(
-        //   width: 100.0,
-        //   height: 50.0,
-        //   child: new Image.network(
-        //     "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2FBelval-biere.jpg?alt=media&token=9c678f4e-bff1-4956-a533-72b283226abc",
-        //     // Image.asset(
-        //     //   "assets/media/img/cheese/" + cheese.image,
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
         leading: circleAvatar
             ? CircleAvatar(
-                backgroundColor: Colors.red[100],
-                foregroundColor: Colors.black,
-                // child: new Text(cheese.name.substring(0, 2).toUpperCase()),
-                backgroundImage: 
-                NetworkImage("https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2FBelval-biere.jpg?alt=media&token=9c678f4e-bff1-4956-a533-72b283226abc"),
-                // Image.network(
-                //   "https://firebasestorage.googleapis.com/v0/b/cheese-me-up.appspot.com/o/cheese_images%2FBelval-biere.jpg?alt=media&token=9c678f4e-bff1-4956-a533-72b283226abc",
-                // ),
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: FadeInImage.assetNetwork(
+                    fadeInDuration: Duration(seconds: 2),
+                    fadeInCurve: Curves.bounceIn,
+                    placeholder: "assets/media/icons/cheese_color.png",
+                    image:
+                        "https://via.placeholder.com/350x150",
+                    fit: BoxFit.cover,
+                  ),
+                ),
               )
             : null,
         title: Row(

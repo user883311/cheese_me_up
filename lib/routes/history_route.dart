@@ -1,13 +1,14 @@
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/cards/history_card.dart';
-import 'package:cheese_me_up/elements/cards/starred_card.dart';
 import 'package:cheese_me_up/elements/cheese_tile.dart';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/checkin.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/rating.dart';
 import 'package:cheese_me_up/models/user.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class HistoryRoute extends StatefulWidget {
   HistoryRoute({Key key});
@@ -24,6 +25,15 @@ class _HistoryRouteState extends State<HistoryRoute> {
   void initState() {
     super.initState();
     deleteMode = false;
+  }
+
+  _deleteRating(String userId, String cheeseId) {
+    final FirebaseDatabase database = FirebaseDatabase.instance;
+    DatabaseReference _userRef =
+        database.reference().child("users/$userId/ratings/r$cheeseId");
+    setState(() {
+      _userRef.remove();
+    });
   }
 
   @override
@@ -47,23 +57,6 @@ class _HistoryRouteState extends State<HistoryRoute> {
               Tab(icon: Icon(Icons.star)),
             ],
           ),
-
-          // automaticallyImplyLeading: false,
-          // bottom:
-          // TabBar(
-          //   tabs: [
-          //     Tab(icon: Icon(Icons.history)),
-          //     Tab(icon: Icon(Icons.star)),
-          //   ],
-          // ),
-          // title: Text("History"),
-          // leading: IconButton(
-          //     icon: Icon(Icons.arrow_back_ios),
-          //     onPressed: () {
-          //       // Navigator.pop(context);
-          //       Navigator.pushNamedAndRemoveUntil(
-          //           context, "/", ModalRoute.withName('/'));
-          //     }),
         ),
         body: TabBarView(
           children: <Widget>[
@@ -98,17 +91,25 @@ class _HistoryRouteState extends State<HistoryRoute> {
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.all(5.0),
-                        child: StarredCard(
-                          cheese: cheeses[ratings[index].cheeseId],
-                          user: user,
-                          circleAvatar: deleteMode
-                              ? Text("d")
-                              : StarWidget(
-                                  user: user,
-                                  cheese: cheeses[ratings[index].cheeseId],
-                                ),
-                          onTapped: () => Navigator.pushNamed(context,
-                              "/cheese_route/${cheeses[ratings[index].cheeseId].id}"),
+                        child: Slidable(
+                          child: CheeseTile(
+                            cheese: cheeses[ratings[index].cheeseId],
+                            user: user,
+                            circleAvatar: true,
+                            onTapped: () => Navigator.pushNamed(context,
+                                "/cheese_route/${cheeses[ratings[index].cheeseId].id}"),
+                          ),
+                          delegate: new SlidableDrawerDelegate(),
+                          actionExtentRatio: 0.25,
+                          secondaryActions: <Widget>[
+                            new IconSlideAction(
+                              caption: 'Delete',
+                              color: Colors.red,
+                              icon: Icons.delete,
+                              onTap: () => _deleteRating(
+                                  user.id, cheeses[ratings[index].cheeseId].id),
+                            ),
+                          ],
                         ),
                       );
                     },
