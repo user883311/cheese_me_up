@@ -13,8 +13,7 @@ class SettingsRoute extends StatefulWidget {
 
 class SettingsRouteState extends State<SettingsRoute> {
   AppState appState;
-  // TODO: add dropdown form to change user's profile fields:
-  // display name, isEmailVerified
+  // TODO: add dropdown form to change user's profile fields :display name, isEmailVerified
   @override
   void initState() => super.initState();
 

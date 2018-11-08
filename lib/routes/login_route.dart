@@ -1,12 +1,7 @@
-import 'dart:async';
 import 'package:cheese_me_up/app_state_container.dart';
-import 'package:cheese_me_up/models/user.dart';
-import 'package:cheese_me_up/utils/database.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
 
 final Map<String, dynamic> labels = {
   "sign_in_link": "Already have an account? Sign in here!",
@@ -18,19 +13,6 @@ final Map<String, dynamic> labels = {
   "sign_in_function": () {},
   "create_account_function": () {},
 };
-
-Future<Null> addNewUserToDatabase(User user) async {
-  DatabaseReference _usersRef =
-      FirebaseDatabase.instance.reference().child('users/${user.id}');
-
-  final TransactionResult transactionResult = await writeNewElementToDatabase(
-      user.toJson(), _usersRef,
-      randomKey: false);
-}
-
-// final FirebaseAuth _auth = FirebaseAuth.instance;
-
-// bool signInOrCreateAccountMode = true;
 
 class LoginRoute extends StatefulWidget {
   LoginRoute();
@@ -45,8 +27,10 @@ class LoginRouteState extends State<LoginRoute> {
 
   bool signInOrCreateAccountMode = true;
 
-  TextEditingController emailController = new TextEditingController(text: "user883311@gmail.com");
-  TextEditingController passwordController1 = new TextEditingController(text: "password");
+  TextEditingController emailController =
+      new TextEditingController(text: "user883311@gmail.com");
+  TextEditingController passwordController1 =
+      new TextEditingController(text: "password");
   TextEditingController passwordController2 = new TextEditingController();
 
   void handleSignInResponse(dynamic response) {
