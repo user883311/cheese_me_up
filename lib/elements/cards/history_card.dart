@@ -1,6 +1,5 @@
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/cards/themed_card.dart';
-import 'package:cheese_me_up/elements/cheese_tile.dart';
 import 'package:cheese_me_up/elements/themed_snackbar.dart';
 import 'package:cheese_me_up/elements/time.dart';
 import 'package:cheese_me_up/models/app_state.dart';
@@ -89,9 +88,13 @@ class HistoryCardState extends State<HistoryCard> {
           caption: 'Delete',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: () => _deleteCheckin(user.id, widget.checkin.checkinId),
+          onTap: () {
+            _deleteCheckin(user.id, widget.checkin.checkinId);
+            showSnackBar(context, "This checkin has been deleted.");
+          },
         ),
       ],
+      // controller: _slidableController,
     );
   }
 }

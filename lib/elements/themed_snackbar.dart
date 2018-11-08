@@ -20,3 +20,13 @@ class ThemedSnackBar extends SnackBar {
         assert(duration != null),
         super(key: key, content: content);
 }
+
+void showSnackBar(BuildContext context, String message) {
+    Scaffold.of(context).showSnackBar(ThemedSnackBar(
+      content: Text(
+        message,
+        style: TextStyle(color: Colors.black87),
+      ),
+      backgroundColor: Colors.red[100],
+    ));
+  }

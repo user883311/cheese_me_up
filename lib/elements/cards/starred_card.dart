@@ -1,5 +1,6 @@
 import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/elements/cheese_tile.dart';
+import 'package:cheese_me_up/elements/themed_snackbar.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -45,13 +46,6 @@ class StarredCardState extends State<StarredCard> {
     super.initState();
   }
 
-  _deleteRating(String userId, String cheeseId) {
-    final FirebaseDatabase database = FirebaseDatabase.instance;
-    DatabaseReference _userRef =
-        database.reference().child("users/$userId/ratings/r$cheeseId");
-    _userRef.remove();
-  }
-
   Widget build(BuildContext context) {
     return ThemedCard(
       child: ListTile(
@@ -62,8 +56,7 @@ class StarredCardState extends State<StarredCard> {
               fadeInDuration: Duration(seconds: 2),
               fadeInCurve: Curves.bounceIn,
               placeholder: "assets/media/icons/cheese_color.png",
-              image:
-                  "https://via.placeholder.com/350x150",
+              image: "https://via.placeholder.com/350x150",
               fit: BoxFit.cover,
             ),
           ),

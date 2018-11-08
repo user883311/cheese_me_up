@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 /// Creates a tile representing a given [Cheese] object. Upon tapping
 /// on the tile, a callback function [onTapped] is called, for a given [user].

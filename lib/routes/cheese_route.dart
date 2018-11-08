@@ -106,10 +106,7 @@ class CheeseRouteState extends State<CheeseRoute> {
               onPressed: () async {
                 String response =
                     await _checkCheckinIntent(cheese, appState.user, context);
-                Scaffold.of(context).showSnackBar(ThemedSnackBar(
-                  content: Text(response),
-                  backgroundColor: Colors.red[100],
-                ));
+                showSnackBar(context, response);
               },
             ),
       ),
@@ -165,21 +162,14 @@ class CheeseRouteState extends State<CheeseRoute> {
                                             'users/${appState.user.id}/ratings/r$cheeseId'),
                                         randomKey: false);
                                 if (result.committed) {
-                                  Scaffold.of(context)
-                                      .showSnackBar(ThemedSnackBar(
-                                    content: Text('Added to your ratings.'),
-                                    backgroundColor: Colors.red[100],
-                                  ));
+                                  showSnackBar(
+                                      context, "Added to your ratings");
                                   setState(() {
                                     this.rating = rating;
                                   });
                                 } else {
-                                  Scaffold.of(context)
-                                      .showSnackBar(ThemedSnackBar(
-                                    content: Text(
-                                        'Oops. It was not added to your ratings.'),
-                                    backgroundColor: Colors.red[100],
-                                  ));
+                                  showSnackBar(context,
+                                      "Oops. It was not added to your ratings.");
                                 }
                               } else {
                                 Navigator.pop(context, false);
