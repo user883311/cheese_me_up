@@ -78,7 +78,8 @@ class HistoryCardState extends State<HistoryCard> {
               ", " +
               widget.cheese.country +
               "\n${relevantTimeSince(widget.checkin.time)["durationInt"]} ${relevantTimeSince(widget.checkin.time)["unit"]} ago"),
-          onTap: () {},
+          onTap: () =>
+              Navigator.pushNamed(context, "/cheese_route/${widget.cheese.id}"),
         ),
       ),
       delegate: new SlidableDrawerDelegate(),

@@ -188,7 +188,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
     }
   }
 
-  Future<Null> emailLogIntoFirebase(String email, String password) async {
+  Future<dynamic> emailLogIntoFirebase(String email, String password) async {
     FirebaseUser firebaseUser;
     FirebaseAuth _auth = FirebaseAuth.instance;
     try {
@@ -219,13 +219,10 @@ class _AppStateContainerState extends State<AppStateContainer> {
           state.user = new User.fromSnapshot(event.snapshot);
         });
       });
+      return true;
     } catch (e) {
       print("Firebase sign-in error (${e.runtimeType}):\n$e");
-      if (e.runtimeType == PlatformException) {
-        return e.details;
-      } else {
-        return e;
-      }
+      return e;
     }
   }
 

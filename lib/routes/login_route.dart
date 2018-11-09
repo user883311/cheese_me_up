@@ -1,18 +1,8 @@
 import 'package:cheese_me_up/app_state_container.dart';
+import 'package:cheese_me_up/elements/themed_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
-final Map<String, dynamic> labels = {
-  "sign_in_link": "Already have an account? Sign in here!",
-  "create_account_link": "Don't have an account yet? Create one here!",
-  "sign_in_button_title": "Log into my account",
-  "create_account_button_title": "Create account",
-  "sign_in_appbar_title": "Sign in",
-  "create_account_appbar_title": "Create account",
-  "sign_in_function": () {},
-  "create_account_function": () {},
-};
 
 class LoginRoute extends StatefulWidget {
   LoginRoute();
@@ -25,62 +15,33 @@ class LoginRouteState extends State<LoginRoute> {
   bool _disableButtons = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  bool signInOrCreateAccountMode = true;
+  bool _signInOrCreateAccountMode = true;
 
-  TextEditingController emailController =
+  TextEditingController _emailController =
       new TextEditingController(text: "user883311@gmail.com");
-  TextEditingController passwordController1 =
+  TextEditingController _passwordController1 =
       new TextEditingController(text: "password");
-  TextEditingController passwordController2 = new TextEditingController();
-
-  void handleSignInResponse(dynamic response) {
-    // print("response:\n$response");
-    try {
-      if (response.runtimeType == FirebaseUser && response.uid != null) {
-        Navigator.pushReplacementNamed(context, '/feed_route/${response.uid}');
-      } else {
-        print("Login failed.. Response:\n$response");
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return new SimpleDialog(
-                title: Text('Bummer! It failed. $response'),
-                children: <Widget>[
-                  new SimpleDialogOption(
-                    onPressed: () => Navigator.pop(context, true),
-                    child: const Text('OK', textAlign: TextAlign.center),
-                  ),
-                ],
-              );
-            });
-      }
-    } finally {
-      setState(() {
-        _disableButtons = false;
-      });
-    }
-  }
+  TextEditingController _passwordController2 = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     _disableButtons = false;
     final container = AppStateContainer.of(context);
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color.fromRGBO(255, 202, 208, 0.9),
-        label: Text(
-          "show me the\ncheese now!",
-          style: TextStyle(color: Colors.black87),
-        ),
-        icon: Icon(
-          Icons.search,
-          color: Colors.black87,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, '/checkin_route');
-        },
+    Widget _floatingActionButton = FloatingActionButton.extended(
+      backgroundColor: Color.fromRGBO(255, 202, 208, 0.9),
+      label: Text(
+        "show me the\ncheese now!",
+        style: TextStyle(color: Colors.black87),
       ),
+      icon: Icon(Icons.search, color: Colors.black87),
+      onPressed: () {
+        Navigator.pushNamed(context, '/checkin_route');
+      },
+    );
+
+    return Scaffold(
+      floatingActionButton: _floatingActionButton,
       resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: new BoxDecoration(
@@ -116,23 +77,23 @@ class LoginRouteState extends State<LoginRoute> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TextField(
-                        controller: emailController,
+                        controller: _emailController,
                         decoration: InputDecoration(
                           hintText: "Email address",
                         ),
                         keyboardType: TextInputType.emailAddress,
                       ),
                       TextField(
-                        controller: passwordController1,
+                        controller: _passwordController1,
                         obscureText: true,
                         decoration: InputDecoration(
                           hintText: "Password",
                         ),
                       ),
-                      signInOrCreateAccountMode
+                      _signInOrCreateAccountMode
                           ? Container()
                           : new TextField(
-                              controller: passwordController2,
+                              controller: _passwordController2,
                               obscureText: true,
                               decoration: InputDecoration(
                                 hintText: "Type your password again",
@@ -142,53 +103,45 @@ class LoginRouteState extends State<LoginRoute> {
                         padding: EdgeInsets.only(top: 15.0),
                         child: IgnorePointer(
                           ignoring: _disableButtons,
-                          child: RaisedButton(
-                            // color: Color.fromRGBO(181, 221, 255, 0.8),
-                            child: Text(
-                              signInOrCreateAccountMode
-                                  ? labels["sign_in_button_title"]
-                                  : labels["create_account_button_title"],
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                _disableButtons = true;
-                              });
-                              try {
-                                if (!signInOrCreateAccountMode) {
-                                  if (passwordController1.text !=
-                                      passwordController2.text) {
-                                    throw "Bummer! Your 2 passwords do not match.";
+                          child: Builder(
+                            builder: (context) {
+                              return RaisedButton(
+                                // color: Color.fromRGBO(181, 221, 255, 0.8),
+                                child: Text(
+                                  _signInOrCreateAccountMode
+                                      ? "Log into my account"
+                                      : "Create account",
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    _disableButtons = true;
+                                  });
+                                  try {
+                                    if (!_signInOrCreateAccountMode) {
+                                      if (_passwordController1.text !=
+                                          _passwordController2.text) {
+                                        throw "Your 2 passwords do not match.";
+                                      }
+                                      await _auth
+                                          .createUserWithEmailAndPassword(
+                                        email: _emailController.text,
+                                        password: _passwordController1.text,
+                                      );
+                                    }
+                                    dynamic _loginAttemptResponse =
+                                        await container.emailLogIntoFirebase(
+                                            _emailController.text,
+                                            _passwordController1.text);
+                                    if (_loginAttemptResponse != true) {
+                                      throw _loginAttemptResponse;
+                                    }
+                                  } catch (e) {
+                                    print("error came:$e");
+                                    showSnackBar(context,
+                                        "Bummer! ${e.details.toString()}");
                                   }
-                                  await _auth.createUserWithEmailAndPassword(
-                                    email: emailController.text,
-                                    password: passwordController1.text,
-                                  );
-                                }
-                                container.emailLogIntoFirebase(
-                                    emailController.text,
-                                    passwordController1.text);
-                              } catch (e) {
-                                print("error came:$e");
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return new SimpleDialog(
-                                      title: Text('Bummer! ${e.toString()}'),
-                                      children: <Widget>[
-                                        new SimpleDialogOption(
-                                          onPressed: () {
-                                            Navigator.pop(context, true);
-                                          },
-                                          child: const Text(
-                                            'OK',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
+                                },
+                              );
                             },
                           ),
                         ),
@@ -196,7 +149,7 @@ class LoginRouteState extends State<LoginRoute> {
                     ],
                   ),
                 ),
-                signInOrCreateAccountMode
+                _signInOrCreateAccountMode
                     ? Padding(
                         padding: EdgeInsets.symmetric(vertical: 0.0),
                         child: IgnorePointer(
@@ -226,20 +179,20 @@ class LoginRouteState extends State<LoginRoute> {
                     ignoring: _disableButtons,
                     child: FlatButton(
                       child: Text(
-                        signInOrCreateAccountMode
-                            ? labels["create_account_link"]
-                            : labels["sign_in_link"],
+                        _signInOrCreateAccountMode
+                            ? "Don't have an account yet? Create one here!"
+                            : "Already have an account? Sign in here!",
                         style: TextStyle(color: Colors.blue[900]),
                       ),
-                      onPressed: signInOrCreateAccountMode
+                      onPressed: _signInOrCreateAccountMode
                           ? () {
                               setState(() {
-                                signInOrCreateAccountMode = false;
+                                _signInOrCreateAccountMode = false;
                               });
                             }
                           : () {
                               setState(() {
-                                signInOrCreateAccountMode = true;
+                                _signInOrCreateAccountMode = true;
                               });
                             },
                     ),
@@ -331,12 +284,6 @@ class EmailVerificationDialog extends StatelessWidget {
                 await _auth
                     .sendPasswordResetEmail(email: emailToReset.text.trim())
                     .then((_) {});
-              } on Exception catch (e) {
-                print('1/ Exception details:\n $e');
-              } catch (e, s) {
-                print('2/ Exception details:\n $e');
-                print('Stack trace:\n $s');
-              } finally {
                 await showDialog(
                     context: context,
                     builder: (context) => SimpleDialog(children: <Widget>[
@@ -344,6 +291,18 @@ class EmailVerificationDialog extends StatelessWidget {
                               "A password reset email has been sent to this email address, if it is linked to an active account. Thanks!")
                         ]));
                 Navigator.pop(context);
+              } on PlatformException catch (e) {
+                await showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                        children: <Widget>[Text(e.details.toString())]));
+              } on Exception catch (e) {
+                await showDialog(
+                    context: context,
+                    builder: (context) =>
+                        SimpleDialog(children: <Widget>[Text(e.toString())]));
+              } catch (e) {
+                print(e);
               }
             },
           ),

@@ -23,6 +23,7 @@ class ThemedSnackBar extends SnackBar {
 
 void showSnackBar(BuildContext context, String message) {
     Scaffold.of(context).showSnackBar(ThemedSnackBar(
+      duration: Duration(milliseconds: 2000),
       content: Text(
         message,
         style: TextStyle(color: Colors.black87),

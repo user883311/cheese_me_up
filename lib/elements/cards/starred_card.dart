@@ -1,9 +1,7 @@
 import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/elements/cheese_tile.dart';
-import 'package:cheese_me_up/elements/themed_snackbar.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
