@@ -47,8 +47,8 @@ class StarredCardState extends State<StarredCard> {
   Widget build(BuildContext context) {
     return ThemedCard(
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.transparent,
+        leading: Container(
+          width: 90.0,
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
             child: FadeInImage.assetNetwork(

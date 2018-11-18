@@ -46,10 +46,10 @@ class HistoryCardState extends State<HistoryCard> {
     return Slidable(
       child: ThemedCard(
         child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.transparent,
+          leading: Container(
+            width: 90.0,
             child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
               child: FadeInImage.assetNetwork(
                 fadeInDuration: Duration(seconds: 2),
                 fadeInCurve: Curves.bounceIn,

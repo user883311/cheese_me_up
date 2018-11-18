@@ -22,22 +22,27 @@ class CheeseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemedCard(
       child: ListTile(
-        leading: circleAvatar
-            ? CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: FadeInImage.assetNetwork(
-                    fadeInDuration: Duration(seconds: 2),
-                    fadeInCurve: Curves.bounceIn,
-                    placeholder: "assets/media/icons/cheese_color.png",
-                    image:
-                        cheese.image,
-                    fit: BoxFit.cover,
+        leading: 
+        // circleAvatar
+        //     ? CircleAvatar(
+        //         backgroundColor: Colors.transparent,
+        //         child: 
+                Container(
+                  width: 90.0,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: FadeInImage.assetNetwork(
+                      fadeInDuration: Duration(seconds: 2),
+                      fadeInCurve: Curves.bounceIn,
+                      placeholder: "assets/media/icons/cheese_color.png",
+                      image:
+                          cheese.image,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              )
-            : null,
+              // )
+            // : null,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

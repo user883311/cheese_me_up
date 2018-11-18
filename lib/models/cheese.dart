@@ -64,9 +64,9 @@ class Cheese {
       : id = map["cheeseID"].toString(),
         name = map["en"],
         region = "Country",
-        country = "Region",
+        country = "Switzerland",
         image = map["image"],
-        fullSearch = map["en"];
+        fullSearch = map["en"]+" Switzerland";
 
   toJson([Cheese cheese]) {
     return {
