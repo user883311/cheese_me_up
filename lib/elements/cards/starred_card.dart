@@ -49,12 +49,13 @@ class StarredCardState extends State<StarredCard> {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.transparent,
-          child: ClipOval(
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
             child: FadeInImage.assetNetwork(
               fadeInDuration: Duration(seconds: 2),
               fadeInCurve: Curves.bounceIn,
               placeholder: "assets/media/icons/cheese_color.png",
-              image: "https://via.placeholder.com/350x150",
+              image: cheese.image,
               fit: BoxFit.cover,
             ),
           ),

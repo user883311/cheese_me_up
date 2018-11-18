@@ -116,16 +116,18 @@ class CheeseRouteState extends State<CheeseRoute> {
           leading: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios,
-                color: Colors.brown[200],
               ),
               onPressed: () => Navigator.pop(context)),
           expandedHeight: 200.0,
           pinned: true,
           title: Container(
             padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-            child: Text(cheese.name),
+            child: Text(
+              cheese.name,
+              style: TextStyle(color: Colors.brown[800]),
+            ),
             decoration: BoxDecoration(
-                color: Colors.black26,
+                color: Colors.white70,
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
           ),
           flexibleSpace: FlexibleSpaceBar(
@@ -133,7 +135,7 @@ class CheeseRouteState extends State<CheeseRoute> {
               fadeInDuration: Duration(seconds: 2),
               fadeInCurve: Curves.bounceIn,
               placeholder: "assets/media/icons/cheese_color.png",
-              image: "https://via.placeholder.com/350x150",
+              image: cheese.image,
               fit: BoxFit.cover,
             ),
           ),
@@ -284,7 +286,7 @@ class CheeseRouteState extends State<CheeseRoute> {
                     Text(
                         "\Ipsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\n"),
                     Text("\nLOCATION\n"),
-                    Image.network("https://i.imgur.com/4L8KoEs.png"),
+                    Image.network(cheese.image),
                     Text(
                         "\nIpsam et quaerat sint aliquam. Aut delectus qui tenetur delectus. Voluptate blanditiis odit sunt nostrum et. A non voluptatem laudantium iure esse asperiores et.\n"),
                     Text("\nABOUT THE PRODUCER\n"),

@@ -7,13 +7,13 @@ class Cheese {
   String region;
   String country;
   String image;
-  // TODO: add: 
+  // TODO: add:
   // region coordinates
   // producers list
   // producers coordinates
   // (free text) description
   // color: blue, white
-  // rind/croute: bloomy, washed, natural https://www.thespruceeats.com/are-cheese-rinds-edible-591575 
+  // rind/croute: bloomy, washed, natural https://www.thespruceeats.com/are-cheese-rinds-edible-591575
   // flavor
   // smell / aroma
   // nutritionals: moisture, fat, lactose, protein
@@ -26,8 +26,7 @@ class Cheese {
   // sustainability at producer's level
   // price
   // wine and meat pairings
-  
-  
+
   bool show;
   String fullSearch;
 
@@ -60,6 +59,14 @@ class Cheese {
         country = json["country"],
         image = json["image"],
         fullSearch = json["fullSearch"];
+
+  Cheese.fromMap(Map<dynamic, dynamic> map)
+      : id = map["cheeseID"].toString(),
+        name = map["en"],
+        region = "Country",
+        country = "Region",
+        image = map["image"],
+        fullSearch = map["en"];
 
   toJson([Cheese cheese]) {
     return {

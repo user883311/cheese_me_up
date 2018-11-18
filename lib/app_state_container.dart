@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// The AppStateContainer is an [InheritedWidget] wrapped in a [StatefulWidget].
 /// This basically makes the container a stateful widget that has the ability to pass
@@ -57,7 +60,8 @@ class _AppStateContainerState extends State<AppStateContainer> {
     } else {
       state = new AppState.loading();
       initUser();
-      initCheeses();
+      // initFirebaseCheeses();
+      initSqliteCheeses();
       initFirebaseStorage();
     }
   }
@@ -83,7 +87,9 @@ class _AppStateContainerState extends State<AppStateContainer> {
     state.storage = storage;
   }
 
-  Future<Null> initCheeses() async {
+  /// Accesses the Firebase cheeses node and loads every [Cheese] entry into the
+  /// [cheeses] collection.
+  Future<Null> initFirebaseCheeses() async {
     final FirebaseDatabase database = FirebaseDatabase.instance;
     Query _cheesesRef;
     _cheesesRef = database.reference().child("cheeses").orderByChild("name");
@@ -95,6 +101,39 @@ class _AppStateContainerState extends State<AppStateContainer> {
     }
 
     _cheesesRef.onChildAdded.listen(_onEntryAdded);
+  }
+
+  /// Accesses the SQLite cheeses database and loads every [Cheese] entry into the
+  /// [cheeses] collection.
+  Future<Null> initSqliteCheeses() async {
+    // Construct the path to the app's writable database file:
+    var dbDir = await getDatabasesPath();
+    var dbPath = join(dbDir, "app.db");
+
+    // Delete any existing database:
+    await deleteDatabase(dbPath);
+
+    // Create the writable database file from the bundled cheeses database file:
+    ByteData data = await rootBundle.load("assets/database/cheeses.db");
+    List<int> bytes =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    await File(dbPath).writeAsBytes(bytes);
+
+    var db = await openDatabase(dbPath);
+
+    List<Map> cheesesList = await db.rawQuery('SELECT * FROM cheeses');
+    print("SQL query :\n" + cheesesList.toString());
+
+    for (Map cheeseMap in cheesesList) {
+      setState(() {
+        state.cheeses[cheeseMap["cheeseID"].toString()] =
+            Cheese.fromMap(cheeseMap);
+      });
+    }
+
+    print("state.cheeses:\n" + state.cheeses.toString());
+
+    await db.close();
   }
 
   Future<Null> initUser() async {

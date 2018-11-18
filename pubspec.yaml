@@ -28,6 +28,7 @@ dependencies:
   flutter_rating: ^0.0.2
   animated_text_kit: ^1.1.0
   flutter_slidable: ^0.4.9
+  sqflite: any
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    # cheese SQLite database
+   - assets/database/cheeses.db
+    # cheese images
    - assets/media/img/cheese/abbaye-de-belloc.jpg
    - assets/media/img/cheese/Boulette_dAvesnes.jpg
    - assets/media/img/cheese/cantal.jpg
