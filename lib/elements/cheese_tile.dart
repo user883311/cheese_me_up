@@ -3,7 +3,7 @@ import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/models/user.dart';
 
-/// Creates a tile representing a given [Cheese] object. Upon tapping
+/// Creates a tile representing a given [Cheese]. Upon tapping
 /// on the tile, a callback function [onTapped] is called, for a given [user].
 class CheeseTile extends StatelessWidget {
   final Cheese cheese;
@@ -22,27 +22,20 @@ class CheeseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemedCard(
       child: ListTile(
-        leading: 
-        // circleAvatar
-        //     ? CircleAvatar(
-        //         backgroundColor: Colors.transparent,
-        //         child: 
-                Container(
-                  width: 90.0,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: FadeInImage.assetNetwork(
-                      fadeInDuration: Duration(seconds: 2),
-                      fadeInCurve: Curves.bounceIn,
-                      placeholder: "assets/media/icons/cheese_color.png",
-                      image:
-                          cheese.image,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              // )
-            // : null,
+        leading: Container(
+          width: 90.0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            child: FadeInImage.assetNetwork(
+              fadeInDuration: Duration(seconds: 2),
+              fadeInCurve: Curves.bounceIn,
+              placeholder: "assets/media/icons/cheese_color.png",
+              placeholderScale: 0.5,
+              image: cheese.image,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

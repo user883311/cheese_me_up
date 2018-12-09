@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:cheese_me_up/models/app_state.dart';
-import 'package:cheese_me_up/models/cheese.dart';
-import 'package:cheese_me_up/models/user.dart';
-import 'package:cheese_me_up/utils/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:cheese_me_up/models/app_state.dart';
+import 'package:cheese_me_up/models/cheese.dart';
+import 'package:cheese_me_up/models/producer.dart';
+import 'package:cheese_me_up/models/user.dart';
+import 'package:cheese_me_up/utils/database.dart';
+
+enum LoginType { email, google, facebook }
 
 /// The AppStateContainer is an [InheritedWidget] wrapped in a [StatefulWidget].
 /// This basically makes the container a stateful widget that has the ability to pass
@@ -62,15 +63,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
       initUser();
       // initFirebaseCheeses();
       initSqliteCheeses();
-      initFirebaseStorage();
-    }
-  }
-
-  @override
-  void didUpdateWidget(Widget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget != widget) {
-      print("didUpdateWidget");
+      // initFirebaseStorage();
     }
   }
 
@@ -80,28 +73,28 @@ class _AppStateContainerState extends State<AppStateContainer> {
     super.dispose();
   }
 
-  Future<void> initFirebaseStorage() async {
-    FirebaseApp app = FirebaseApp(name: "cheesopedia");
-    var storage = FirebaseStorage(
-        app: app, storageBucket: 'gs://cheese-me-up.appspot.com');
-    state.storage = storage;
-  }
+  // Future<void> initFirebaseStorage() async {
+  //   FirebaseApp app = FirebaseApp(name: "cheesopedia");
+  //   var storage = FirebaseStorage(
+  //       app: app, storageBucket: 'gs://cheese-me-up.appspot.com');
+  //   state.storage = storage;
+  // }
 
   /// Accesses the Firebase cheeses node and loads every [Cheese] entry into the
   /// [cheeses] collection.
-  Future<Null> initFirebaseCheeses() async {
-    final FirebaseDatabase database = FirebaseDatabase.instance;
-    Query _cheesesRef;
-    _cheesesRef = database.reference().child("cheeses").orderByChild("name");
-    void _onEntryAdded(Event event) {
-      setState(() {
-        Cheese cheese = Cheese.fromSnapshot(event.snapshot);
-        state.cheeses[cheese.id.toString()] = cheese;
-      });
-    }
+  // Future<Null> initFirebaseCheeses() async {
+  //   final FirebaseDatabase database = FirebaseDatabase.instance;
+  //   Query _cheesesRef;
+  //   _cheesesRef = database.reference().child("cheeses").orderByChild("name");
+  //   void _onEntryAdded(Event event) {
+  //     setState(() {
+  //       Cheese cheese = Cheese.fromSnapshot(event.snapshot);
+  //       state.cheeses[cheese.id.toString()] = cheese;
+  //     });
+  //   }
 
-    _cheesesRef.onChildAdded.listen(_onEntryAdded);
-  }
+  //   _cheesesRef.onChildAdded.listen(_onEntryAdded);
+  // }
 
   /// Accesses the SQLite cheeses database and loads every [Cheese] entry into the
   /// [cheeses] collection.
@@ -119,11 +112,11 @@ class _AppStateContainerState extends State<AppStateContainer> {
         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await File(dbPath).writeAsBytes(bytes);
 
-    var db = await openDatabase(dbPath);
+    state.sqlDatabase = await openDatabase(dbPath);
+    var db = state.sqlDatabase;
 
+    // Get the cheeses.
     List<Map> cheesesList = await db.rawQuery('SELECT * FROM cheeses');
-    print("SQL query :\n" + cheesesList.toString());
-
     for (Map cheeseMap in cheesesList) {
       setState(() {
         state.cheeses[cheeseMap["cheeseID"].toString()] =
@@ -131,9 +124,28 @@ class _AppStateContainerState extends State<AppStateContainer> {
       });
     }
 
-    print("state.cheeses:\n" + state.cheeses.toString());
+    // Get the producers.
+    List<Map> producersList = await db.rawQuery('SELECT * FROM producers');
+    for (Map producerMap in producersList) {
+      print("producerMap= \n$producerMap");
+      setState(() {
+        state.producers[producerMap["producerID"].toString()] =
+            Producer.fromMap(producerMap);
+      });
+    }
 
-    await db.close();
+    // // get the producedBy
+    // List<Map<String,String>> producedBy = await db.rawQuery('SELECT * FROM producedBy');
+    // // create two Maps for retrieving cheeses and producers alike
+    // for (Map<String,String> producedByLine in producedBy) {
+    //   print("producedByLine= \n$producedByLine");
+    //   setState(() {
+    //     state.producers[producerMap["producerID"].toString()] =
+    //         Producer.fromMap(producerMap);
+    //   });
+    // }
+
+    // await db.close();
   }
 
   Future<Null> initUser() async {
@@ -175,7 +187,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
     // When fired from the button on the auth screen, there should
     // never be a googleUser
     if (googleUser == null) {
-      // necessary?
       // This built in method brings starts the process
       // Of a user entering their Google email and password.
       googleUser = await googleSignIn.signIn();
@@ -263,6 +274,72 @@ class _AppStateContainerState extends State<AppStateContainer> {
       print("Firebase sign-in error (${e.runtimeType}):\n$e");
       return e;
     }
+  }
+
+  Future getAuthentificatedUser(LoginType loginType,
+      [String email, String password]) async {
+    FirebaseUser firebaseUser;
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    // get the firebase user ID = authentify user
+    String firebaseUserID;
+    try {
+      switch (loginType) {
+        case LoginType.email:
+          print("LoginType.email");
+          print("email=$email");
+          firebaseUser = await _auth.signInWithEmailAndPassword(
+              email: email, password: password);
+          setState(() {
+            // Updating the isLoading will force the Homepage to change because of
+            // The inheritedWidget setup.
+            state.isLoading = false;
+          });
+          break;
+
+        case LoginType.google:
+          print("LoginType.google");
+          GoogleSignInAuthentication googleAuth =
+              await googleUser.authentication;
+          firebaseUser = await _auth.signInWithGoogle(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          setState(() {
+            state.isLoading = false;
+          });
+          break;
+
+        default:
+      }
+      print('--Logged in with Google Sign In, firebaseUser: $firebaseUser');
+      firebaseUserID = firebaseUser.uid;
+    } catch (error) {
+      print("Sign-in error (${error.runtimeType}):\n$error");
+      throw error;
+    }
+
+    // User firebase user ID to add the user to the app global state
+    _userRef = database.reference().child("users/$firebaseUserID");
+    streamSubscription = _userRef.onValue.listen((Event event) async {
+      bool _isUserNotInDatabase = (event.snapshot.value == null);
+      if (_isUserNotInDatabase) {
+        User newUser = User.fromJson({
+          "id": firebaseUser.uid,
+          "displayName": firebaseUser.displayName,
+          "email": firebaseUser.email,
+        });
+        // Add new user to the database
+        await addUserToFirebase(newUser, firebaseUser.uid);
+      }
+
+      User userInstance = User.fromSnapshot(event.snapshot);
+      print(userInstance.toString());
+      setState(() {
+        state.user = userInstance;
+      });
+      return userInstance;
+    });
   }
 
   // So the WidgetTree is actually

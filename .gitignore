@@ -4,6 +4,7 @@
 assets
 android
 ios
+internal
 building
 .vscode
 .idea

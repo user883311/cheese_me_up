@@ -1,11 +1,11 @@
 import 'package:cheese_me_up/app_state_container.dart';
-import 'package:cheese_me_up/elements/cards/themed_card.dart';
 import 'package:cheese_me_up/elements/cards/this_period_card.dart';
 import 'package:cheese_me_up/models/app_state.dart';
 import 'package:cheese_me_up/models/cheese.dart';
 import 'package:cheese_me_up/routes/checkin_route.dart';
 import 'package:cheese_me_up/routes/history_route.dart';
 import 'package:cheese_me_up/routes/login_route.dart';
+import 'package:cheese_me_up/routes/map_route.dart';
 import 'package:cheese_me_up/routes/settings_route.dart';
 import 'package:flutter/material.dart';
 import 'package:cheese_me_up/models/user.dart';
@@ -65,21 +65,7 @@ class _FeedRoute extends State<FeedRoute> {
         "appBar": null,
       },
       {
-        "body": Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Center(
-              child: ThemedCard(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                      "The Map functionnality is in preparation. Stay tuned! ;-)"),
-                ),
-              ),
-            ),
-            Image.network("https://i.imgur.com/4L8KoEs.png"),
-          ],
-        ),
+        "body": MapRoute(),
         "appBar": null,
       },
       {

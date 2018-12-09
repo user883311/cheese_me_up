@@ -1,5 +1,6 @@
 import 'package:cheese_me_up/app_state_container.dart';
 import 'package:cheese_me_up/elements/themed_snackbar.dart';
+import 'package:cheese_me_up/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -17,10 +18,8 @@ class LoginRouteState extends State<LoginRoute> {
 
   bool _signInOrCreateAccountMode = true;
 
-  TextEditingController _emailController =
-      new TextEditingController(text: "user883311@gmail.com");
-  TextEditingController _passwordController1 =
-      new TextEditingController(text: "password");
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController1 = new TextEditingController();
   TextEditingController _passwordController2 = new TextEditingController();
 
   @override
@@ -106,7 +105,6 @@ class LoginRouteState extends State<LoginRoute> {
                           child: Builder(
                             builder: (context) {
                               return RaisedButton(
-                                // color: Color.fromRGBO(181, 221, 255, 0.8),
                                 child: Text(
                                   _signInOrCreateAccountMode
                                       ? "Log into my account"
@@ -128,12 +126,27 @@ class LoginRouteState extends State<LoginRoute> {
                                         password: _passwordController1.text,
                                       );
                                     }
-                                    dynamic _loginAttemptResponse =
-                                        await container.emailLogIntoFirebase(
-                                            _emailController.text,
-                                            _passwordController1.text);
-                                    if (_loginAttemptResponse != true) {
-                                      throw _loginAttemptResponse;
+                                    // dynamic _loginAttemptResponse =
+                                    //     await container.emailLogIntoFirebase(
+                                    //         _emailController.text,
+                                    //         _passwordController1.text);
+                                    // if (_loginAttemptResponse != true) {
+                                    //   throw _loginAttemptResponse;
+                                    // }
+                                    try {
+                                      User authedUser = await container
+                                          .getAuthentificatedUser(
+                                              LoginType.email,
+                                              _emailController.text,
+                                              _passwordController1.text);
+                                      setState(() {
+                                        container.state.user = authedUser;
+                                      });
+                                    } catch (e) {
+                                      String errorMessage =
+                                          e.details ?? e.toString();
+                                      showSnackBar(
+                                          context, "Bummer! $errorMessage");
                                     }
                                   } catch (e) {
                                     print("error came:$e");

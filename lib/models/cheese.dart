@@ -52,30 +52,12 @@ class Cheese {
             " " +
             snapshot.value["country"].toString();
 
-  Cheese.fromJson(Map<dynamic, dynamic> json)
-      : id = json["id"],
-        name = json["name"],
-        region = json["region"],
-        country = json["country"],
-        image = json["image"],
-        fullSearch = json["fullSearch"];
-
-  Cheese.fromMap(Map<dynamic, dynamic> map)
-      : id = map["cheeseID"].toString(),
-        name = map["en"],
-        region = "Country",
-        country = "Switzerland",
-        image = map["image"],
-        fullSearch = map["en"]+" Switzerland";
-
-  toJson([Cheese cheese]) {
-    return {
-      "id": id,
-      "name": name,
-      "region": region,
-      "country": country,
-      "image": image,
-      "fullSearch": fullSearch,
-    };
+  Cheese.fromMap(Map<dynamic, dynamic> map) {
+    this.id = map["cheeseID"].toString();
+    this.name = map["en"];
+    this.region = "Helvetia";
+    this.country = "Switzerland";
+    this.image = map["image"];
+    this.fullSearch = map["en"] + " Switzerland";
   }
 }

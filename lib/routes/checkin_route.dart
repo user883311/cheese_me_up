@@ -80,6 +80,11 @@ class CheckinRouteState extends State<CheckinRoute> {
             hintText: "Search a cheese...",
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.format_align_center),
+          )
+        ],
       ),
       body: checkinBody,
     );
